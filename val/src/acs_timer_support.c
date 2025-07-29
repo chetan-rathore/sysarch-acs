@@ -26,11 +26,12 @@ uint8_t get_effective_e2h(void)
 {
   uint32_t effective_e2h;
   uint32_t hcr_e2h = VAL_EXTRACT_BITS(ArmReadHcrEl2(), 34, 34);
-  uint32_t feat_vhe = VAL_EXTRACT_BITS(ArmReadAA64MMFR1EL1(), 8, 11);
-  uint32_t e2h0 = VAL_EXTRACT_BITS(ArmReadAA64MMFR4EL1(), 24, 27);
-
   val_print(ACS_PRINT_DEBUG, "\n       hcr_e2h   : 0x%x", hcr_e2h);
+
+  uint32_t feat_vhe = VAL_EXTRACT_BITS(ArmReadAA64MMFR1EL1(), 8, 11);
   val_print(ACS_PRINT_DEBUG, "\n       feat_vhe  : 0x%x", feat_vhe);
+
+  uint32_t e2h0 = VAL_EXTRACT_BITS(ArmReadAA64MMFR4EL1(), 24, 27);
   val_print(ACS_PRINT_DEBUG, "\n       e2h0 : 0x%x", e2h0);
 
   if (feat_vhe == 0x0) //ID_AA64MMFR1_EL1.VH
