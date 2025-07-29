@@ -18,6 +18,7 @@
 #include "include/acs_val.h"
 #include "include/acs_timer_support.h"
 #include "include/acs_common.h"
+#include "include/acs_pe.h"
 
 /**
   @brief This API is used to get the effective HCR_EL2.E2H
