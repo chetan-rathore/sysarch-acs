@@ -25,6 +25,12 @@
 uint8_t get_effective_e2h(void)
 {
   uint32_t effective_e2h;
+
+  /* if EL2 is not present, effective E2H will be 0 */
+  if (val_pe_reg_read(CurrentEL) == AARCH64_EL1) {
+    val_print(ACS_PRINT_DEBUG, "\n       CurrentEL: AARCH64_EL1", 0);
+    return 0;
+  }
   uint32_t hcr_e2h = VAL_EXTRACT_BITS(ArmReadHcrEl2(), 34, 34);
   val_print(ACS_PRINT_DEBUG, "\n       hcr_e2h   : 0x%x", hcr_e2h);
 
