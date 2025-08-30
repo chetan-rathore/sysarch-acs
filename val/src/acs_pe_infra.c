@@ -89,8 +89,13 @@ val_pe_create_info_table(uint64_t *pe_info_table)
   }
 
 #ifndef TARGET_LINUX
-val_print(ACS_PRINT_TEST, " Primary PE: MIDR_EL1                 :    0x%llx \n",
+  val_print(ACS_PRINT_TEST, " Primary PE: MIDR_EL1                 :    0x%llx \n",
                                                                      val_pe_reg_read(MIDR_EL1));
+  if (val_pe_reg_read(CurrentEL) == AARCH64_EL1)
+       val_print(ACS_PRINT_DEBUG, "  Current EL: EL1\n", 0);
+
+  if (val_pe_reg_read(CurrentEL) == AARCH64_EL2)
+       val_print(ACS_PRINT_DEBUG, "  Current EL: EL2\n", 0);
 #endif
 
   /* store primary PE index for debug message printing purposes on
