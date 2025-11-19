@@ -4,7 +4,7 @@
 - [BSA - Architecture Compliance Suite](#bsa---architecture-compliance-suite)
 - [Release details](#release-details)
 - [Documentation & Guides](#documentation-and-guides)
-- [BSA build steps](#acs-build-steps)
+- [BSA build steps](#bsa-build-steps)
   - [UEFI Shell application](#uefi-shell-application)
   - [Linux application](#linux-application)
   - [Baremetal application](#baremetal-application)
@@ -35,7 +35,7 @@ Tests can also run in a bare-metal environment. Initialization of the bare-metal
 - **Scope:** The compliance suite is **not** a substitute for design verification.  
 - **Access to logs:** Arm licensees can contact Arm through their partner managers.  
 
-### BSA ACS version mapping
+#### BSA ACS version mapping
 
 |   BSA ACS Version   |      BSA Tag ID     | BSA Spec Version |    Pre-Si Support |
 |:-------------------:|:-------------------:|:----------------:|------------------:|
@@ -53,11 +53,11 @@ Tests can also run in a bare-metal environment. Initialization of the bare-metal
 |        v1.0.1       |   v22.06_REL1.0.1   |   BSA v1.0       |       No          |
 |        v1.0         |   v21.09_REL1.0     |   BSA v1.0       |       No          |
 
-### GitHub branch
+#### GitHub branch
 - To pick up the release version of the code, check out the corresponding **tag** from the **main** branch.
 - To get the latest code with bug fixes and new features, use the **main** branch.
 
-### Prebuilt release binaries
+#### Prebuilt release binaries
 Prebuilt images for each release are available in the [`prebuilt_images`](prebuilt_images/BSA) folder of the main branch.  
 
 ## Documentation and Guides
@@ -83,61 +83,51 @@ Prebuilt images for each release are available in the [`prebuilt_images`](prebui
 
 - A mainstream Linux distribution on x86 or AArch64.
 - Bash Shell for build
-- Clone the [EDK2 tree](https://github.com/tianocore/edk2). Recommended commit: `836942fbadb629050b866a8052e6af755bcdf623`.
-- Clone the [EDK2 port of libc](https://github.com/tianocore/edk2-libc) into local `<edk2_path>`.
-- Install **GCC-ARM 13.2** [toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads).
 - Install prerequisite packages to build EDK2.  
   *Note: Package details are beyond the scope of this document.*
 
-#### To start the ACS build for platform using ACPI table, perform the following steps:
+#### Setup the workspace and clone required repositories
+```
+mkdir workspace && cd workspace
+git clone -b edk2-stable202508 https://github.com/tianocore/edk2
+cd edk2
+git submodule update --init --recursive
+git clone https://github.com/tianocore/edk2-libc
+git clone https://github.com/ARM-software/sysarch-acs.git ShellPkg/Application/sysarch-acs
+cd -
+```
+- On x86 machine download and setup toolchain
+```
+wget https://developer.arm.com/-/media/Files/downloads/gnu/14.3.rel1/binrel/arm-gnu-toolchain-14.3.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+tar -xf arm-gnu-toolchain-14.3.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+export GCC_AARCH64_PREFIX=$PWD/arm-gnu-toolchain-14.3.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-
+```
+- On Aarch64 machine, export toolchain variable to native tools
+```
+export GCC_AARCH64_PREFIX=/usr/bin
+```
 
-1. `cd <local_edk2_path>`  
-2. `git submodule update --init --recursive`  
-3. `git clone https://github.com/ARM-software/bsa-acs.git ShellPkg/Application/bsa-acs`  
-4. Add the following to the **[LibraryClasses.common]** section in `ShellPkg/ShellPkg.dsc`:
-   ```
-   BsaValLib|ShellPkg/Application/bsa-acs/val/BsaValLib.inf
-   BsaPalLib|ShellPkg/Application/bsa-acs/pal/uefi_acpi/BsaPalLib.inf
-   ```
-5. Add the following in the **[components]** section of `ShellPkg/ShellPkg.dsc`:
-   ```
-   ShellPkg/Application/bsa-acs/uefi_app/BsaAcs.inf
-   ```
+#### Build edk2 by following below steps:
+```
+export PACKAGES_PATH=$PWD/edk2-libc
+source edksetup.sh
+make -C BaseTools/Source/C
+```
+
+#### To start the ACS build for platform using ACPI table, perform the following steps:
+```
+rm -rf Build/
+source ShellPkg/Application/sysarch-acs/tools/scripts/acsbuild.sh bsa
+```
 
 #### To start the ACS build for platform using Device tree, perform the following steps:
-
-1. `cd <local_edk2_path>`  
-2. `git submodule update --init --recursive`  
-3. `git clone https://github.com/ARM-software/bsa-acs.git ShellPkg/Application/bsa-acs`  
-4. Add the following to the **[LibraryClasses.common]** section in `ShellPkg/ShellPkg.dsc`:
-   ```
-   FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
-   BsaValLib|ShellPkg/Application/bsa-acs/val/BsaValLib.inf
-   BsaPalLib|ShellPkg/Application/bsa-acs/pal/uefi_dt/BsaPalLib.inf
-   ```
-5. Add the following in the **[components]** section of `ShellPkg/ShellPkg.dsc`:
-   ```
-   ShellPkg/Application/bsa-acs/uefi_app/BsaAcs.inf
-   ```
-
-6. Apply the following change in `edk2/MdeModulePkg/Library/UefiHiiServicesLib/UefiHiiServicesLib.c`:
-   ```diff
-   -Status = gBS->LocateProtocol (&gEfiHiiConfigRoutingProtocolGuid, NULL, (VOID **) &gHiiConfigRouting);
-   -ASSERT_EFI_ERROR (Status);
-   +//Status = gBS->LocateProtocol (&gEfiHiiConfigRoutingProtocolGuid, NULL, (VOID **) &gHiiConfigRouting);
-   +//ASSERT_EFI_ERROR (Status);
-   ```
-
-#### Perform the following steps:
-1. `export GCC49_AARCH64_PREFIX=<GCC 13.2 toolchain path>/bin/aarch64-linux-gnu-` (on x86 hosts)  
-    For an AArch64 host build, this should point to `/usr/bin/`.
-2. `export PACKAGES_PATH=<path to edk2-libc>`  
-3. `source edksetup.sh`  
-4. `make -C BaseTools/Source/C`  
-5. `source ShellPkg/Application/bsa-acs/tools/scripts/acsbuild.sh`
+```
+rm -rf Build/
+source ShellPkg/Application/sysarch-acs/tools/scripts/acsbuild.sh bsa_dt
+```
 
 #### Build output
-The EFI executable is generated at: `<edk2_path>/Build/Shell/DEBUG_GCC49/AARCH64/Bsa.efi`
+The EFI executable is generated at: `<edk2_path>/Build/Shell/DEBUG_GCC/AARCH64/Bsa.efi`
 
 ### Linux application
 Certain Peripheral, PCIe, and Memory Map tests require a Linux OS. This section covers building and executing these tests from the Linux application.
