@@ -1,7 +1,7 @@
 [![SYSARCH-ACS Build Check](https://github.com/ARM-software/sysarch-acs/actions/workflows/sysarch_daily.yml/badge.svg)](https://github.com/ARM-software/sysarch-acs/actions/workflows/sysarch_daily.yml)
 
 
-## 📚 Table of Contents
+## Table of Contents
 
 * [Introduction](#introduction)
 * [Repository Structure](#repository-structure)
@@ -20,7 +20,7 @@
 
 ---
 
-## 🏗️ Introduction
+## Introduction
 
 The **Arm sysarch-acs** repository is a collection of **Architecture Compliance Suites (ACS)** that verify compliance with the following Arm System Architecture specifications:
 
@@ -85,7 +85,7 @@ sysarch-acs/
 
 ---
 
-## 🧱 Architecture Compliance Suites
+## Architecture Compliance Suites
 
 ###  BSA Architecture Compliance Suite
 Validates platform compliance with Arm BSA specification.
