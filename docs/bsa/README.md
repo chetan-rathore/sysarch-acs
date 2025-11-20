@@ -9,8 +9,8 @@
   - [Linux application](#linux-application)
   - [Baremetal application](#baremetal-application)
 - [BSA run steps](#bsa-run-steps)
-  - [On UEFI shell](#on-uefi-shell)
-  - [On Linux enviroment](#on-linux-enviroment)
+  - [For UEFI application](#for-uefi-application)
+  - [For Linux application](#for-linux-application)
 - [Limitations](#limitations)
 - [License](#license)
 
@@ -169,29 +169,7 @@ For details on generating binaries for bare-metal environments, refer to [README
 
 ### For UEFI application 
 
-#### Prerequisites
-If the system supports **LPIs** (Interrupt ID > 8192), firmware must support handler installation for LPI interrupts.
-
-- For **edk2**, modify the ArmGic driver in `ArmPkg` to support LPI handler installation:
-  - In `edk2/ArmPkg/Drivers/ArmGic/GicV3/ArmGicV3Dxe.c`  
-    After:
-    ```c
-    #define ARM_GIC_DEFAULT_PRIORITY  0x80
-    ```
-    add:
-    ```c
-    #define ARM_GIC_MAX_NUM_INTERRUPT 16384
-    ```
-    In `GicV3DxeInitialize` change:
-    ```c
-    mGicNumInterrupts = ArmGicGetMaxNumInterrupts (mGicDistributorBase);
-    ```
-    to:
-    ```c
-    mGicNumInterrupts = ARM_GIC_MAX_NUM_INTERRUPT;
-    ```
-
-##### Silicon System
+#### Silicon System
 On a system with a functional USB port:
 1. Copy `Bsa.efi` to a USB device which is fat formatted.  
 
@@ -220,7 +198,7 @@ On a system with a functional USB port:
 
 - For application parameters, see the [User Guide](docs/arm_bsa_architecture_compliance_user_guide.pdf).
 
-##### Emulation environment with secondary storage
+#### Emulation environment with secondary storage
 1. Create an image containing `Bsa.efi` and **'Shell.efi` (only for u-boot systems)**:
    ```
    mkfs.vfat -C -n HD0 hda.img 2097152
