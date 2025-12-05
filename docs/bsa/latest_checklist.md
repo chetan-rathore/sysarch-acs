@@ -27,6 +27,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <th>UEFI</th>
       <th>BM</th>
       <th>Linux</th>
+      <th>Additonal Information</th>
     </tr>
   </thead>
   <tbody>
@@ -39,6 +40,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -49,6 +51,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -59,6 +62,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -69,16 +73,18 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>            
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_PE_05</td>
       <td>B_PE_05</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -89,6 +95,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -99,6 +106,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -109,6 +117,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -119,6 +128,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -129,6 +139,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -139,6 +150,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -149,6 +161,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -159,6 +172,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -169,6 +183,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -179,6 +194,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -189,6 +205,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -199,6 +216,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -209,6 +227,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -219,6 +238,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -229,6 +249,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -239,6 +260,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -249,6 +271,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -259,6 +282,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -269,6 +293,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>No</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -279,6 +304,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>No</td>
       <td>Yes</td>
       <td>Yes</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -289,6 +315,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>No</td>
       <td>Yes</td>
       <td>Yes</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -299,6 +326,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -309,36 +337,40 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>No</td>
       <td>Yes</td>
       <td>Yes</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_MEM_07</td>
       <td>B_MEM_07</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-944</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_MEM_08</td>
       <td>B_MEM_08</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-947</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_MEM_09</td>
       <td>B_MEM_09</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-948</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -349,6 +381,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -359,6 +392,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -369,6 +403,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -379,6 +414,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -389,6 +425,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -399,6 +436,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -409,6 +447,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -419,6 +458,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -429,6 +469,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -439,6 +480,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -449,16 +491,18 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>B_PPI_03</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-1005</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -469,6 +513,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -479,6 +524,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -489,6 +535,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -499,6 +546,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -509,6 +557,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -519,6 +568,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -529,16 +579,18 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_SMMU_07</td>
       <td>B_SMMU_07</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-964</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -549,16 +601,18 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_SMMU_12</td>
       <td>B_SMMU_12</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-966</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -569,16 +623,18 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_SMMU_17</td>
       <td>B_SMMU_17</td>
       <td>Covered by others</td>
-      <td>https://jira.arm.com/browse/PJ03164-969</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -589,6 +645,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -599,6 +656,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -609,6 +667,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -619,6 +678,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -629,36 +689,40 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_TIME_03</td>
       <td>B_TIME_03</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-1010</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_TIME_04</td>
       <td>B_TIME_04</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-1011</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_TIME_05</td>
       <td>B_TIME_05</td>
       <td>Covered by others</td>
-      <td>https://jira.arm.com/browse/PJ03164-1012</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -669,6 +733,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -679,6 +744,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -689,6 +755,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -699,16 +766,18 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
       <td>B_TIME_10</td>
       <td>B_TIME_10</td>
       <td>Covered by others</td>
-      <td>https://jira.arm.com/browse/PJ03164-1017</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -719,6 +788,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -729,6 +799,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -739,6 +810,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -749,6 +821,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -759,6 +832,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -769,6 +843,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -779,6 +854,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -789,6 +865,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -799,6 +876,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -809,6 +887,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -819,6 +898,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -829,6 +909,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -839,6 +920,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -849,6 +931,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -859,6 +942,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -869,6 +953,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -879,6 +964,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -889,6 +975,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -899,6 +986,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -909,6 +997,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -919,6 +1008,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -929,6 +1019,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -939,6 +1030,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -949,6 +1041,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -959,6 +1052,7 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>Yes</td>
       <td>Yes</td>
       <td>No</td>
+      <td></td>      
     </tr>
     <tr>
       <td></td>
@@ -1075,10 +1169,10 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>B_WAK_08</td>
       <td>B_WAK_08</td>
       <td>Covered by others</td>
-      <td>https://jira.arm.com/browse/PJ03164-1026</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -1215,10 +1309,10 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td>B_WD_02</td>
       <td>Covered by others</td>
-      <td>https://jira.arm.com/browse/PJ03164-1031</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
@@ -1234,21 +1328,21 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>B_WD_04</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-1033</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>B_WD_05</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-1034</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -1284,11 +1378,11 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>BSA-L1</td>
       <td>B_PER_04</td>
       <td>B_PER_04</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-952</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -1315,10 +1409,10 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>B_PER_07</td>
       <td>B_PER_07</td>
       <td>Covered by others</td>
-      <td>https://jira.arm.com/browse/PJ03164-955</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -1474,51 +1568,51 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>PCI_IN_06</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IN_07</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IN_08</td>
       <td>Covered by others</td>
-      <td>https://jira.arm.com/browse/PJ03164-778</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IN_09</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-779</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IN_10</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
@@ -1594,21 +1688,21 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>PCI_IN_14</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-781</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IN_15</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-782</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
@@ -1734,11 +1828,11 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>PCI_MM_02</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
@@ -1784,11 +1878,11 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>PCI_MM_06</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
@@ -1874,21 +1968,21 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>PCI_LI_04</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_SM_01</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
@@ -1924,31 +2018,31 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>PCI_IC_12</td>
+      <td>Not Covered</td>
       <td></td>
-      <td>https://jira.arm.com/browse/FOMO-503</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IC_13</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IC_14</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
@@ -1964,61 +2058,61 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>PCI_IC_16</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IC_17</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IC_18</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IO_01</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-784</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_IEP_1</td>
+      <td>Not Covered</td>
       <td></td>
       <td></td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td>PCI_PP_01</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-785</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td></td>
@@ -2094,11 +2188,11 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td></td>
       <td></td>
       <td>PCI_PTM_1</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-787</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-L1</td>
@@ -2135,10 +2229,10 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>B_PER_11</td>
       <td>B_PER_11</td>
       <td>Covered by others</td>
-      <td>https://jira.arm.com/browse/PJ03164-960</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-FR</td>
@@ -2146,9 +2240,9 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>B_PE_16</td>
       <td>linux mte app</td>
       <td>Check for MTE support</td>
-      <td>Yes</td>
-      <td>Yes</td>
       <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
     </tr>
     <tr>
       <td>BSA-FR</td>
@@ -2264,21 +2358,21 @@ The [**Changes**](#latest-changes) section captures how the checklist has change
       <td>BSA-FR</td>
       <td>B_SMMU_24</td>
       <td>B_SMMU_24</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-766</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>BSA-FR</td>
       <td>B_SMMU_25</td>
       <td>B_SMMU_25</td>
-      <td>Waived</td>
-      <td>https://jira.arm.com/browse/PJ03164-767</td>
-      <td>Yes</td>
-      <td>Yes</td>
-      <td>No</td>
+      <td>Not covered</td>
+      <td> </td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
   </tbody>
 </table>
