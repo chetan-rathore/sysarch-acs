@@ -14,7 +14,7 @@ The checklist provides information about:
 
 <br>
 Changelog table summarizing the latest checklist changes relative to the latest released tag, is present at end of document.
-[Changes](https://github.com/chetan-rathore/sysarch-acs/edit/main/docs/bsa/latest_checklist.xml#latest-changes)
+[Changes](https://github.com/chetan-rathore/sysarch-acs/blob/main/docs/bsa/latest_checklist.md#latest-changes)
 <br><br>
 
 
