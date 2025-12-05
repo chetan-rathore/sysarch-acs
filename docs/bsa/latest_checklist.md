@@ -12,12 +12,10 @@ The checklist provides information about:
 6. In case if a UEFI or Linux based test is **not** part of the SystemReady image, it is marked with `#`.
 6. Tests which requires PAL API implementation for run, are marked with `&`.
 
+
+The [**Changes**](#latest-changes) section captures how the checklist has changed in the latest code compared to the checklist in the corresponding ACS release tag.
+
 <br>
-Changelog table summarizing the latest checklist changes relative to the latest released tag, is present at end of document.
-[Changes](https://github.com/chetan-rathore/sysarch-acs/blob/main/docs/bsa/latest_checklist.md#latest-changes)
-<br><br>
-
-
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
