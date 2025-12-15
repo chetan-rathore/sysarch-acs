@@ -540,7 +540,15 @@ val_get_num_smbios_slots()
 void
 val_smbios_free_info_table()
 {
-  pal_mem_free_aligned((void *)g_smbios_info_table);
+      if (g_smbios_info_table != NULL) {
+        pal_mem_free_aligned((void *)g_smbios_info_table);
+        g_smbios_info_table = NULL;
+    }
+    else {
+      val_print(ACS_PRINT_ERR,
+                  "\n WARNING: g_smbios_info_table pointer is already NULL",
+        0);
+    }
 }
 #endif
 
