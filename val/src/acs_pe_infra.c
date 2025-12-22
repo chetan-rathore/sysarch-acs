@@ -223,6 +223,7 @@ val_pe_get_index_mpid(uint64_t mpid)
            Uses PSCI_CPU_OFF to switch off PE after payload execution.
            1. Caller       -  PAL code
            2. Prerequisite -  Stack pointer for this PE is setup by PAL
+                              MMU/caches enabled by ModuleEntryPoint
   @param   None
   @return  None
 **/
