@@ -975,6 +975,7 @@ typedef enum {
     TPM,
     POWER_WAKEUP,
     PFDI,
+    CXL,
     MODULE_ID_SENTINEL /* need to be in last */
 } MODULE_NAME_e;
 

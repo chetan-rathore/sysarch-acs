@@ -457,6 +457,24 @@ typedef struct {
   pcie_device_attr device[];         ///< in the format of Segment/Bus/Dev/Func
 } pcie_device_bdf_table;
 
+/*
+ * CXL info table describing per-host bridge component register windows and
+ * discovered capability flags from firmware (CEDT) or overrides.
+ */
+typedef struct {
+  uint32_t cxl_struct_type;      ///< Type of CXL Structure [CHBS/CFMWS and so on]
+  uint32_t uid;                  ///< CXL HB Unique ID
+  uint32_t component_reg_type;   ///< Type of CEDt Structure
+  uint64_t component_reg_base;   ///< Base address of the CHBCR/RCH DP RCRB
+  uint64_t component_reg_length; ///< Length of the range
+  uint32_t cxl_version;          ///< CXL Version
+  uint32_t hdm_decoder_count;    ///< No. of HDM decoders
+} CXL_INFO_BLOCK;
+
+typedef struct {
+  uint32_t num_entries;
+  CXL_INFO_BLOCK device[];
+} CXL_INFO_TABLE;
 
 typedef struct {
   uint32_t    num_usb;   ///< Number of USB  Controllers

@@ -55,6 +55,7 @@
 #define RES_CC       0x13
 
 /* Command register shifts */
+#define CR_IO_SE_SHIFT 0
 #define CR_MSE_SHIFT   1
 #define CR_BME_SHIFT   2
 #define CR_SCE_SHIFT   3

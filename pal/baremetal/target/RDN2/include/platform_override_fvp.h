@@ -581,6 +581,17 @@
 #define PLATFORM_PCIE_DEV20_BEHIND_SMMU  1
 #define PLATFORM_PCIE_DEV20_ATC_SUPPORT  0
 
+/* CXL platform config parameters */
+#define PLATFORM_OVERRIDE_NUM_CXL_HB                 0    /* No. of CXL Host bridges */
+
+#define PLATFORM_OVERRIDE_CXL_COUNT                  0    /* No. of CXL devices */
+#define PLATFORM_OVERRIDE_CXL0_UID                   0x0  /* CXL HB Unique ID */
+#define PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_TYPE    0x0  /* Type of CEDT Structure */
+#define PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_BASE    0x0  /* Base address of the CHBCR */
+#define PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_LENGTH  0x0  /* Length of the range */
+#define PLATFORM_OVERRIDE_CXL0_CXL_VERSION           0x0  /* CXL Version */
+#define PLATFORM_OVERRIDE_CXL0_CXL_STRUCT_TYPE       0x0  /* Type of CXL Structure [CHBS/CFMWS] */
+
 /* PERIPHERAL platform config parameters */
 #define PLATFORM_OVERRIDE_PERIPHERAL_COUNT 3  //UART + USB + SATA
 
@@ -1574,4 +1585,5 @@
 #define PLATFORM_TPM_VERSION              0x0     /* 2 = TPM 2.0, adjust if different */
 #define PLATFORM_TPM_BASE_ADDR            0x0     /* FIFO locality 0 base address */
 #define PLATFORM_TPM_INTERFACE_TYPE       0x0     /* StartMethod (6=TIS, 7=CRB, etc.) */
+
 /** End config **/

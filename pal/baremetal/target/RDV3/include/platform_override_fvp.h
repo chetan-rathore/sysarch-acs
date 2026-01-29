@@ -614,6 +614,18 @@
 #define CTRL_OFFSET    0x08                       /* Used in PAL APIs. Modify acc to the API impl */
 #define STATUS_OFFSET  0x10                       /* Used in PAL APIs. Modify acc to the API impl */
 
+/* -----------------------------  CXL info  ----------------------------- */
+/* CXL platform config parameters */
+#define PLATFORM_OVERRIDE_NUM_CXL_HB                 0    /* No. of CXL Host bridges */
+
+#define PLATFORM_OVERRIDE_CXL_COUNT                  0    /* No. of CXL devices */
+#define PLATFORM_OVERRIDE_CXL0_UID                   0x0  /* CXL HB Unique ID */
+#define PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_TYPE    0x0  /* Type of CEDT Structure */
+#define PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_BASE    0x0  /* Base address of the CHBCR */
+#define PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_LENGTH  0x0  /* Length of the range */
+#define PLATFORM_OVERRIDE_CXL0_CXL_VERSION           0x0  /* CXL Version */
+#define PLATFORM_OVERRIDE_CXL0_CXL_STRUCT_TYPE       0x0  /* Type of CXL Structure [CHBS/CFMWS] */
+
 /* -----------------------------  Peripheral info  ----------------------------- */
 #define PLATFORM_OVERRIDE_PERIPHERAL_COUNT 2  //UART + USB + SATA
 

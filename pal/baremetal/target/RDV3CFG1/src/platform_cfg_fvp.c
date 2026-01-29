@@ -264,6 +264,27 @@ PCIE_ROOT_INFO_TABLE platform_root_pcie_cfg = {
     */
 };
 
+CXL_INFO_TABLE platform_cxl_cfg = {
+    .num_entries                    = PLATFORM_OVERRIDE_NUM_CXL_HB,
+    .device[0].uid                   = PLATFORM_OVERRIDE_CXL0_UID,
+    .device[0].component_reg_type    = PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_TYPE,
+    .device[0].component_reg_base    = PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_BASE,
+    .device[0].component_reg_length  = PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_LENGTH,
+    .device[0].cxl_version           = PLATFORM_OVERRIDE_CXL0_CXL_VERSION,
+    .device[0].cxl_struct_type       = PLATFORM_OVERRIDE_CXL0_CXL_STRUCT_TYPE,
+
+/** Configure more CXL info details as per specification for more than 1 HB
+    Refer to platform_override_fvp.h file for an example
+    .device[1].uid                   = PLATFORM_OVERRIDE_CXL1_UID,
+    .device[1].component_reg_type    = PLATFORM_OVERRIDE_CXL1_COMPONENT_REG_TYPE,
+    .device[1].component_reg_base    = PLATFORM_OVERRIDE_CXL1_COMPONENT_REG_BASE,
+    .device[1].component_reg_length  = PLATFORM_OVERRIDE_CXL1_COMPONENT_REG_LENGTH,
+    .device[1].cxl_version           = PLATFORM_OVERRIDE_CXL1_CXL_VERSION,
+    .device[1].cxl_struct_type       = PLATFORM_OVERRIDE_CXL1_CXL_STRUCT_TYPE,
+
+**/
+};
+
 PLATFORM_OVERRIDE_IOVIRT_INFO_TABLE platform_iovirt_cfg = {
     .Address              = IOVIRT_ADDRESS,
     .node_count           = IORT_NODE_COUNT,

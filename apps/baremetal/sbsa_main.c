@@ -319,6 +319,9 @@ ShellAppMainsbsa()
         createRas2InfoTable();
     }
 
+    if (acs_is_module_enabled(CXL))
+        createCxlInfoTable();
+
     val_allocate_shared_mem();
 
     /* Initialise exception vector, so any unexpected exception gets handled

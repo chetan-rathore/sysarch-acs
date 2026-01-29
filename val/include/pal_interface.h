@@ -457,6 +457,28 @@ uint32_t pal_pcie_get_rp_transaction_frwd_support(uint32_t seg, uint32_t bus,
 uint32_t pal_pcie_dsm_ste_tags(void);
 uint32_t pal_pcie_check_bus_valid(uint32_t bus_index);
 
+/*
+ * CXL info table definitions capture host bridge component register windows
+ * and capability metadata discovered via CEDT or overrides.
+ */
+typedef struct {
+  uint32_t cxl_struct_type;      ///< Type of CXL Structure [CHBS/CFMWS and so on]
+  uint32_t uid;                  ///< CXL HB Unique ID
+  uint32_t component_reg_type;   ///< Type of CEDT Structure
+  uint64_t component_reg_base;   ///< Base address of the CHBCR/RCH DP RCRB
+  uint64_t component_reg_length; ///< Length of the range
+  uint32_t cxl_version;          ///< CXL Version
+  uint32_t hdm_decoder_count;    ///< No. of HDM decoders
+} CXL_INFO_BLOCK;
+
+typedef struct {
+  uint32_t       num_entries;
+  CXL_INFO_BLOCK device[];
+} CXL_INFO_TABLE;
+
+void     pal_cxl_create_info_table(CXL_INFO_TABLE *CxlTable);
+uint32_t pal_cxl_get_host_bridge_uid(uint32_t bdf, uint32_t *uid);
+
 /**
   @brief  Instance of SMMU INFO block
 **/

@@ -1125,6 +1125,17 @@ createPcieVirtInfoTable(
 }
 
 VOID
+createCxlInfoTable(
+)
+{
+  UINT64 *CxlInfoTable;
+
+  CxlInfoTable = val_aligned_alloc(SIZE_4K, CXL_INFO_TBL_SZ);
+
+  val_cxl_create_info_table(CxlInfoTable);
+}
+
+VOID
 createPeripheralInfoTable(
 )
 {
