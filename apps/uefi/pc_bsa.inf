@@ -315,6 +315,7 @@
   ../../test_pool/drtm/interface011.c
   ../../test_pool/tpm/tpm001.c
   ../../test_pool/tpm/tpm002.c
+  ../../test_pool/cxl/cxl001.c
 
 [Packages]
   StdLib/StdLib.dec

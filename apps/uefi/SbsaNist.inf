@@ -203,6 +203,7 @@
   ../../test_pool/ete/ete006.c
   ../../test_pool/ete/ete007.c
   ../../test_pool/ete/ete008.c
+  ../../test_pool/cxl/cxl001.c
 
   ../../test_pool/nist_sts/test_n001.c
 

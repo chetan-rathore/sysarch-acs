@@ -459,6 +459,7 @@ char *rule_id_string[RULE_ID_SENTINEL] = {
     [S_L4PCI_2]   = "S_L4PCI_2",
     [S_L6PCI_1]   = "S_L6PCI_1",
     [S_L8CXL_1]   = "S_L8CXL_1",
+    [CXL_01]      = "CXL_01",
     [S_L3GI_02]   = "S_L3GI_02",
 
     /* PC-BSA identifiers */
@@ -577,4 +578,5 @@ char *module_name_string[MODULE_ID_SENTINEL] = {
     [TPM]          = "TPM",
     [POWER_WAKEUP] = "POWER_WAKEUP",
     [PFDI]         = "PFDI",
+    [CXL]          = "CXL",
 };

@@ -91,7 +91,7 @@ HelpMsg (VOID)
         "            SBSA level 7 compliance.\n"
         "-m      Run only the specified modules (comma-separated names).\n"
         "        Accepted: PE, GIC, PERIPHERAL, MEM_MAP, PMU, RAS, SMMU,\n"
-        "                  TIMER, WATCHDOG, NIST, PCIE, MPAM, ETE, TPM, POWER_WAKEUP\n"
+        "                  TIMER, WATCHDOG, NIST, PCIE, MPAM, ETE, TPM, POWER_WAKEUP, CXL\n"
         "        Example: -m PE,GIC,PCIE\n"
         "-mmio   Pass this flag to enable pal_mmio_read/write prints, use with -v 1\n"
         "-no_crypto_ext \n"

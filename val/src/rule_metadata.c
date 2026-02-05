@@ -2882,6 +2882,22 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_PFDI_TEST_NUM_BASE + 31,
         },
+        /* CXL */
+        [S_L8CXL_1] = {
+            .test_entry_id    = NULL_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "CXL Rules",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = ALIAS_RULE,
+        },
+        [CXL_01] = {
+            .test_entry_id    = CXL001_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL Version",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  1,
+        },
     };
 
 /* Following structure maps test entry enums with entry function pointers
@@ -3201,6 +3217,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PE066_ENTRY] = pe066_entry,
     [PE067_ENTRY] = pe067_entry,
     [PE068_ENTRY] = pe068_entry,
+    [CXL001_ENTRY] = cxl001_entry,
 /* The following test entries are excluded from compilation for the BSA DT UEFI App, as they are
    not required for the BSA DT build. These tests invoke VAL APIs, which in turn call PAL APIs,
    and PAL_DT lacks a few necessary implementations.*/
@@ -3574,6 +3591,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PMU010_ENTRY] = pmu010_entry,
     [PMU011_ENTRY] = pmu011_entry,
     [PMU001_ENTRY] = pmu001_entry,
+    [CXL001_ENTRY] = cxl001_entry,
 #endif /* BAREMETAL_BSA_BUILD */
     [PE037_ENTRY] = pe037_entry,
     [PE043_ENTRY] = pe043_entry,
@@ -4167,6 +4185,14 @@ RULE_ID_e s_l8shd_1_rule_list[]   = {
                                     RULE_ID_SENTINEL
 };
 
+/* S_L8CXL_1 */
+RULE_ID_e s_l8cxl_rule_list[] = {
+    /* SBSA CXL Rules */
+    CXL_01,
+
+    RULE_ID_SENTINEL
+};
+
 /* PCBSA alias lists */
 /* P_L2WD_01 */
 RULE_ID_e p_l2wd_01_rule_list[]   = {B_WD_01, B_WD_02, B_WD_03, B_WD_04, B_WD_05,
@@ -4257,6 +4283,7 @@ alias_rule_map_t alias_rule_map[] = {
     {S_L8SHD_1, s_l8shd_1_rule_list},
     {SYS_RAS,   sys_ras_rule_list},
     {LVQBC,     lvqbc_rule_list},
+    {S_L8CXL_1, s_l8cxl_rule_list},
 
     /* PCBSA alias rules */
     {P_L1_01,   bsa_l1_rule_list},

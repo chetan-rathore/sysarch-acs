@@ -1133,14 +1133,17 @@ val_cxl_free_info_table(void)
 uint64_t
 val_cxl_get_info(CXL_INFO_e type, uint32_t index)
 {
+
   if (g_cxl_info_table == NULL) {
     val_print(ACS_PRINT_ERR, " GET_CXL_INFO: CXL info table is not created ", 0);
     return 0;
   }
+
   if ((type != CXL_INFO_NUM_DEVICES) && (index >= g_cxl_info_table->num_entries)) {
     val_print(ACS_PRINT_ERR, " GET_CXL_INFO: Invalid index %d ", index);
     return 0;
   }
+
   switch (type) {
   case CXL_INFO_NUM_DEVICES:
     return g_cxl_info_table->num_entries;
@@ -1152,15 +1155,16 @@ val_cxl_get_info(CXL_INFO_e type, uint32_t index)
     return g_cxl_info_table->device[index].component_reg_type;
   case CXL_INFO_DEVICE_TYPE:
     return g_cxl_info_table->device[index].cxl_struct_type;
-  case CXL_INFO_REVISION:
-    return g_cxl_info_table->device[index].cxl_version;
   case CXL_INFO_HDM_COUNT:
     return g_cxl_info_table->device[index].hdm_decoder_count;
   case CXL_INFO_UID:
     return g_cxl_info_table->device[index].uid;
+  case CXL_INFO_VERSION:
+    return g_cxl_info_table->device[index].cxl_version;
   default:
     val_print(ACS_PRINT_ERR, " GET_CXL_INFO: Unsupported info type %d ", type);
     break;
   }
+
   return 0;
 }

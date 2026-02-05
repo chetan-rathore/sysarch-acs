@@ -24,6 +24,7 @@
 
 /* PCIe ECAP/DVSEC */
 #define CXL_DVSEC_VENDOR_ID             0x1E98  /* CXL Consortium Vendor ID */
+#define CXL_68BVH_SHIFT                 21
 
 #define CXL_COMPONENT_TABLE_MAX_ENTRIES 1024
 
@@ -260,7 +261,7 @@ typedef enum {
   CXL_INFO_COMPONENT_LENGTH,
   CXL_INFO_COMPONENT_TYPE,
   CXL_INFO_DEVICE_TYPE,
-  CXL_INFO_REVISION,
+  CXL_INFO_VERSION,
   CXL_INFO_HDM_COUNT,
   CXL_INFO_CAPABILITY_FLAGS,
   CXL_INFO_UID
@@ -272,4 +273,8 @@ void     val_cxl_free_component_table(void);
 uint32_t val_cxl_create_table(void);
 uint64_t val_cxl_get_info(CXL_INFO_e type, uint32_t index);
 uint64_t val_cxl_get_component_info(CXL_COMPONENT_INFO_e type, uint32_t index);
+uint32_t val_cxl_find_capability(uint32_t bdf, uint32_t cid, uint32_t *cid_offset);
+
+uint32_t cxl001_entry(uint32_t num_pe);
+
 #endif
