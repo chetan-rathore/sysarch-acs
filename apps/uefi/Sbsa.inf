@@ -319,6 +319,7 @@
   ../../test_pool/cxl/cxl001.c
   ../../test_pool/cxl/cxl003.c
   ../../test_pool/cxl/cxl004.c
+  ../../test_pool/cxl/cxl010.c
 
 
 [Packages]

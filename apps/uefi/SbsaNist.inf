@@ -206,6 +206,7 @@
   ../../test_pool/cxl/cxl001.c
   ../../test_pool/cxl/cxl003.c
   ../../test_pool/cxl/cxl004.c
+  ../../test_pool/cxl/cxl010.c
 
   ../../test_pool/nist_sts/test_n001.c
 

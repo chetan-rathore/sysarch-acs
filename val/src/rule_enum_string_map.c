@@ -462,6 +462,7 @@ char *rule_id_string[RULE_ID_SENTINEL] = {
     [CXL_01]      = "CXL_01",
     [CXL_03]      = "CXL_03",
     [CXL_04]      = "CXL_04",
+    [CXL_10]      = "CXL_10",
     [S_L3GI_02]   = "S_L3GI_02",
 
     /* PC-BSA identifiers */
