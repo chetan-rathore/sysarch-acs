@@ -95,6 +95,9 @@
 #define CXL_CAPID_EXT_SECURITY          0x0006
 #define CXL_CAPID_IDE                   0x0007
 #define CXL_CAPID_SNOOP_FILTER          0x0008
+#define CXL_CAPID_TIMEOUT_ISOLATION     0x0009
+#define CXL_CAPID_BI_DECODER            0x000C
+#define CXL_CAPID_CACHE_ID_DECODER      0x000E
 
 /* CXL Device Register Cap IDs */
 #define CXL_DEVCAPID_DEVICE_STATUS      0x0001
@@ -274,7 +277,10 @@ uint32_t val_cxl_create_table(void);
 uint64_t val_cxl_get_info(CXL_INFO_e type, uint32_t index);
 uint64_t val_cxl_get_component_info(CXL_COMPONENT_INFO_e type, uint32_t index);
 uint32_t val_cxl_find_capability(uint32_t bdf, uint32_t cid, uint32_t *cid_offset);
+uint32_t val_cxl_find_comp_capability(uint32_t index, uint32_t cap_id);
+const char *val_cxl_cap_name(uint16_t id);
 
 uint32_t cxl001_entry(uint32_t num_pe);
+uint32_t cxl004_entry(uint32_t num_pe);
 
 #endif

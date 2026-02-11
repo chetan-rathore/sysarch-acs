@@ -41,6 +41,72 @@ val_align_up(uint64_t value, uint64_t align)
 }
 
 /**
+  @brief   Retrieve a pointer to a component table entry.
+
+  @param  component_index  Index of the component within the component table.
+
+  @return Pointer to the component entry on success; NULL on error.
+**/
+CXL_COMPONENT_ENTRY *
+val_cxl_get_component_entry(uint32_t component_index)
+{
+  if (g_cxl_component_table == NULL) {
+    val_print(ACS_PRINT_ERR, " CXL: component table not initialised", 0);
+    return NULL;
+  }
+
+  if (component_index >= g_cxl_component_table->num_entries) {
+    val_print(ACS_PRINT_ERR, " CXL: invalid component index %u", component_index);
+    return NULL;
+  }
+
+  return &g_cxl_component_table->component[component_index];
+}
+
+/**
+  @brief   Locate a capability structure within the register block.
+
+  @param  index      Index of the device for which the cap to be identified.
+  @param  cap_id     Capability ID to search for.
+
+  @return 0 if found; else 1.
+**/
+uint32_t
+val_cxl_find_comp_capability(uint32_t index, uint32_t cap_id)
+{
+  uint64_t base;
+  uint32_t arr_hdr;
+  uint32_t entries;
+  uint32_t idx;
+  uint32_t cap_hdr;
+  uint32_t found_id;
+
+  base = val_cxl_get_info(CXL_INFO_COMPONENT_BASE, index);
+  if (base == 0)
+    return 1;
+
+  base = base + CXL_CACHEMEM_PRIMARY_OFFSET;
+  arr_hdr = val_mmio_read(base + CXL_COMPONENT_CAP_ARRAY_OFFSET);
+  entries = CXL_CAP_ARRAY_ENTRIES(arr_hdr);
+
+  for (idx = 0; idx <= entries; ++idx) {
+    cap_hdr = val_mmio_read(base + (uint64_t)idx * CXL_CAP_HDR_SIZE);
+    val_print(ACS_PRINT_INFO, "\n       cap_hdr %llx", cap_hdr);
+    if ((cap_hdr == 0u) || (cap_hdr == PCIE_UNKNOWN_RESPONSE))
+      continue;
+
+    found_id = CXL_CAP_HDR_CAPID(cap_hdr);
+    val_print(ACS_PRINT_INFO, "\n       Found id %llx", found_id);
+    if (found_id == cap_id)
+        return 0;
+
+
+  }
+
+  return 1;
+}
+
+/**
   @brief  Convert a component role enumeration value to a printable label.
   @param  role  CXL component role value.
   @return Pointer to a static string describing the role.
@@ -459,17 +525,21 @@ int val_cxl_get_mmio_bar_host_pa(uint32_t bdf, uint8_t bir,
   @param id    - CXL component capability ID.
   @return  Pointer to a static string describing the capability.
 **/
-static const char *val_cxl_cap_name(uint16_t id)
+const char *
+val_cxl_cap_name(uint16_t id)
 {
     switch (id) {
-    case CXL_CAPID_COMPONENT_CAP: return "CXL Capability";
-    case CXL_CAPID_RAS:           return "CXL RAS Capability";
-    case CXL_CAPID_SECURITY:      return "CXL Security Capability";
-    case CXL_CAPID_LINK:          return "CXL Link Capability";
-    case CXL_CAPID_HDM_DECODER:   return "CXL HDM Decoder Capability";
-    case CXL_CAPID_EXT_SECURITY:  return "CXL Extended Security Capability";
-    case CXL_CAPID_IDE:           return "CXL IDE Capability";
-    case CXL_CAPID_SNOOP_FILTER:  return "CXL Snoop Filter Capability";
+    case CXL_CAPID_COMPONENT_CAP:     return "CXL Capability";
+    case CXL_CAPID_RAS:               return "CXL RAS Capability";
+    case CXL_CAPID_SECURITY:          return "CXL Security Capability";
+    case CXL_CAPID_LINK:              return "CXL Link Capability";
+    case CXL_CAPID_HDM_DECODER:       return "CXL HDM Decoder Capability";
+    case CXL_CAPID_EXT_SECURITY:      return "CXL Extended Security Capability";
+    case CXL_CAPID_IDE:               return "CXL IDE Capability";
+    case CXL_CAPID_SNOOP_FILTER:      return "CXL Snoop Filter Capability";
+    case CXL_CAPID_TIMEOUT_ISOLATION: return "CXL Timeout Isolation Capability";
+    case CXL_CAPID_BI_DECODER:        return "CXL BI Decoder Capability";
+    case CXL_CAPID_CACHE_ID_DECODER:  return "CXL CACHE ID Decoder Capability";
     /* Device Register Cap IDs overlap numerically with Component Cap IDs.
        Avoid duplicate case values; treat others as unknown here. */
     default:
@@ -600,10 +670,10 @@ void val_cxl_dump_reg_block(uint64_t base_pa,
                 break;
             id = id_local; ver = ver_local;
             val_print(ACS_PRINT_INFO, "   \nDevCap[%ld]: ", (uint64_t)i);
-            val_print(ACS_PRINT_INFO, "    \nID=0x%x ", (uint64_t)id);
-            val_print(ACS_PRINT_INFO, "    (%a) ", (uint64_t)val_cxl_dev_cap_name(id));
-            val_print(ACS_PRINT_INFO, "    Ver=%d ", (uint64_t)ver);
-            val_print(ACS_PRINT_INFO, "    Off=0x%x", (uint64_t)cap_off);
+            val_print(ACS_PRINT_INFO, "   ID=0x%x ", (uint64_t)id);
+            val_print(ACS_PRINT_INFO, "   (%a) ", (uint64_t)val_cxl_dev_cap_name(id));
+            val_print(ACS_PRINT_INFO, "   Ver=%d ", (uint64_t)ver);
+            val_print(ACS_PRINT_INFO, "   Off=0x%x", (uint64_t)cap_off);
             /* Bounds check for capability structure */
             if (block_len && cap_off >= block_len) {
                 val_print(ACS_PRINT_INFO, " ERROR in CXL Summary:: -> Cap offset out of range", 0);
@@ -774,7 +844,7 @@ static void val_cxl_parse_register_locator(uint32_t bdf,
         val_print(ACS_PRINT_INFO, "  BIR=%d", CXL_RL_BAR_NUM(bir));
 
         blkname =
-            (block_id == CXL_REG_BLOCK_COMPONENT) ? "CXL Component Registers" :
+            (block_id == CXL_REG_BLOCK_COMPONENT) ? "\nCXL Component Registers" :
             (block_id == CXL_REG_BLOCK_DEVICE)    ? "CXL Device Registers" :
             (block_id == CXL_REG_BLOCK_VENDOR_SPECIFIC) ? "Vendor-Specific Reg Block" :
                                                     "CXL Register Block";
