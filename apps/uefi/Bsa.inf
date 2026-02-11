@@ -313,6 +313,7 @@
   ../../test_pool/tpm/tpm001.c
   ../../test_pool/tpm/tpm002.c
   ../../test_pool/cxl/cxl001.c
+  ../../test_pool/cxl/cxl003.c
   ../../test_pool/cxl/cxl004.c
 
 [Packages]

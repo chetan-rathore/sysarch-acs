@@ -281,6 +281,7 @@ uint32_t val_cxl_find_comp_capability(uint32_t index, uint32_t cap_id);
 const char *val_cxl_cap_name(uint16_t id);
 
 uint32_t cxl001_entry(uint32_t num_pe);
+uint32_t cxl003_entry(uint32_t num_pe);
 uint32_t cxl004_entry(uint32_t num_pe);
 
 #endif

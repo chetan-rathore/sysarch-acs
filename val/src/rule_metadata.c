@@ -2898,6 +2898,14 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_CXL_TEST_NUM_BASE  +  1,
         },
+        [CXL_03] = {
+            .test_entry_id    = CXL003_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CHBCR address map",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  3,
+        },
         [CXL_04] = {
             .test_entry_id    = CXL004_ENTRY,
             .module_id        = CXL,
@@ -3226,6 +3234,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PE067_ENTRY] = pe067_entry,
     [PE068_ENTRY] = pe068_entry,
     [CXL001_ENTRY] = cxl001_entry,
+    [CXL003_ENTRY] = cxl003_entry,
     [CXL004_ENTRY] = cxl004_entry,
 /* The following test entries are excluded from compilation for the BSA DT UEFI App, as they are
    not required for the BSA DT build. These tests invoke VAL APIs, which in turn call PAL APIs,
@@ -3601,6 +3610,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PMU011_ENTRY] = pmu011_entry,
     [PMU001_ENTRY] = pmu001_entry,
     [CXL001_ENTRY] = cxl001_entry,
+    [CXL003_ENTRY] = cxl003_entry,
     [CXL004_ENTRY] = cxl004_entry,
 #endif /* BAREMETAL_BSA_BUILD */
     [PE037_ENTRY] = pe037_entry,
@@ -4199,6 +4209,7 @@ RULE_ID_e s_l8shd_1_rule_list[]   = {
 RULE_ID_e s_l8cxl_rule_list[] = {
     /* SBSA CXL Rules */
     CXL_01,
+    CXL_03,
     CXL_04,
 
     RULE_ID_SENTINEL

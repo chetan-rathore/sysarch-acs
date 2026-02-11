@@ -574,6 +574,7 @@ typedef enum {
     R0194,
     /* CXL rules */
     CXL_01,
+    CXL_03,
     CXL_04,
 
     /* Sentinel must remain last */
@@ -971,6 +972,7 @@ typedef enum {
     PFDI030_ENTRY,
     PFDI031_ENTRY,
     CXL001_ENTRY,
+    CXL003_ENTRY,
     CXL004_ENTRY,
     TEST_ENTRY_SENTINEL
 } TEST_ENTRY_ID_e;
