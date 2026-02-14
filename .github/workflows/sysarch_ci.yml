@@ -212,7 +212,7 @@ jobs:
         run: |
           mkdir -p "artifacts/${{ matrix.toolchain }}"
           cp "edk2/Build/Shell/DEBUG_GCC/AARCH64/${{ matrix.target.outfile }}" "artifacts/${{ matrix.toolchain }}/${{ matrix.target.artifact }}"
-          cp "edk2/Build/Shell/DEBUG_GCC/AARCH64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi" "artifacts/${{ matrix.toolchain }}/${{ matrix.target.artifact }}"
+          cp "edk2/Build/Shell/DEBUG_GCC/AARCH64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi" "artifacts/${{ matrix.toolchain }}/"
 
       - name: Upload ${{ matrix.target.artifact }}
         uses: actions/upload-artifact@v4
