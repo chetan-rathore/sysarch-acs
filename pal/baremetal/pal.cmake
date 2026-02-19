@@ -36,6 +36,7 @@ target_include_directories(${PAL_LIB} PRIVATE
  ${ROOT_DIR}/pal/baremetal/base/include/
  ${ROOT_DIR}/pal/baremetal/base/src/AArch64/
  ${ROOT_DIR}/pal/baremetal/target/${TARGET}/include/
+ ${ROOT_DIR}/pal/include/
 )
 
 unset(PAL_SRC)

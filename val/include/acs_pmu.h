@@ -18,6 +18,8 @@
 #ifndef __ACS_PMU_H__
 #define __ACS_PMU_H__
 
+#include "val_sysreg_pmu_reg.h"
+
 /* EL2 Cycle Count Filter Enable */
 #define NSH_EN    27
 /* Cycle Counter Enable */
@@ -36,13 +38,6 @@
 #define PMCR_EN_BIT             0
 
 #define PMCR_NUM_COUNTERS_MASK  0xF800
-
-uint64_t AA64ReadPmccntr(void);
-uint64_t AA64ReadPmccfiltr(void);
-uint64_t AA64ReadPmcntenset(void);
-void AA64WritePmccntr(uint64_t WriteData);
-void AA64WritePmccfiltr(uint64_t WriteData);
-void AA64WritePmcntenset(uint64_t WriteData);
 
 uint64_t val_pmu_get_info(PMU_INFO_e type, uint32_t node_index);
 uint8_t  val_pmu_supports_dedicated_cycle_counter(uint32_t node_index);

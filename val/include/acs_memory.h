@@ -18,6 +18,8 @@
 #ifndef __ACS_MEMORY_H__
 #define __ACS_MEMORY_H__
 
+#include "val_sysreg.h"
+
 #define MEM_MAP_SUCCESS  0x0
 #define MEM_MAP_NO_MEM   0x1
 #define MEM_MAP_FAILURE  0x2
@@ -43,7 +45,6 @@ void *val_aligned_alloc(uint32_t alignment, uint32_t size);
 void val_memory_free_aligned(void *addr);
 void *val_memory_alloc_cacheable(uint32_t bdf, uint32_t size, void **pa);
 void val_memory_free_cacheable(uint32_t bdf, uint32_t size, void *va, void *pa);
-void AA64IssueDSB(void);
 void val_mem_issue_dsb(void);
 
 uint32_t val_memory_region_has_52bit_addr(void);
