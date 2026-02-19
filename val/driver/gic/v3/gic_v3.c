@@ -74,7 +74,7 @@ CurrentCpuRDBase(uint64_t mGicRedistributorBase, uint32_t length)
   uint64_t     GicCpuRedistributorBase;
   uint64_t     Mpidr;
 
-  Mpidr = ArmReadMpidr();
+  Mpidr = read_mpidr_el1();
 
   CpuAffinity = (Mpidr & (PE_AFF0 | PE_AFF1 | PE_AFF2)) | ((Mpidr & PE_AFF3) >> 8);
 
@@ -395,10 +395,10 @@ v3_Init(void)
 
   if (val_pe_reg_read(CurrentEL) == AARCH64_EL2) {
     /* Route exception to EL2 */
-    GicWriteHcr(1 << 27);
+    write_hcr_el2(1 << 27);
   }
 
-  GicClearDaif();
+  write_daifclr(DAIF_CONFIG);
 
   /* Wake up redistributor before programming SGI/PPI state */
   WakeUpRD();
@@ -419,7 +419,7 @@ v3_Init(void)
   }
 #endif
 
-  Mpidr = ArmReadMpidr();
+  Mpidr = read_mpidr_el1();
   cpuTarget = Mpidr & (PE_AFF0 | PE_AFF1 | PE_AFF2 | PE_AFF3);
 
 #if defined(TARGET_SIMULATION)

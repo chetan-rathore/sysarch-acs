@@ -265,7 +265,7 @@ v3_route_extended_interrupt(uint32_t int_id)
   /* Get the distributor base */
   gicd_base = val_get_gicd_base();
 
-  Mpidr = ArmReadMpidr();
+  Mpidr = read_mpidr_el1();
   cpuTarget = Mpidr & (PE_AFF0 | PE_AFF1 | PE_AFF2 | PE_AFF3);
 
   val_mmio_write64(gicd_base + GICD_IROUTERn + (int_id * 8), cpuTarget);

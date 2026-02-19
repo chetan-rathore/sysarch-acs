@@ -116,11 +116,11 @@ val_mpam_reg_read(MPAM_SYS_REGS reg_id)
 {
   switch (reg_id) {
   case MPAMIDR_EL1:
-      return AA64ReadMpamidr();
+      return read_mpamidr_el1();
   case MPAM2_EL2:
-      return AA64ReadMpam2();
+      return read_mpam2_el2();
   case MPAM1_EL1:
-      return AA64ReadMpam1();
+      return read_mpam1_el1();
   default:
       val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
                         RESULT_FAIL(0, STATUS_SYS_REG_ACCESS_FAIL), NULL);
@@ -142,10 +142,10 @@ val_mpam_reg_write(MPAM_SYS_REGS reg_id, uint64_t write_data)
 {
   switch (reg_id) {
   case MPAM2_EL2:
-      AA64WriteMpam2(write_data);
+      write_mpam2_el2(write_data);
       break;
   case MPAM1_EL1:
-      AA64WriteMpam1(write_data);
+      write_mpam1_el1(write_data);
       break;
   default:
       val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),

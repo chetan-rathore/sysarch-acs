@@ -451,19 +451,19 @@ val_ras_reg_read(uint32_t node_index, uint32_t reg, uint32_t err_rec_idx)
       /* System register based read */
 
       /* RAS registers reads with ERRSELR_EL1.SEL set to start error record index */
-      AA64WriteErrSelr1(start_rec_index);
+      write_errselr_el1(start_rec_index);
 
       switch (reg) {
       case RAS_ERR_FR:
-          value = AA64ReadErrFr1();
+          value = read_erxfr_el1();
           break;
       case RAS_ERR_CTLR:
-          value = AA64ReadErrCtlr1();
+          value = read_erxctlr_el1();
           break;
       case RAS_ERR_PFGCDN:
           /* ERR<n>PFGCDN RAS register is valid only for first error record */
           if (err_rec_idx == start_rec_index)
-              value = AA64ReadErrPfgcdn1();
+              value = read_erxpfgcdn_el1();
           else {
               val_print(ACS_PRINT_ERR,
                 "\n       RAS_REG_READ : ERR<%d>PFGCDN is RES0 for the node index :", err_rec_idx);
@@ -474,7 +474,7 @@ val_ras_reg_read(uint32_t node_index, uint32_t reg, uint32_t err_rec_idx)
       case RAS_ERR_PFGCTL:
           /* ERR<n>PFGCTL RAS register is valid only for first error record */
           if (err_rec_idx == start_rec_index)
-              value = AA64ReadErrPfgctl1();
+              value = read_erxpfgctl_el1();
           else {
               val_print(ACS_PRINT_ERR,
                 "\n       RAS_REG_READ : ERR<%d>PFGCTL is RES0 for the node index :", err_rec_idx);
@@ -488,14 +488,14 @@ val_ras_reg_read(uint32_t node_index, uint32_t reg, uint32_t err_rec_idx)
 
       /* RAS registers reads with ERRSELR_EL1.SEL set to current error record index
         These registers are unique to given error record */
-      AA64WriteErrSelr1(err_rec_idx);
+      write_errselr_el1(err_rec_idx);
 
       switch (reg) {
       case RAS_ERR_STATUS:
-          value = AA64ReadErrStatus1();
+          value = read_erxstatus_el1();
           break;
       case RAS_ERR_ADDR:
-          value = AA64ReadErrAddr1();
+          value = read_erxaddr_el1();
           break;
       default:
           break;
@@ -553,20 +553,20 @@ val_ras_reg_write(uint32_t node_index, uint32_t reg, uint64_t write_data)
     /* System register based Write */
 
     /* Update ERRSELR_EL1.SEL to choose which record index to use */
-    AA64WriteErrSelr1(rec_index);
+    write_errselr_el1(rec_index);
 
     switch (reg) {
     case RAS_ERR_CTLR:
-      AA64WriteErrCtlr1(write_data);
+      write_erxctlr_el1(write_data);
       break;
     case RAS_ERR_STATUS:
-      AA64WriteErrStatus1(write_data);
+      write_erxstatus_el1(write_data);
       break;
     case RAS_ERR_PFGCDN:
-      AA64WriteErrPfgcdn1(write_data);
+      write_erxpfgcdn_el1(write_data);
       break;
     case RAS_ERR_PFGCTL:
-      AA64WriteErrPfgctl1(write_data);
+      write_erxpfgctl_el1(write_data);
       break;
     default:
       break;

@@ -43,7 +43,7 @@ void payload(void)
     total_nodes = val_mpam_get_msc_count();
 
     /* Save MPAM2_EL2 to a temp storage */
-    mpam2_el2_temp = AA64ReadMpam2();
+    mpam2_el2_temp = read_mpam2_el2();
 
     for (index = 0; index < total_nodes; index++) {
 

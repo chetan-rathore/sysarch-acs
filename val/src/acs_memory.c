@@ -614,7 +614,7 @@ void
 val_mem_issue_dsb(void)
 {
 #ifndef TARGET_LINUX
-    AA64IssueDSB();
+    dsbsy();
 #endif
     return;
 }

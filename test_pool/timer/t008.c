@@ -49,7 +49,7 @@ void payload(void)
             goto read_virt_ss_timer;
 
         while (iter) {
-            curr_value = ArmReadCntPctSS();
+            curr_value = read_cntpctss_el0();
             if (curr_value < prev_value) {
                 val_print_primary_pe(ACS_PRINT_ERR, "\n       CNTPCTSS_EL0 did not increment",
                                                                                         0, index);
@@ -71,7 +71,7 @@ read_virt_ss_timer:
         iter = NUM_ITERATIONS;
 
         while (iter) {
-            curr_value = ArmReadCntVctSS();
+            curr_value = read_cntvctss_el0();
             if (curr_value < prev_value) {
                 val_print_primary_pe(ACS_PRINT_ERR, "\n       CNTVCTSS_EL0 did not increment",
                                                                                         0, index);
@@ -95,8 +95,8 @@ read_virt_ss_timer:
         val_print_primary_pe(ACS_PRINT_DEBUG, "\n       FEAT_ECV isn't Implemented, Reading CntPct",
                                                                                         0, index);
         while (iter) {
-            AA64IssueISB();
-            curr_value = ArmReadCntPct();
+            isb();
+            curr_value = read_cntpct_el0();
             if (curr_value < prev_value) {
                 val_print_primary_pe(ACS_PRINT_ERR, "\n       CNTPCT_EL0 did not increment",
                                                                                         0, index);
@@ -118,8 +118,8 @@ read_virt_timer:
         iter = NUM_ITERATIONS;
 
         while (iter) {
-            AA64IssueISB();
-            curr_value = ArmReadCntvCt();
+            isb();
+            curr_value = read_cntvct_el0();
             if (curr_value < prev_value) {
                 val_print_primary_pe(ACS_PRINT_ERR, "\n       CNTVCT_EL0 did not increment",
                                                                                         0, index);

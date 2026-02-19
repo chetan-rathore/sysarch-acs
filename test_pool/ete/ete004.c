@@ -68,7 +68,7 @@ static void payload(void)
      * for accessing TRFCR_* Registers */
 
     /* Enable Timer */
-    ArmWriteCntpCtl((ArmReadCntpCtl() | ARM_ARCH_TIMER_ENABLE) & (~ARM_ARCH_TIMER_IMASK));
+    write_cntp_ctl_el0((read_cntp_ctl_el0() | ARM_ARCH_TIMER_ENABLE) & (~ARM_ARCH_TIMER_IMASK));
 
     /* Generate Trace when SelfHostedTraceEnabled = TRUE */
     traced_timestamp_1 = val_ete_generate_trace(trace_buffer_addr, SH_TRACE_ENABLE_TRUE);
@@ -89,7 +89,7 @@ static void payload(void)
                          "\n       traced_timestamp_3 : 0x%llx", traced_timestamp_3, index);
 
     /* Disable Timer */
-    ArmWriteCntpCtl((ArmReadCntpCtl() | ARM_ARCH_TIMER_IMASK) & (~ARM_ARCH_TIMER_ENABLE));
+    write_cntp_ctl_el0((read_cntp_ctl_el0() | ARM_ARCH_TIMER_IMASK) & (~ARM_ARCH_TIMER_ENABLE));
 
     if ((traced_timestamp_1 == ACS_STATUS_FAIL) ||
         (traced_timestamp_2 == ACS_STATUS_FAIL) ||

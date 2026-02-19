@@ -18,8 +18,7 @@
 
 #include "acs_gic_its.h"
 #include "acs_gic_support.h"
-
-uint64_t ArmReadMpidr(void);
+#include "val_sysreg_pe.h"
 
 extern GIC_ITS_INFO    *g_gic_its_info;
 static uint32_t        *g_cwriter_ptr;
@@ -44,7 +43,7 @@ uint64_t val_its_get_curr_rdbase(uint64_t rd_base, uint32_t length)
   uint64_t     curr_rd_base; /* RD Base for Current CPU */
   uint32_t     typer;
 
-  Mpidr = ArmReadMpidr();
+  Mpidr = read_mpidr_el1();
 
   CpuAffinity = (Mpidr & (ARM_CORE_AFF0 | ARM_CORE_AFF1 | ARM_CORE_AFF2)) |
                 ((Mpidr & ARM_CORE_AFF3) >> 8);
@@ -500,14 +499,14 @@ void val_its_clear_lpi_map(uint32_t its_index, uint32_t device_id, uint32_t int_
   /* ITS SYNC Command */
   WriteCmdQSYNC(its_index, (uint64_t *)(ItsCommandBase), RDBase);
 
-  TestExecuteBarrier();
+  dsbsy();
   /* Update the CWRITER Register so that all the commands from Command queue gets executed.*/
   value = ((g_cwriter_ptr[its_index] * NUM_BYTES_IN_DW));
   val_mmio_write64((ItsBase + ARM_GITS_CWRITER), value);
 
   /* Check CREADR value which ensures Command Queue is processed */
   PollTillCommandQueueDone(its_index);
-  TestExecuteBarrier();
+  dsbsy();
 
 }
 
@@ -551,7 +550,7 @@ void val_its_create_lpi_map(uint32_t its_index, uint32_t device_id,
   /* ITS SYNC Command */
   WriteCmdQSYNC(its_index, (uint64_t *)(ItsCommandBase), RDBase);
 
-  TestExecuteBarrier();
+  dsbsy();
 
   /* Update the CWRITER Register so that all the commands from Command queue gets executed.*/
   value = ((g_cwriter_ptr[its_index] * NUM_BYTES_IN_DW));
@@ -559,7 +558,7 @@ void val_its_create_lpi_map(uint32_t its_index, uint32_t device_id,
 
   /* Check CREADR value which ensures Command Queue is processed */
   PollTillCommandQueueDone(its_index);
-  TestExecuteBarrier();
+  dsbsy();
 
 }
 

@@ -53,177 +53,181 @@ val_pe_reg_read(uint32_t reg_id)
 
   switch(reg_id) {
       case MPIDR_EL1:
-          return ArmReadMpidr();
+          return read_mpidr_el1();
       case ID_AA64PFR0_EL1:
-          return ArmReadIdPfr0();
+          return read_id_aa64pfr0_el1();
       case ID_AA64PFR1_EL1:
-          return ArmReadIdPfr1();
+          return read_id_aa64pfr1_el1();
       case ID_AA64MMFR0_EL1:
-          return AA64ReadMmfr0();
+          return read_id_aa64mmfr0_el1();
       case ID_AA64MMFR1_EL1:
-          return AA64ReadMmfr1();
+          return read_id_aa64mmfr1_el1();
       case ID_AA64MMFR2_EL1:
-          return AA64ReadMmfr2();
+          return read_id_aa64mmfr2_el1();
       case ID_AA64MMFR3_EL1:
-          return AA64ReadMmfr3();
+          return read_id_aa64mmfr3_el1();
       case CTR_EL0:
-          return AA64ReadCtr();
+          return read_ctr_el0();
       case ID_AA64ISAR0_EL1:
-          return AA64ReadIsar0();
+          return read_id_aa64isar0_el1();
       case ID_AA64ISAR1_EL1:
-          return AA64ReadIsar1();
+          return read_id_aa64isar1_el1();
       case ID_AA64ISAR2_EL1:
-          return AA64ReadIsar2();
+          return read_id_aa64isar2_el1();
       case SCTLR_EL3:
-          return AA64ReadSctlr3();
+          return read_sctlr_el3();
       case SCTLR_EL2:
-          return AA64ReadSctlr2();
+          return read_sctlr_el2();
       case SCTLR_EL1:
-          return AA64ReadSctlr1();
+          return read_sctlr_el1();
       case PMCR_EL0:
-          return AA64ReadPmcr();
+          return read_pmcr_el0();
       case ID_AA64DFR0_EL1:
-          return AA64ReadIdDfr0();
+          return read_id_aa64dfr0_el1();
       case ID_AA64DFR1_EL1:
-          return AA64ReadIdDfr1();
+          return read_id_aa64dfr1_el1();
       case CurrentEL:
-          return AA64ReadCurrentEL();
+          return read_CurrentEL();
       case MDCR_EL2:
-          return AA64ReadMdcr2();
+          return read_mdcr_el2();
       case VBAR_EL2:
-          return AA64ReadVbar2();
+          return read_vbar_el2();
       case CCSIDR_EL1:
-          return AA64ReadCcsidr();
+          return read_ccsidr_el1();
       case CSSELR_EL1:
-          return AA64ReadCsselr();
+          return read_csselr_el1();
       case CLIDR_EL1:
-          return AA64ReadClidr();
+          return read_clidr_el1();
       case ID_DFR0_EL1:
-          return ArmReadDfr0();
+          return read_id_dfr0_el1();
       case ID_ISAR0_EL1:
-          return ArmReadIsar0();
+          return read_id_isar0_el1();
       case ID_ISAR1_EL1:
-          return ArmReadIsar1();
+          return read_id_isar1_el1();
       case ID_ISAR2_EL1:
-          return ArmReadIsar2();
+          return read_id_isar2_el1();
       case ID_ISAR3_EL1:
-          return ArmReadIsar3();
+          return read_id_isar3_el1();
       case ID_ISAR4_EL1:
-          return ArmReadIsar4();
+          return read_id_isar4_el1();
       case ID_ISAR5_EL1:
-          return ArmReadIsar5();
+          return read_id_isar5_el1();
       case ID_MMFR0_EL1:
-          return ArmReadMmfr0();
+          return read_id_mmfr0_el1();
       case ID_MMFR1_EL1:
-          return ArmReadMmfr1();
+          return read_id_mmfr1_el1();
       case ID_MMFR2_EL1:
-          return ArmReadMmfr2();
+          return read_id_mmfr2_el1();
       case ID_MMFR3_EL1:
-          return ArmReadMmfr3();
+          return read_id_mmfr3_el1();
       case ID_MMFR4_EL1:
-          return ArmReadMmfr4();
+          return read_id_mmfr4_el1();
       case ID_PFR0_EL1:
-          return ArmReadPfr0();
+          return read_id_pfr0_el1();
       case ID_PFR1_EL1:
-          return ArmReadPfr1();
+          return read_id_pfr1_el1();
       case MIDR_EL1:
-          return ArmReadMidr();
+          return read_midr_el1();
       case MVFR0_EL1:
-          return ArmReadMvfr0();
+          return read_mvfr0_el1();
       case MVFR1_EL1:
-          return ArmReadMvfr1();
+          return read_mvfr1_el1();
       case MVFR2_EL1:
-          return ArmReadMvfr2();
+          return read_mvfr2_el1();
       case PMCEID0_EL0:
-          return AA64ReadPmceid0();
+          return read_pmceid0_el0();
       case PMCEID1_EL0:
-          return AA64ReadPmceid1();
+          return read_pmceid1_el0();
       case VMPIDR_EL2:
-          return AA64ReadVmpidr();
+          return read_vmpidr_el2();
       case VPIDR_EL2:
-          return AA64ReadVpidr();
+          return read_vpidr_el2();
       case PMBIDR_EL1:
-          return AA64ReadPmbidr();
+          return read_pmbidr_el1();
       case PMSIDR_EL1:
-          return AA64ReadPmsidr();
+          return read_pmsidr_el1();
       case LORID_EL1:
-          return AA64ReadLorid();
+          return read_lorid_el1();
       case ERRIDR_EL1:
-          return AA64ReadErridr();
+          return read_erridr_el1();
       case ERR0FR_EL1:
-          return AA64ReadErr0fr();
+          return 0x0;
+        // return read_err0fr_el1();
       case ERR1FR_EL1:
-          return AA64ReadErr1fr();
+          return 0x0;
+        // return read_err1fr_el1();
       case ERR2FR_EL1:
-          return AA64ReadErr2fr();
+          return 0x0;
+        // return read_err2fr_el1();
       case ERR3FR_EL1:
-          return AA64ReadErr3fr();
+          return 0x0;
+        // return read_err3fr_el1();
       case ESR_EL2:
-          return AA64ReadEsr2();
+          return read_esr_el2();
       case FAR_EL2:
-          return AA64ReadFar2();
+          return read_far_el2();
       case RDVL:
           return ArmRdvl();
       case MAIR_ELx:
-          if (AA64ReadCurrentEL() == AARCH64_EL1)
-            return AA64ReadMair1();
-          if (AA64ReadCurrentEL() == AARCH64_EL2)
-            return AA64ReadMair2();
+          if (read_CurrentEL() == AARCH64_EL1)
+            return read_mair_el1();
+          if (read_CurrentEL() == AARCH64_EL2)
+            return read_mair_el2();
           break;
       case TCR_ELx:
-          if (AA64ReadCurrentEL() == AARCH64_EL1)
-            return AA64ReadTcr1();
-          if (AA64ReadCurrentEL() == AARCH64_EL2)
-            return AA64ReadTcr2();
+          if (read_CurrentEL() == AARCH64_EL1)
+            return read_tcr_el1();
+          if (read_CurrentEL() == AARCH64_EL2)
+            return read_tcr_el2();
           break;
       case DBGBCR0_EL1:
-          return AA64ReadDbgbcr0El1();
+          return read_dbgbcr0_el1();
       case DBGBCR1_EL1:
-          return AA64ReadDbgbcr1El1();
+          return read_dbgbcr1_el1();
       case DBGBCR2_EL1:
-          return AA64ReadDbgbcr2El1();
+          return read_dbgbcr2_el1();
       case DBGBCR3_EL1:
-          return AA64ReadDbgbcr3El1();
+          return read_dbgbcr3_el1();
       case DBGBCR4_EL1:
-          return AA64ReadDbgbcr4El1();
+          return read_dbgbcr4_el1();
       case DBGBCR5_EL1:
-          return AA64ReadDbgbcr5El1();
+          return read_dbgbcr5_el1();
       case DBGBCR6_EL1:
-          return AA64ReadDbgbcr6El1();
+          return read_dbgbcr6_el1();
       case DBGBCR7_EL1:
-          return AA64ReadDbgbcr7El1();
+          return read_dbgbcr7_el1();
       case DBGBCR8_EL1:
-          return AA64ReadDbgbcr8El1();
+          return read_dbgbcr8_el1();
       case DBGBCR9_EL1:
-          return AA64ReadDbgbcr9El1();
+          return read_dbgbcr9_el1();
       case DBGBCR10_EL1:
-          return AA64ReadDbgbcr10El1();
+          return read_dbgbcr10_el1();
       case DBGBCR11_EL1:
-          return AA64ReadDbgbcr11El1();
+          return read_dbgbcr11_el1();
       case DBGBCR12_EL1:
-          return AA64ReadDbgbcr12El1();
+          return read_DBGBCR12_EL1();
       case DBGBCR13_EL1:
-          return AA64ReadDbgbcr13El1();
+          return read_dbgbcr13_el1();
       case DBGBCR14_EL1:
-          return AA64ReadDbgbcr14El1();
+          return read_dbgbcr14_el1();
       case DBGBCR15_EL1:
-          return AA64ReadDbgbcr15El1();
+          return read_dbgbcr15_el1();
       case ID_AA64ZFR0_EL1:
-          return AA64ReadZfr0();
+          return read_id_aa64zfr0_el1();
       case BRBIDR0_EL1:
-          return AA64ReadBrbidr0();
+          return read_brbidr0_el1();
       case TRBIDR_EL1:
-          return AA64ReadTrbidr();
+          return read_trbidr_el1();
       case TRCIDR0:
-          return AA64ReadTrcidr0();
+          return read_trcidr0();
        case TRCIDR4:
-          return AA64ReadTrcidr4();
+          return read_trcidr4();
        case TRCIDR5:
-          return AA64ReadTrcidr5();
+          return read_trcidr5();
        case HCR_EL2:
-          return ArmReadHcrEl2();
+          return read_hcr_el2();
        case VTCR_EL2:
-          return AA64ReadVtcr();
+          return read_vtcr_el2();
       default:
            val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
                                                  RESULT_FAIL(0, 0xFF), NULL);
@@ -247,43 +251,43 @@ val_pe_reg_write(uint32_t reg_id, uint64_t write_data)
 
   switch(reg_id) {
       case CSSELR_EL1:
-          AA64WriteCsselr(write_data);
+          write_csselr_el1(write_data);
           break;
       case PMCR_EL0:
-          AA64WritePmcr(write_data);
+          write_pmcr_el0(write_data);
           break;
       case PMOVSSET_EL0:
-          AA64WritePmovsset(write_data);
+          write_pmovsset_el0(write_data);
           break;
       case PMOVSCLR_EL0:
-          AA64WritePmovsclr(write_data);
+          write_pmovsclr_el0(write_data);
           break;
       case PMINTENSET_EL1:
-          AA64WritePmintenset(write_data);
+          write_pmintenset_el1(write_data);
           break;
       case PMINTENCLR_EL1:
-          AA64WritePmintenclr(write_data);
+          write_pmintenclr_el1(write_data);
           break;
       case MDCR_EL2:
-          AA64WriteMdcr2(write_data);
+          write_mdcr_el2(write_data);
           break;
       case VBAR_EL2:
-          AA64WriteVbar2(write_data);
+          write_vbar_el2(write_data);
           break;
       case PMSIRR_EL1:
-          AA64WritePmsirr(write_data);
+        // write_pmsirr_el1(write_data);
           break;
       case PMSCR_EL2:
-          AA64WritePmscr2(write_data);
+        // write_pmscr_el2(write_data);
           break;
       case PMSFCR_EL1:
-          AA64WritePmsfcr(write_data);
+        // write_pmsfcr_el1(write_data);
           break;
       case PMBPTR_EL1:
-          AA64WritePmbptr(write_data);
+        // write_pmbptr_el1(write_data);
           break;
       case PMBLIMITR_EL1:
-          AA64WritePmblimitr(write_data);
+        // write_pmblimitr_el1(write_data);
           break;
       default:
            val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
@@ -414,7 +418,7 @@ val_pe_spe_disable(void)
 uint32_t val_pe_reg_read_tcr(uint32_t ttbr1, PE_TCR_BF *tcr)
 {
     uint64_t val = val_pe_reg_read(TCR_ELx);
-    uint32_t el = AA64ReadCurrentEL() & AARCH64_EL_MASK;
+    uint32_t el = read_CurrentEL() & AARCH64_EL_MASK;
     uint8_t tg_ttbr0[3] = {12 /*4KB*/, 16 /*64KB*/, 14 /*16KB*/};
     uint8_t tg_ttbr1[4] = {0 /* N/A */, 14 /*16KB*/, 12 /*4KB*/, 16 /* 64KB*/};
     uint64_t e2h = 0;
@@ -424,7 +428,7 @@ uint32_t val_pe_reg_read_tcr(uint32_t ttbr1, PE_TCR_BF *tcr)
         return ACS_STATUS_ERR;
 
     if (el == AARCH64_EL2)
-        e2h = ArmReadHcrEl2() & AARCH64_HCR_E2H_MASK;
+        e2h = read_hcr_el2() & AARCH64_HCR_E2H_MASK;
 
     if (el == AARCH64_EL1 || (el == AARCH64_EL2 && e2h))
     {
@@ -467,10 +471,10 @@ uint32_t val_pe_reg_read_tcr(uint32_t ttbr1, PE_TCR_BF *tcr)
 **/
 uint32_t val_pe_reg_read_ttbr(uint32_t ttbr1, uint64_t *ttbr_ptr)
 {
-    uint32_t el = AA64ReadCurrentEL() & AARCH64_EL_MASK;
-    typedef uint64_t (*ReadTtbr_t)(void);
-    ReadTtbr_t ReadTtbr[2][2] = {{AA64ReadTtbr0El1, AA64ReadTtbr0El2},
-                                  {AA64ReadTtbr1El1, AA64ReadTtbr1El2}};
+    uint32_t el = read_CurrentEL() & AARCH64_EL_MASK;
+    typedef u_register_t (*ReadTtbr_t)(void);
+    ReadTtbr_t ReadTtbr[2][2] = {{read_ttbr0_el1, read_ttbr0_el2},
+                                  {read_ttbr1_el1, read_ttbr1_el2} };
 
     if ((ttbr_ptr == NULL) ||
         (el != AARCH64_EL1 && el != AARCH64_EL2) ||

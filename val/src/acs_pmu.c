@@ -42,13 +42,13 @@ val_pmu_reg_read (
 
     switch (RegId) {
     case PMCR_EL0:
-        return AA64ReadPmcr();
+        return read_pmcr_el0();
     case PMCCNTR_EL0:
-        return AA64ReadPmccntr();
+        return read_pmccntr_el0();
     case PMCCFILTR_EL0:
-        return AA64ReadPmccfiltr();
+        return read_pmccfiltr_el0();
     case PMCNTENSET_EL0:
-        return AA64ReadPmcntenset();
+        return read_pmcntenset_el0();
     default:
         val_print(ACS_PRINT_ERR, "\n FATAL - Unsupported PMU register read \n", 0);
     }
@@ -72,16 +72,16 @@ val_pmu_reg_write (
 
     switch (RegId) {
     case PMCR_EL0:
-        AA64WritePmcr(WriteData);
+        write_pmcr_el0(WriteData);
         break;
     case PMCCNTR_EL0:
-        AA64WritePmccntr(WriteData);
+        write_pmccntr_el0(WriteData);
         break;
     case PMCCFILTR_EL0:
-        AA64WritePmccfiltr(WriteData);
+        write_pmccfiltr_el0(WriteData);
         break;
     case PMCNTENSET_EL0:
-        AA64WritePmcntenset(WriteData);
+        write_pmcntenset_el0(WriteData);
         break;
     default:
         val_print(ACS_PRINT_ERR, "\n FATAL - Unsupported PMU register read \n", 0);

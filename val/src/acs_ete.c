@@ -377,7 +377,7 @@ uint64_t val_ete_generate_trace(uint64_t buffer_addr, uint32_t self_hosted_trace
     AA64EnableETETrace();
 
     /* Read TRBPTR_EL1 before generating the trace */
-    trbptr_before = AA64ReadTrbPtrEl1();
+    trbptr_before = read_trbptr_el1();
 
     /* Generate Trace */
     AA64GenerateETETrace();
@@ -391,7 +391,7 @@ uint64_t val_ete_generate_trace(uint64_t buffer_addr, uint32_t self_hosted_trace
         AA64DisableTFO();
 
     /* Read TRBPTR_EL1 after generating the trace */
-    trbptr_after = AA64ReadTrbPtrEl1();
+    trbptr_after = read_trbptr_el1();
 
     /* If Trace is not generated or timestamp for current PE not updated */
     if (trbptr_before == trbptr_after)
