@@ -116,7 +116,7 @@ val_power_enter_semantic(BSA_POWER_SEM_e semantic)
 
   switch (semantic) {
   case BSA_POWER_SEM_B:
-      ArmCallWFI();
+      wfi();
       break;
   default:
       break;

@@ -46,11 +46,11 @@ val_gic_reg_read(uint32_t reg_id)
   switch(reg_id) {
       case ICH_HCR_EL2:
           if (val_gic_get_info(GIC_INFO_VERSION) >= 3)
-              return GicReadIchHcr();
+              return read_ich_hcr_el2();
           else
               return val_mmio_read(val_get_gich_base() + 0); /* 0 is GICH_HCR offset */
       case ICH_MISR_EL2:
-          return GicReadIchMisr();
+          return read_ich_misr_el2();
       default:
            val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
                                                   RESULT_FAIL(0, 0xFF), NULL);
@@ -75,18 +75,18 @@ val_gic_reg_write(uint32_t reg_id, uint64_t write_data)
   switch(reg_id) {
       case ICH_HCR_EL2:
           if (val_gic_get_info(GIC_INFO_VERSION) >= 3)
-              GicWriteIchHcr(write_data);
+              write_ich_hcr_el2(write_data);
           else
               val_mmio_write64(val_get_gich_base() + 0, write_data); /* 0 is GICH_HCR offset */
           break;
       case ICC_IGRPEN1_EL1:
-          GicWriteIccIgrpen1(write_data);
+          write_icc_igrpen1_el1(write_data);
           break;
       case ICC_BPR1_EL1:
-          GicWriteIccBpr1(write_data);
+          write_icc_bpr1_el1(write_data);
           break;
       case ICC_PMR_EL1:
-          GicWriteIccPmr(write_data);
+          write_icc_pmr_el1(write_data);
           break;
       default:
            val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),

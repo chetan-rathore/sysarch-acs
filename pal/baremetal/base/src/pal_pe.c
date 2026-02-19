@@ -18,7 +18,7 @@
 #include "pal_common_support.h"
 #include "pal_pcie_enum.h"
 #include "platform_override_struct.h"
-
+#include "pal_sysreg.h"
 
 extern const PE_INFO_TABLE platform_pe_cfg;
 extern const PE_SMBIOS_PROCESSOR_INFO_TABLE platform_smbios_cfg;
@@ -34,19 +34,6 @@ uint64_t  gMpidrMax;
   enable MMU/caches with the same page table configuration.
 **/
 static PE_MMU_CONFIG gMmuConfig __attribute__((aligned(64)));
-
-/* External assembly functions for reading MMU registers */
-uint64_t AA64ReadCurrentEL(void);
-uint64_t AA64ReadTtbr0El1(void);
-uint64_t AA64ReadTtbr0El2(void);
-uint64_t AA64ReadTtbr1El1(void);
-uint64_t AA64ReadTtbr1El2(void);
-uint64_t AA64ReadTcr1(void);
-uint64_t AA64ReadTcr2(void);
-uint64_t AA64ReadMair1(void);
-uint64_t AA64ReadMair2(void);
-uint64_t AA64ReadSctlr1(void);
-uint64_t AA64ReadSctlr2(void);
 
 #define SIZE_STACK_SECONDARY_PE  0x100          //256 bytes per core
 #define UPDATE_AFF_MAX(src,dest,mask)  ((dest & mask) > (src & mask) ? (dest & mask) : (src & mask))
@@ -171,23 +158,23 @@ PalCaptureMmuConfig(void)
   uint64_t CurrentEl;
 
   /* Read current exception level */
-  CurrentEl = (AA64ReadCurrentEL() >> 2) & 0x3;
+  CurrentEl = (read_CurrentEL() >> 2) & 0x3;
   gMmuConfig.current_el = (uint32_t)CurrentEl;
 
   /* Read MMU configuration registers based on current EL */
   if (CurrentEl == 2) {
-    gMmuConfig.ttbr0 = AA64ReadTtbr0El2();
-    gMmuConfig.ttbr1 = AA64ReadTtbr1El2();
-    gMmuConfig.tcr   = AA64ReadTcr2();
-    gMmuConfig.mair  = AA64ReadMair2();
-    gMmuConfig.sctlr = AA64ReadSctlr2();
+    gMmuConfig.ttbr0 = read_ttbr0_el2();
+    gMmuConfig.ttbr1 = read_ttbr1_el2();
+    gMmuConfig.tcr   = read_tcr_el2();
+    gMmuConfig.mair  = read_mair_el2();
+    gMmuConfig.sctlr = read_sctlr_el2();
   } else {
     /* Assume EL1 */
-    gMmuConfig.ttbr0 = AA64ReadTtbr0El1();
-    gMmuConfig.ttbr1 = AA64ReadTtbr1El1();
-    gMmuConfig.tcr   = AA64ReadTcr1();
-    gMmuConfig.mair  = AA64ReadMair1();
-    gMmuConfig.sctlr = AA64ReadSctlr1();
+    gMmuConfig.ttbr0 = read_ttbr0_el1();
+    gMmuConfig.ttbr1 = read_ttbr1_el1();
+    gMmuConfig.tcr   = read_tcr_el1();
+    gMmuConfig.mair  = read_mair_el1();
+    gMmuConfig.sctlr = read_sctlr_el1();
   }
 
   print(ACS_PRINT_INFO,  "  MMU Config captured at EL%d\n", gMmuConfig.current_el);

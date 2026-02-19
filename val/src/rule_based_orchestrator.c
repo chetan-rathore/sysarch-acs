@@ -413,8 +413,8 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
     bool test_warn_flag;
     uint32_t i, j;
     uint32_t alias_rule_map_index;
-    uint32_t rule_test_status;
-    uint32_t base_rule_status;
+    uint32_t rule_test_status = 0;
+    uint32_t base_rule_status = 0;
     uint32_t precheck_status;
     uint32_t rule_support_status;
     uint32_t num_pe;

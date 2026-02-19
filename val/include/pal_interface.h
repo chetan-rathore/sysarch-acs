@@ -90,6 +90,7 @@
 #endif //TARGET_LINUX
 
 #ifdef TARGET_UEFI
+  #include <Base.h>
   #include "platform_override.h"
   typedef INT8    int8_t;
   typedef INT32   int32_t;
@@ -102,6 +103,11 @@
   typedef UINT64  uint64_t;
   typedef UINT64  addr_t;
   typedef UINT64  dma_addr_t;
+  typedef UINTN  uintptr_t;
+  typedef INTN   intptr_t;
+  typedef INT64  intmax_t;
+  typedef UINT64 uintmax_t;
+
 
   #if defined __STDC_VERSION__ && __STDC_VERSION__ > 201710L
    /* bool is a keyword  */

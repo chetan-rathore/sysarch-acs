@@ -29,6 +29,7 @@
 #include "pal_uefi.h"
 #include "pal_dt.h"
 #include "pal_dt_spec.h"
+#include "pal_sysreg.h"
 
 UINT8   *gSecondaryPeStack;
 UINT64  gMpidrMax;
@@ -43,19 +44,6 @@ pal_strncmp(CHAR8 *str1, CHAR8 *str2, UINT32 len);
   enable MMU/caches with the same page table configuration.
 **/
 static PE_MMU_CONFIG gMmuConfig __attribute__((aligned(64)));
-
-/* External assembly functions for reading MMU registers */
-UINT64 AA64ReadCurrentEL(VOID);
-UINT64 AA64ReadTtbr0El1(VOID);
-UINT64 AA64ReadTtbr0El2(VOID);
-UINT64 AA64ReadTtbr1El1(VOID);
-UINT64 AA64ReadTtbr1El2(VOID);
-UINT64 AA64ReadTcr1(VOID);
-UINT64 AA64ReadTcr2(VOID);
-UINT64 AA64ReadMair1(VOID);
-UINT64 AA64ReadMair2(VOID);
-UINT64 AA64ReadSctlr1(VOID);
-UINT64 AA64ReadSctlr2(VOID);
 
 static char pmu_dt_arr[][PMU_COMPATIBLE_STR_LEN] = {
     "arm,armv8-pmuv3",
@@ -284,29 +272,29 @@ PalCaptureMmuConfig(VOID)
   UINT32 SkipTtbr1;
 
   /* Read current exception level */
-  CurrentEl = (AA64ReadCurrentEL() >> 2) & 0x3;
+  CurrentEl = (read_CurrentEL() >> 2) & 0x3;
   gMmuConfig.current_el = (UINT32)CurrentEl;
 
   /* Read MMU configuration registers based on current EL */
   if (CurrentEl == 2) {
-    gMmuConfig.ttbr0 = AA64ReadTtbr0El2();
-    gMmuConfig.tcr   = AA64ReadTcr2();
-    gMmuConfig.mair  = AA64ReadMair2();
-    gMmuConfig.sctlr = AA64ReadSctlr2();
+    gMmuConfig.ttbr0 = read_ttbr0_el2();
+    gMmuConfig.tcr   = read_tcr_el2();
+    gMmuConfig.mair  = read_mair_el2();
+    gMmuConfig.sctlr = read_sctlr_el2();
     /* Read TTBR1_EL2 only if TCR_EL2 allows translation via TTBR1 (EPD1 bit[23]) */
     SkipTtbr1 = (gMmuConfig.tcr >> TCR_EPD1_BIT) & 0x1;
     if (!SkipTtbr1)
-        gMmuConfig.ttbr1 = AA64ReadTtbr1El2();
+        gMmuConfig.ttbr1 = read_ttbr1_el2();
   } else {
     /* Assume EL1 */
-    gMmuConfig.ttbr0 = AA64ReadTtbr0El1();
-    gMmuConfig.tcr   = AA64ReadTcr1();
-    gMmuConfig.mair  = AA64ReadMair1();
-    gMmuConfig.sctlr = AA64ReadSctlr1();
+    gMmuConfig.ttbr0 = read_ttbr0_el1();
+    gMmuConfig.tcr   = read_tcr_el1();
+    gMmuConfig.mair  = read_mair_el1();
+    gMmuConfig.sctlr = read_sctlr_el1();
     /* Read TTBR1_EL1 only if TCR_EL1 allows translation via TTBR1 (EPD1 bit[23]) */
     SkipTtbr1 = (gMmuConfig.tcr >> TCR_EPD1_BIT) & 0x1;
     if (!SkipTtbr1)
-        gMmuConfig.ttbr1 = AA64ReadTtbr1El1();
+        gMmuConfig.ttbr1 = read_ttbr1_el1();
   }
 
   acs_print(ACS_PRINT_DEBUG, L"  MMU Config captured at EL%d\n", gMmuConfig.current_el);

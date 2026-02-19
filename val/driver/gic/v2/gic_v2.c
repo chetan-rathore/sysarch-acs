@@ -121,10 +121,10 @@ v2_Init(void)
 
   if (val_pe_reg_read(CurrentEL) == AARCH64_EL2) {
     /* Route exception to EL2 */
-    GicWriteHcr(1 << 27);
+    write_hcr_el2(1 << 27);
   }
 
-  GicClearDaif();
+  write_daifclr(DAIF_CONFIG);
 
   /* Set default priority */
   for (index = 0; index < max_num_interrupts; index++) {

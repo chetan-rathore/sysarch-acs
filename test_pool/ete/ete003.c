@@ -119,10 +119,10 @@ static void payload(void)
      * for accessing TRFCR_* Registers */
 
     /* Enable Timer */
-    ArmWriteCntpCtl((ArmReadCntpCtl() | ARM_ARCH_TIMER_ENABLE) & (~ARM_ARCH_TIMER_IMASK));
+    write_cntp_ctl_el0((read_cntp_ctl_el0() | ARM_ARCH_TIMER_ENABLE) & (~ARM_ARCH_TIMER_IMASK));
 
     /* Store Start Timestamp values which will be used later */
-    start_timestamp[index] = ArmReadCntPct();
+    start_timestamp[index] = read_cntpct_el0();
     val_data_cache_ops_by_va((addr_t)(start_timestamp + index), CLEAN_AND_INVALIDATE);
     val_print_primary_pe(ACS_PRINT_INFO,
                          "\n       Start Timestamp : 0x%llx", start_timestamp[index], index);
@@ -134,10 +134,10 @@ static void payload(void)
 
 
     /* Disable Timer */
-    ArmWriteCntpCtl((ArmReadCntpCtl() | ARM_ARCH_TIMER_IMASK) & (~ARM_ARCH_TIMER_ENABLE));
+    write_cntp_ctl_el0((read_cntp_ctl_el0() | ARM_ARCH_TIMER_IMASK) & (~ARM_ARCH_TIMER_ENABLE));
 
     /* Read Current Counter Value */
-    end_timestamp[index] = ArmReadCntPct();
+    end_timestamp[index] = read_cntpct_el0();
     val_data_cache_ops_by_va((addr_t)(end_timestamp + index), CLEAN_AND_INVALIDATE);
     val_print_primary_pe(ACS_PRINT_INFO,
                          "\n       End Timestamp   : 0x%llx", end_timestamp[index], index);

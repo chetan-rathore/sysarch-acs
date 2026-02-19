@@ -176,7 +176,7 @@ uint32_t val_mpam_msc_generate_por_error(uint32_t msc_index)
     val_print(ACS_PRINT_DEBUG, "\n       MSC Max PARTID is %d", msc_max_partid);
 
     /* Extract max PARTID supported by MPAMIDR_EL1 */
-    mpamidr = AA64ReadMpamidr();
+    mpamidr = read_mpamidr_el1();
     pe_max_partid = (mpamidr >> MPAMIDR_PARTID_MAX_SHIFT) & MPAMIDR_PARTID_MAX_MASK;
     val_print(ACS_PRINT_DEBUG, "\n       PE Max PARTID is %d", pe_max_partid);
 
