@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2016-2020, 2022-2025, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2016-2020, 2022-2026, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -770,4 +770,19 @@ pal_mem_set_wb_executable (
   }
 
   return 0;
+}
+
+void pal_uart_putc(char c)
+{
+    CHAR8 ch = (CHAR8)c;
+
+    AsciiPrint("%c", ch);
+
+    if (g_acs_log_file_handle) {
+        UINTN n = 1;
+        EFI_STATUS Status = ShellWriteFile(g_acs_log_file_handle, &n, &ch);
+        if (EFI_ERROR(Status)) {
+            acs_print(ACS_PRINT_ERR, L" Error in writing to log file\n");
+        }
+    }
 }
