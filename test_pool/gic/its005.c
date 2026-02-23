@@ -45,7 +45,7 @@ payload()
   pe_index = val_pe_get_index_mpid(val_pe_get_mpid());
   bdf_tbl_ptr = val_pcie_bdf_table_ptr();
   if ((!bdf_tbl_ptr) || (!bdf_tbl_ptr->num_entries)) {
-      val_print(ACS_PRINT_DEBUG, "\n       No entries in BDF table", 0);
+      val_print(DEBUG, "\n       No entries in BDF table");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -68,7 +68,7 @@ payload()
                                         seg_num, &device_id,
                                         &stream_id, &its_id);
     if (status) {
-        val_print(ACS_PRINT_DEBUG, "\n       Could not get device info for BDF : 0x%x", bdf);
+        val_print(DEBUG, "\n       Could not get device info for BDF : 0x%x", bdf);
         val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
         return;
     }
@@ -93,12 +93,12 @@ payload()
       continue;
     }
 
-    val_print(ACS_PRINT_DEBUG, "\n       Checking ReqID-DeviceID Association, Bdf : 0x%llx", bdf);
+    val_print(DEBUG, "\n       Checking ReqID-DeviceID Association, Bdf : 0x%llx", bdf);
 
     /* No SMMU, Check only for device_id */
     if (curr_grp_did_cons != (device_id - req_id)) {
     /* DeviceID Constant Base Failure */
-    val_print(ACS_PRINT_ERR, "\n       ReqID-DeviceID Association Fail for Bdf : %x", bdf);
+    val_print(ERROR, "\n       ReqID-DeviceID Association Fail for Bdf : %x", bdf);
         test_fail++;
     }
   }

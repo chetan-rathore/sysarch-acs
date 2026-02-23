@@ -67,9 +67,9 @@ next_bdf:
           val_pcie_read_cfg(bdf, TYPE01_VIDR, &reg_value);
           device_id = (reg_value >> TYPE01_DIDR_SHIFT) & TYPE01_DIDR_MASK;
           vendor_id = (reg_value >> TYPE01_VIDR_SHIFT) & TYPE01_VIDR_MASK;
-          val_print(ACS_PRINT_DEBUG, "\n       BDF 0x%x ", bdf);
-          val_print(ACS_PRINT_DEBUG, "Dev ID 0x%x ", device_id);
-          val_print(ACS_PRINT_DEBUG, "Vendor ID 0x%x", vendor_id);
+          val_print(DEBUG, "\n       BDF 0x%x ", bdf);
+          val_print(DEBUG, "Dev ID 0x%x ", device_id);
+          val_print(DEBUG, "Vendor ID 0x%x", vendor_id);
 
           rp_ecam_base = val_pcie_get_ecam_base(bdf);
           rp_segment = PCIE_EXTRACT_BDF_SEG(bdf);
@@ -81,7 +81,7 @@ next_bdf:
 
               if (ecam_base == rp_ecam_base && segment == rp_segment)
               {
-                  val_print(ACS_PRINT_DEBUG,
+                  val_print(DEBUG,
                             "\n       ECAM base 0x%llx matches with RPs base address ", ecam_base);
                   goto next_bdf;
               }
@@ -89,13 +89,13 @@ next_bdf:
               ecam_index++;
           }
 
-          val_print(ACS_PRINT_ERR, "\n       RP BDF 0x%x not under any HB", bdf);
+          val_print(ERROR, "\n       RP BDF 0x%x not under any HB", bdf);
           test_fail++;
       }
   }
 
   if (test_skip == 1) {
-      val_print(ACS_PRINT_DEBUG, "\n       No RP or iEP_RP type device found. Skipping test", 0);
+      val_print(DEBUG, "\n       No RP or iEP_RP type device found. Skipping test");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
   }
   else if (test_fail)

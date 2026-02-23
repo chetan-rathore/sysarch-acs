@@ -37,7 +37,7 @@ isr_failsafe()
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
 
   val_timer_set_phy_el1(0);
-  val_print(ACS_PRINT_ERR, "       Received Failsafe interrupt\n", 0);
+  val_print(ERROR, "       Received Failsafe interrupt\n");
   g_failsafe_int_rcvd = 1;
   /* On some system the failsafe is rcvd just after test interrupt and resulting
      in incorrect fail, to avoid this ensure set test as fail only when failsafe
@@ -59,13 +59,13 @@ isr3()
 
   /* We received our interrupt, so disable timer from generating further interrupts */
   val_timer_set_phy_el2(0);
-  val_print(ACS_PRINT_INFO, "       Received EL2 Physical interrupt\n", 0);
+  val_print(TRACE, "       Received EL2 Physical interrupt\n");
   g_el2phy_int_rcvd = 1;
   val_set_status(index, RESULT_PASS(TEST_NUM, 1));
   intid = val_timer_get_info(TIMER_INFO_PHY_EL2_INTID, 0);
   val_gic_end_of_interrupt(intid);
   val_timer_set_phy_el1(0);
-  val_print(ACS_PRINT_DEBUG, "       Clear Failsafe interrupt\n", 0);
+  val_print(DEBUG, "       Clear Failsafe interrupt\n");
 }
 
 static
@@ -98,7 +98,7 @@ payload3()
 
   intid = val_timer_get_info(TIMER_INFO_PHY_EL2_INTID, 0);
   if (val_gic_install_isr(intid, isr3)) {
-    val_print(ACS_PRINT_WARN, "\n       GIC Install Handler Failed...", 0);
+    val_print(WARN, "\n       GIC Install Handler Failed...");
     val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
     return;
   }
@@ -133,10 +133,10 @@ payload3()
       intid = val_timer_get_info(TIMER_INFO_PHY_EL2_INTID, 0);
       val_gic_end_of_interrupt(intid);
       val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
-      val_print(ACS_PRINT_DEBUG,
-                "\n       PE wakeup by some other events/int or didn't enter WFI", 0);
+      val_print(DEBUG,
+                "\n       PE wakeup by some other events/int or didn't enter WFI");
   }
-  val_print(ACS_PRINT_INFO, "\n       delay loop remainig value %d", delay_loop);
+  val_print(TRACE, "\n       delay loop remainig value %d", delay_loop);
   return;
 }
 

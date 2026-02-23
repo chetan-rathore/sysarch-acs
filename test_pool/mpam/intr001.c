@@ -40,7 +40,7 @@ esr(uint64_t exception_type, void *context)
   /* Update the ELR to point to next instrcution */
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
-  val_print(ACS_PRINT_WARN, "\n       Received Exception of type %d", exception_type);
+  val_print(WARN, "\n       Received Exception of type %d", exception_type);
   val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
 }
 
@@ -48,7 +48,7 @@ static void intr_handler(void)
 {
     uint32_t pe_index = val_pe_get_index_mpid(val_pe_get_mpid());
 
-    val_print(ACS_PRINT_DEBUG, "\n       Received MSC Err interrupt %d", intr_num);
+    val_print(DEBUG, "\n       Received MSC Err interrupt %d", intr_num);
     val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
 
     /* Restore Error Control Register original settings */
@@ -85,14 +85,14 @@ void payload(void)
     for (msc_index = 0; msc_index < total_nodes; msc_index++) {
 
         if (!val_mpam_msc_supports_esr(msc_index)) {
-            val_print(ACS_PRINT_DEBUG, "\n       MSC index %d does not support ESR", msc_index);
+            val_print(DEBUG, "\n       MSC index %d does not support ESR", msc_index);
             continue;
         }
 
         intr_num = val_mpam_get_info(MPAM_MSC_ERR_INTR, msc_index, 0);
         intr_flags = val_mpam_get_info(MPAM_MSC_ERR_INTR_FLAGS, msc_index, 0);
 
-        val_print(ACS_PRINT_DEBUG, "\n       Error interrupt flags - 0x%llx", intr_flags);
+        val_print(DEBUG, "\n       Error interrupt flags - 0x%llx", intr_flags);
         intr_type = intr_flags & MPAM_ACPI_ERR_INTR_TYPE_MASK;
 
         /* Read MPAMF_ECR before generating error. This will be used to restore to default later */
@@ -109,8 +109,8 @@ void payload(void)
          * or if its error interrupt is not of type level-trigger
          */
         if ((intr_num == 0) || (intr_type != MPAM_ACPI_ERR_INTR_TYPE_LEVEL)) {
-            val_print(ACS_PRINT_DEBUG,
-                "\n       MSC does not implement level triggered Error intr. Skipping MSC", 0);
+            val_print(DEBUG,
+                "\n       MSC does not implement level triggered Error intr. Skipping MSC");
             continue;
         } else {
             intr_count++;
@@ -129,7 +129,7 @@ void payload(void)
          * Set the interrupt enable bit in MPAMF_ECR & raise
          * an interrupt by writing non-zero to MPAMF_ESR.ERRCODE
          */
-        val_print(ACS_PRINT_DEBUG, "\n       Triggering MSC Error interrupt %d", intr_num);
+        val_print(DEBUG, "\n       Triggering MSC Error interrupt %d", intr_num);
         val_mpam_msc_trigger_intr(msc_index);
 
         /* PE busy polls to check the completion of interrupt service routine */
@@ -139,7 +139,7 @@ void payload(void)
         /* Restore Error Control Register original settings (safety net) */
         val_mpam_mmr_write(msc_index, REG_MPAMF_ECR, mpamf_ecr_saved);
         if (timeout == 0) {
-            val_print(ACS_PRINT_ERR, "\n       MSC Err Interrupt not received on %d", intr_num);
+            val_print(ERROR, "\n       MSC Err Interrupt not received on %d", intr_num);
             val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
             return;
         }

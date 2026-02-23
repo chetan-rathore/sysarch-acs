@@ -58,7 +58,7 @@ payload(void)
       if (dp_type == RP || dp_type == iEP_RP) {
 
         /* If test runs for atleast an endpoint */
-        val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x", bdf);
+        val_print(DEBUG, "\n       BDF - 0x%x", bdf);
         test_skip = 0;
 
         /* Get the offset for bus number register in the config header which has
@@ -84,7 +84,7 @@ payload(void)
 
         if ((ecam_cr != ecam_cr_8) || (ecam_cr_8 != ecam_cr_16))
         {
-          val_print(ACS_PRINT_ERR, "\n        Byte Enable Read Failed for Bdf: 0x%x", bdf);
+          val_print(ERROR, "\n        Byte Enable Read Failed for Bdf: 0x%x", bdf);
           test_fail++;
         }
 
@@ -100,7 +100,7 @@ payload(void)
             ecam_cr_new = val_mmio_read8(ecam_base + busnum_offset + i);
             if (write_value != ecam_cr_new)
             {
-              val_print(ACS_PRINT_ERR, "\n        8 Bit Write Failed for Bdf: 0x%x", bdf);
+              val_print(ERROR, "\n        8 Bit Write Failed for Bdf: 0x%x", bdf);
               test_fail++;
             }
         }
@@ -116,7 +116,7 @@ payload(void)
         ecam_cr_new = val_mmio_read16(ecam_base + busnum_offset);
         if (write_value != ecam_cr_new)
         {
-          val_print(ACS_PRINT_ERR, "\n        16 Bit Write Failed for Bdf: 0x%x", bdf);
+          val_print(ERROR, "\n        16 Bit Write Failed for Bdf: 0x%x", bdf);
           test_fail++;
         }
 
@@ -131,7 +131,7 @@ payload(void)
   }
 
   if (test_skip) {
-      val_print(ACS_PRINT_DEBUG, "\n       No RP/iEP_RP type device found. Skipping test", 0);
+      val_print(DEBUG, "\n       No RP/iEP_RP type device found. Skipping test");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
   }
   if (test_fail)

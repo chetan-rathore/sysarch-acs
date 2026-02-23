@@ -23,13 +23,8 @@
 #include "acs_pfdi.h"
 #include "acs_cxl.h"
 
-/* set G_PRINT_LEVEL to one of the below values in your application entry
-  to control the verbosity of the prints */
-#define ACS_PRINT_ERR   5      /* Only Errors. use this to de-clutter the terminal and focus only on specifics */
-#define ACS_PRINT_WARN  4      /* Only warnings & errors. use this to de-clutter the terminal and focus only on specifics */
-#define ACS_PRINT_TEST  3      /* Test description and result descriptions. THIS is DEFAULT */
-#define ACS_PRINT_DEBUG 2      /* For Debug statements. contains register dumps etc */
-#define ACS_PRINT_INFO  1      /* Print all statements. Do not use unless really needed */
+extern uint32_t g_print_level;
+
 
 #define ACS_STATUS_FAIL      0x90000000
 #define ACS_STATUS_ERR       0xEDCB1234  //some impropable value?
@@ -38,6 +33,12 @@
 #define ACS_STATUS_NIST_PASS 0x1
 #define ACS_INVALID_INDEX    0xFFFFFFFF
 #define ACS_STATUS_UNKNOWN   0xFFFFFFFF
+
+#define val_print(level, ...)                     \
+    do {                                          \
+        if ((level) >= g_print_level)             \
+            val_printf((level), __VA_ARGS__);     \
+    } while (0)
 
 #define ACS_STATUS_PAL_NOT_IMPLEMENTED 0x4B1D  /* PAL reports feature/API not implemented */
 #ifndef NOT_IMPLEMENTED
@@ -101,7 +102,7 @@ typedef char char8_t;
 /* GENERIC VAL APIs */
 void val_allocate_shared_mem(void);
 void val_free_shared_mem(void);
-void val_print(uint32_t level, char8_t *string, uint64_t data);
+//void val_print(uint32_t level, char8_t *string, uint64_t data);
 void val_print_raw(uint64_t uart_addr, uint32_t level, char8_t *string, uint64_t data);
 void val_print_primary_pe(uint32_t level, char8_t *string, uint64_t data, uint32_t index);
 void val_print_test_start(char8_t *string);

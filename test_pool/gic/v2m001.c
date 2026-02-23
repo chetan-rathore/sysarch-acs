@@ -38,7 +38,7 @@ payload()
 
   msi_frame   = val_gic_get_info(GIC_INFO_NUM_MSI_FRAME);
   if (msi_frame == 0) {
-      val_print(ACS_PRINT_DEBUG, "\n       No MSI frame, Skipping               ", 0);
+      val_print(DEBUG, "\n       No MSI frame, Skipping               ");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -63,20 +63,20 @@ payload()
       }
 
       if (trigger_type != INTR_TRIGGER_INFO_EDGE_RISING) {
-        val_print(ACS_PRINT_DEBUG, "\n       Error : SPI ID 0x%x Level Triggered ", spi_id);
+        val_print(DEBUG, "\n       Error : SPI ID 0x%x Level Triggered ", spi_id);
         fail_cnt++;
       }
     }
   }
 
   if (test_skip) {
-      val_print(ACS_PRINT_WARN, "\n       No SPI Information Found. Skipping   ", 0);
+      val_print(WARN, "\n       No SPI Information Found. Skipping   ");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
       return;
   }
 
   if (fail_cnt) {
-      val_print(ACS_PRINT_ERR, "\n       SPI Trigger Type Check Failed", 0);
+      val_print(ERROR, "\n       SPI Trigger Type Check Failed");
       val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
       return;
   }

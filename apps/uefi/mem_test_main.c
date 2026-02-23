@@ -708,20 +708,20 @@ execute_tests()
   VOID               *branch_label;
   UINT32             Status;
 
-  val_print(ACS_PRINT_TEST, "\n\n BSA Architecture Compliance Suite", 0);
-  val_print(ACS_PRINT_TEST, "\n          Version %d.", BSA_ACS_MAJOR_VER);
-  val_print(ACS_PRINT_TEST, "%d.", BSA_ACS_MINOR_VER);
-  val_print(ACS_PRINT_TEST, "%d\n", BSA_ACS_SUBMINOR_VER);
+  val_print(INFO, "\n\n BSA Architecture Compliance Suite");
+  val_print(INFO, "\n          Version %d.", BSA_ACS_MAJOR_VER);
+  val_print(INFO, "%d.", BSA_ACS_MINOR_VER);
+  val_print(INFO, "%d\n", BSA_ACS_SUBMINOR_VER);
 
 
-  val_print(ACS_PRINT_TEST, BSA_LEVEL_PRINT_FORMAT(g_bsa_level, g_bsa_only_level),
+  val_print(INFO, BSA_LEVEL_PRINT_FORMAT(g_bsa_level, g_bsa_only_level),
                                    (g_bsa_level > BSA_MAX_LEVEL_SUPPORTED) ? 0 : g_bsa_level);
 
   if (g_bsa_only_level)
     g_bsa_level = 0;
 
-  val_print(ACS_PRINT_TEST, "(Print level is %2d)\n\n", g_print_level);
-  val_print(ACS_PRINT_TEST, "\n Creating Platform Information Tables\n", 0);
+  val_print(INFO, "(Print level is %2d)\n\n", g_print_level);
+  val_print(INFO, "\n Creating Platform Information Tables\n");
 
 
   Status = createPeInfoTable();
@@ -756,11 +756,11 @@ execute_tests()
   val_pe_initialize_default_exception_handler(val_pe_default_esr);
 
 print_test_status:
-  val_print(ACS_PRINT_ERR, "\n     -------------------------------------------------------\n", 0);
-  val_print(ACS_PRINT_ERR, "     Total Tests run  = %4d", g_acs_tests_total);
-  val_print(ACS_PRINT_ERR, "  Tests Passed  = %4d", g_acs_tests_pass);
-  val_print(ACS_PRINT_ERR, "  Tests Failed = %4d\n", g_acs_tests_fail);
-  val_print(ACS_PRINT_ERR, "     -------------------------------------------------------\n", 0);
+  val_print(ERROR, "\n     -------------------------------------------------------\n");
+  val_print(ERROR, "     Total Tests run  = %4d", g_acs_tests_total);
+  val_print(ERROR, "  Tests Passed  = %4d", g_acs_tests_pass);
+  val_print(ERROR, "  Tests Failed = %4d\n", g_acs_tests_fail);
+  val_print(ERROR, "     -------------------------------------------------------\n");
 
   freeBsaAcsMem();
 
@@ -768,12 +768,12 @@ print_test_status:
     ShellCloseFile(&g_dtb_log_file_handle);
   }
 
-  val_print(ACS_PRINT_ERR, "\n      *** BSA tests complete. Reset the system. ***\n\n", 0);
+  val_print(ERROR, "\n      *** BSA tests complete. Reset the system. ***\n\n");
 
   /***  Starting memory model consistency tests ***/
-  val_print(ACS_PRINT_ERR, "\n\n      *** Starting memory model consistency tests ***  \n", 0);
-  val_print(ACS_PRINT_ERR, "\nInitializing kvm-unit-tests framework ...", 0);
-  val_print(ACS_PRINT_ERR, "\nLoad address of the image is: 0x%lx\n", (unsigned long)&_textbsa);
+  val_print(ERROR, "\n\n      *** Starting memory model consistency tests ***  \n");
+  val_print(ERROR, "\nInitializing kvm-unit-tests framework ...");
+  val_print(ERROR, "\nLoad address of the image is: 0x%lx\n", (unsigned long)&_textbsa);
   mem_model_execute_tests(myImageHandle, mySystemTable);
 
   if (g_acs_log_file_handle) {

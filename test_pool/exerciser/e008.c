@@ -76,7 +76,7 @@ test_sequence2(void *dram_buf1_virt, void *dram_buf1_phys, uint32_t e_bdf, uint3
   /* Check if the transaction pending bit is cleared */
   tp_bit = val_is_transaction_pending_set(e_bdf);
   if (tp_bit) {
-      val_print(ACS_PRINT_ERR, "\n       Transaction still pending in function %4x", instance);
+      val_print(ERROR, "\n       Transaction still pending in function %4x", instance);
       return 1;
   }
 
@@ -86,7 +86,7 @@ test_sequence2(void *dram_buf1_virt, void *dram_buf1_phys, uint32_t e_bdf, uint3
 
   /* Compare the contents of ddr_buf1 and ddr_buf2 for NEW_DATA */
   if (val_memory_compare(dram_buf1_virt, dram_buf2_virt, dma_len)) {
-      val_print(ACS_PRINT_ERR, "\n       I/O coherency failure for Exerciser %4x", instance);
+      val_print(ERROR, "\n       I/O coherency failure for Exerciser %4x", instance);
       return 1;
   }
 
@@ -125,7 +125,7 @@ test_sequence1(void *dram_buf1_virt, void *dram_buf1_phys, uint32_t e_bdf, uint3
   /* Check if the transaction pending bit is cleared */
   tp_bit = val_is_transaction_pending_set(e_bdf);
   if (tp_bit) {
-      val_print(ACS_PRINT_ERR, "\n       Transaction still pending in function %4x", instance);
+      val_print(ERROR, "\n       Transaction still pending in function %4x", instance);
       return 1;
   }
 
@@ -134,7 +134,7 @@ test_sequence1(void *dram_buf1_virt, void *dram_buf1_phys, uint32_t e_bdf, uint3
 
   /* Compare the contents of ddr_buf1 and ddr_buf2 for NEW_DATA */
   if (val_memory_compare(dram_buf1_virt, dram_buf2_virt, dma_len)) {
-      val_print(ACS_PRINT_ERR, "\n       I/O coherency failure for Exerciser %4x", instance);
+      val_print(ERROR, "\n       I/O coherency failure for Exerciser %4x", instance);
       return 1;
   }
 
@@ -174,7 +174,7 @@ payload (void *arg)
 
     /* Get the exerciser BDF */
     e_bdf = val_exerciser_get_bdf(instance);
-    val_print(ACS_PRINT_DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
+    val_print(DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
 
     dp_type = val_pcie_device_port_type(e_bdf);
     /* Check entry is RCiEP/ iEP_EP. Else move to next BDF. */
@@ -195,7 +195,7 @@ payload (void *arg)
      */
     if (smmu_index != ACS_INVALID_INDEX) {
         if (val_smmu_disable(smmu_index)) {
-            val_print(ACS_PRINT_ERR, "\n       Exerciser %x smmu disable error", instance);
+            val_print(ERROR, "\n       Exerciser %x smmu disable error", instance);
             val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 1));
             return;
         }
@@ -206,7 +206,7 @@ payload (void *arg)
 
     if (!dram_buf1_virt) {
 
-      val_print(ACS_PRINT_ERR, "\n       WB and OSH mem alloc failure %x", 2);
+      val_print(ERROR, "\n       WB and OSH mem alloc failure %x", 2);
       val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 2));
       return;
     }
@@ -216,7 +216,7 @@ payload (void *arg)
      * No snoop bit in exerciser control register.
      */
     if (val_exerciser_ops(TXN_NO_SNOOP_ENABLE, 0, instance)) {
-       val_print(ACS_PRINT_ERR, "\n       Exerciser %x No Snoop enable error", instance);
+       val_print(ERROR, "\n       Exerciser %x No Snoop enable error", instance);
        goto test_fail;
     }
 

@@ -41,7 +41,7 @@ test_status_t check_smmu_stg2_support (void)
     /* Get total number of SMMUs present in the system */
     num_smmu = val_smmu_get_info(SMMU_NUM_CTRL, 0);
     if (num_smmu == 0) {
-        val_print(ACS_PRINT_ERR, "\n       No SMMU Controllers are discovered ", 0);
+        val_print(ERROR, "\n       No SMMU Controllers are discovered ");
         return TEST_FAIL;
     }
 
@@ -52,7 +52,7 @@ test_status_t check_smmu_stg2_support (void)
             /* Check for SMMUv2 stage 2 support by reading SMMUv2_IDR0 29th bit*/
             s2ts = VAL_EXTRACT_BITS(val_smmu_read_cfg(SMMUv2_IDR0, i), 29, 29);
             if (!s2ts) {
-                val_print(ACS_PRINT_ERR,
+                val_print(ERROR,
                         "\n       SMMUv2 index: 0x%x not providing Stage2 functionality", i);
                 fail_cnt++;
             }
@@ -60,12 +60,12 @@ test_status_t check_smmu_stg2_support (void)
             /* Read SMMUv3_IDR0 bit 0 for stage 2 translation support */
             s2p = VAL_EXTRACT_BITS(val_smmu_read_cfg(SMMUv3_IDR0, i), 0, 0);
             if (!s2p) {
-                val_print(ACS_PRINT_ERR,
+                val_print(ERROR,
                     "\n       SMMUv3 index: 0x%x not providing Stage2 functionality", i);
                 fail_cnt++;
             }
         } else {
-            val_print(ACS_PRINT_ERR,
+            val_print(ERROR,
                 "\n       SMMUv%d register read is not supported", smmu_rev);
             fail_cnt++;
         }
@@ -110,7 +110,7 @@ payload_check_sel2_and_smmu_stg2_support()
 
     /* Skip the test if Secure EL2 is implemented */
     if (pe_s_el2 == 0x1) {
-        val_print(ACS_PRINT_DEBUG, "\n       Secure EL2 is supported, skipping the test.", 0);
+        val_print(DEBUG, "\n       Secure EL2 is supported, skipping the test.");
         val_set_status(index, RESULT_SKIP(TEST_NUM1, 1));
         return;
     }

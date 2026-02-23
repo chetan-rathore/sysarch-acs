@@ -688,3 +688,18 @@ pal_mem_free_pages(
 {
   gBS->FreePages((EFI_PHYSICAL_ADDRESS)(UINTN)PageBase, NumPages);
 }
+
+void pal_uart_putc(char c)
+{
+    CHAR8 ch = (CHAR8)c;
+
+    AsciiPrint("%c", ch);
+
+    if (g_acs_log_file_handle) {
+        UINTN n = 1;
+        EFI_STATUS Status = ShellWriteFile(g_acs_log_file_handle, &n, &ch);
+        if (EFI_ERROR(Status)) {
+            acs_print(ACS_PRINT_ERR, L" Error in writing to log file\n");
+        }
+    }
+}

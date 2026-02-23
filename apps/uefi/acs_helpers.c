@@ -1044,62 +1044,62 @@ print_selection_summary(void)
     UINT32 i;
     RULE_ID_e rid;
     UINT32 mid;
-    val_print(ACS_PRINT_TEST, "\nSelected rules: ", 0);
+    val_print(INFO, "\nSelected rules: ");
     for (i = 0; i < g_rule_count; i++) {
         rid = g_rule_list[i];
         if (rid < RULE_ID_SENTINEL && rule_id_string[rid] != NULL) {
-            val_print(ACS_PRINT_TEST, (char8_t *)rule_id_string[rid], 0);
+            val_print(INFO, (char8_t *)rule_id_string[rid]);
         } else {
-            val_print(ACS_PRINT_TEST, "<INVALID>", 0);
+            val_print(INFO, "<INVALID>");
         }
         if (i + 1 < g_rule_count)
-            val_print(ACS_PRINT_TEST, ",", 0);
+            val_print(INFO, ",");
     }
-    val_print(ACS_PRINT_TEST, "\n", 0);
+    val_print(INFO, "\n");
 
     if (g_skip_rule_count > 0 && g_skip_rule_list != NULL) {
-        val_print(ACS_PRINT_TEST, "Skipped rules (-skip): ", 0);
+        val_print(INFO, "Skipped rules (-skip): ");
         for (i = 0; i < g_skip_rule_count; i++) {
             rid = g_skip_rule_list[i];
             if (rid < RULE_ID_SENTINEL && rule_id_string[rid] != NULL) {
-                val_print(ACS_PRINT_TEST, (char8_t *)rule_id_string[rid], 0);
+                val_print(INFO, (char8_t *)rule_id_string[rid]);
             } else {
-                val_print(ACS_PRINT_TEST, "<INVALID>", 0);
+                val_print(INFO, "<INVALID>");
             }
             if (i + 1 < g_skip_rule_count)
-                val_print(ACS_PRINT_TEST, ",", 0);
+                val_print(INFO, ",");
         }
-        val_print(ACS_PRINT_TEST, "\n", 0);
+        val_print(INFO, "\n");
     }
 
     if (g_num_modules > 0 && g_execute_modules != NULL) {
-        val_print(ACS_PRINT_TEST, "Selected modules (-m): ", 0);
+        val_print(INFO, "Selected modules (-m): ");
         for (i = 0; i < g_num_modules; i++) {
             mid = g_execute_modules[i];
             if (mid < MODULE_ID_SENTINEL && module_name_string[mid] != NULL) {
-                val_print(ACS_PRINT_TEST, (char8_t *)module_name_string[mid], 0);
+                val_print(INFO, (char8_t *)module_name_string[mid]);
             } else {
-                val_print(ACS_PRINT_TEST, "<INVALID>", 0);
+                val_print(INFO, "<INVALID>");
             }
             if (i + 1 < g_num_modules)
-                val_print(ACS_PRINT_TEST, ",", 0);
+                val_print(INFO, ",");
         }
-        val_print(ACS_PRINT_TEST, "\n", 0);
+        val_print(INFO, "\n");
     }
 
     if (g_num_skip_modules > 0 && g_skip_modules != NULL) {
-        val_print(ACS_PRINT_TEST, "Skipped modules (-skipmodule): ", 0);
+        val_print(INFO, "Skipped modules (-skipmodule): ");
         for (i = 0; i < g_num_skip_modules; i++) {
             mid = g_skip_modules[i];
             if (mid < MODULE_ID_SENTINEL && module_name_string[mid] != NULL) {
-                val_print(ACS_PRINT_TEST, (char8_t *)module_name_string[mid], 0);
+                val_print(INFO, (char8_t *)module_name_string[mid]);
             } else {
-                val_print(ACS_PRINT_TEST, "<INVALID>", 0);
+                val_print(INFO, "<INVALID>");
             }
             if (i + 1 < g_num_skip_modules)
-                val_print(ACS_PRINT_TEST, ",", 0);
+                val_print(INFO, ",");
         }
-        val_print(ACS_PRINT_TEST, "\n", 0);
+        val_print(INFO, "\n");
     }
 }
 

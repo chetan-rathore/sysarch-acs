@@ -43,11 +43,11 @@ payload()
   gic_version = val_gic_get_info(GIC_INFO_VERSION);
   num_msi_frame = val_gic_get_info(GIC_INFO_NUM_MSI_FRAME);
 
-  val_print(ACS_PRINT_INFO, "\n       Received GIC version = %4d      ", gic_version);
+  val_print(TRACE, "\n       Received GIC version = %4d      ", gic_version);
 
   if (gic_version < 3) {
     if ((num_ecam > 0) && (num_msi_frame == 0)) {
-      val_print(ACS_PRINT_ERR, "\n       GICv2 with PCIe : Invalid Configuration", 0);
+      val_print(ERROR, "\n       GICv2 with PCIe : Invalid Configuration");
       val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
       return;
     }

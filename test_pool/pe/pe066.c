@@ -52,7 +52,7 @@ payload()
 
     if (breakpointcount < 6)
     {
-        val_print_primary_pe(ACS_PRINT_ERR,
+        val_print_primary_pe(ERROR,
                              "\n       Number of PE breakpoints reported: %d, expected >= 6",
                              breakpointcount, pe_index);
         val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
@@ -74,14 +74,14 @@ payload()
     else
         context_aware_breakpoints = (dfr1_ctx == 0) ? 16 : (dfr1_ctx + 1);
 
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Total Breakpoints          : %u",
+    val_print_primary_pe(DEBUG, "\n       Total Breakpoints          : %u",
                          breakpointcount, pe_index);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Context-Aware Breakpoints  : %u",
+    val_print_primary_pe(DEBUG, "\n       Context-Aware Breakpoints  : %u",
                          context_aware_breakpoints, pe_index);
 
     if (context_aware_breakpoints < 2)
     {
-        val_print_primary_pe(ACS_PRINT_ERR,
+        val_print_primary_pe(ERROR,
                              "\n       Context-aware breakpoints reported: %u, expected >= 2",
                              context_aware_breakpoints, pe_index);
         val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
@@ -102,9 +102,9 @@ payload()
         ctx_end = context_aware_breakpoints - 1;
     }
 
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Context-Aware BP range st     : BP[%u]",
+    val_print_primary_pe(DEBUG, "\n       Context-Aware BP range st     : BP[%u]",
                 ctx_start, pe_index);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Context-Aware BP range end     : BP[%u]",
+    val_print_primary_pe(DEBUG, "\n       Context-Aware BP range end     : BP[%u]",
                 ctx_end, pe_index);
 
     /* Breakpoints 4 and 5 must be context-aware */
@@ -112,7 +112,7 @@ payload()
         val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
     else
     {
-        val_print_primary_pe(ACS_PRINT_ERR,
+        val_print_primary_pe(ERROR,
                 "\n       Breakpoints 4 and 5 are not context-aware as required", 0, pe_index);
         val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 3));
     }

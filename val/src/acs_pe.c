@@ -497,7 +497,7 @@ void
 val_cache_create_info_table(uint64_t *cache_info_table)
 {
   if (cache_info_table == NULL) {
-      val_print(ACS_PRINT_ERR, "\n   Pre-allocated memory pointer is NULL\n", 0);
+      val_print(ERROR, "\n   Pre-allocated memory pointer is NULL\n");
       return;
   }
 
@@ -506,7 +506,7 @@ val_cache_create_info_table(uint64_t *cache_info_table)
   pal_cache_create_info_table(g_cache_info_table, g_pe_info_table);
 
   if (g_cache_info_table->num_of_cache != 0) {
-      val_print(ACS_PRINT_TEST,
+      val_print(INFO,
                 " CACHE_INFO: Number of cache nodes    : %4d\n",
                 g_cache_info_table->num_of_cache);
   }
@@ -527,9 +527,8 @@ val_cache_free_info_table(void)
         g_cache_info_table = NULL;
     }
     else {
-      val_print(ACS_PRINT_ERR,
-                  "\n WARNING: g_cache_info_table pointer is already NULL",
-        0);
+      val_print(ERROR,
+                  "\n WARNING: g_cache_info_table pointer is already NULL");
     }
 }
 
@@ -547,7 +546,7 @@ val_cache_get_info(CACHE_INFO_e type, uint32_t cache_index)
   char *cache_info_type[] = {"cache_type", "cache_size", "cache_identifier", "associativity"};
 
   if (cache_index >= g_cache_info_table->num_of_cache) {
-      val_print(ACS_PRINT_ERR, "\n       invalid cache index: %d", cache_index);
+      val_print(ERROR, "\n       invalid cache index: %d", cache_index);
       return 0;
   }
   entry = &(g_cache_info_table->cache_info[cache_index]);
@@ -573,14 +572,14 @@ val_cache_get_info(CACHE_INFO_e type, uint32_t cache_index)
   case CACHE_PRIVATE_FLAG:
       return entry->is_private;
   default:
-      val_print(ACS_PRINT_ERR,
+      val_print(ERROR,
                 "\n      cache option not supported %d\n", type);
       return INVALID_CACHE_INFO;
   }
 
-  val_print(ACS_PRINT_ERR,
+  val_print(ERROR,
    "\n       cache %d has invalid ", cache_index);
-  val_print(ACS_PRINT_ERR, cache_info_type[type], 0);
+  val_print(ERROR, cache_info_type[type]);
   return INVALID_CACHE_INFO;
 }
 
@@ -616,7 +615,7 @@ val_cache_get_llc_index(void)
       return llc_idx;
   }
   else {
-      val_print(ACS_PRINT_DEBUG, "\n       CACHE INFO table invalid", 0);
+      val_print(DEBUG, "\n       CACHE INFO table invalid");
       return CACHE_TABLE_EMPTY;
   }
 }
@@ -636,7 +635,7 @@ val_cache_get_pe_l1_cache_res(uint32_t res_index)
   if (res_index < MAX_L1_CACHE_RES)
       return entry->level_1_res[res_index];
   else {
-      val_print(ACS_PRINT_ERR,
+      val_print(ERROR,
                "\n   Requested resource index exceeds maximum index value %d\n", MAX_L1_CACHE_RES);
       return DEFAULT_CACHE_IDX;
   }
@@ -681,7 +680,7 @@ uint32_t val_pe_feat_check(PE_FEAT_NAME pe_feature)
         else
             return ACS_STATUS_FAIL;
     default:
-        val_print(ACS_PRINT_ERR, "\nPE_FEAT_CHECK: Invalid PE feature", 0);
+        val_print(ERROR, "\nPE_FEAT_CHECK: Invalid PE feature");
         return ACS_STATUS_FAIL;
     }
 }
@@ -700,6 +699,6 @@ uint32_t val_cache_get_associativity(uint64_t cache_id)
             return val_cache_get_info(CACHE_ASSOCIATIVITY, cache_index);
     }
 
-    val_print(ACS_PRINT_ERR, "\n       Invalid Cache ID: %d", cache_id);
+    val_print(ERROR, "\n       Invalid Cache ID: %d", cache_id);
     return 0;
 }

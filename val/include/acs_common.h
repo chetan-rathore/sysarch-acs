@@ -17,6 +17,7 @@
 
 
 /** This file is common to all test cases and Val layer of the Suite */
+#include "val_logger.h"
 
 
 #ifndef __ACS_COMMON_H__

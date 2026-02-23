@@ -49,7 +49,7 @@ static uint32_t check_rule_support(RULE_ID_e rule_id)
 {
     uint8_t plat_bitmask = rule_test_map[rule_id].platform_bitmask;
 
-   // val_print(ACS_PRINT_ERR, "\n plat_bitmask %x", plat_bitmask);
+   // val_print(ERROR, "\n plat_bitmask %x", plat_bitmask);
 
     if (!(g_current_pal & plat_bitmask)) {
         /* Report if rule is not supported by ACS across all available PALs*/
@@ -421,7 +421,7 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
     RULE_ID_e base_rule_id;
     RULE_ID_e *base_rule_list;
 
-    val_print(ACS_PRINT_ERR, "\n---------------------- Running tests ------------------------", 0);
+    val_print(INFO, "\n---------------------- Running tests ------------------------");
 
     /* Initialize per-rule status map to TEST_STATUS_UNKNOWN for this run */
     rule_status_map_reset();
@@ -435,9 +435,9 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
     for (i = 0 ; i < list_size; i++) {
         /* Invalid  rule_test_map entry check */
         // if (rule_test_map[rule_list[i]].flag == INVALID_ENTRY) {
-        //     val_print(ACS_PRINT_ERR, "\n", 0);
-        //     val_print(ACS_PRINT_ERR, rule_id_string[rule_list[i]], 0);
-        //     val_print(ACS_PRINT_ERR, " has invalid rule_test_map[] entry.", 0);
+        //     val_print(ERROR, "\n");
+        //     val_print(ERROR, rule_id_string[rule_list[i]]);
+        //     val_print(ERROR, " has invalid rule_test_map[] entry.");
         //     continue;
         // }
 
@@ -470,7 +470,7 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
 
             /* Validate lookup result before dereferencing the map */
             if (alias_rule_map_index == INVALID_IDX) {
-                val_print(ACS_PRINT_ERR, " alias map index not found for rule id: 0x%x",
+                val_print(ERROR, " alias map index not found for rule id: 0x%x",
                           rule_list[i]);
                 /* Skip executing base rules for an unknown alias */
                 continue;
@@ -502,9 +502,9 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
             base_rule_list = alias_rule_map[alias_rule_map_index].base_rule_list;
 
             /* Print start header for alias rule */
-            val_print(ACS_PRINT_TEST, "\n\n  === Start tests for rules referenced by ", 0);
-            val_print(ACS_PRINT_TEST, rule_id_string[rule_list[i]], 0);
-            val_print(ACS_PRINT_TEST, " ===", 0);
+            val_print(INFO, "\n\n  === Start tests for rules referenced by ");
+            val_print(INFO, rule_id_string[rule_list[i]]);
+            val_print(INFO, " ===");
 
             /* Run the base rules required by the alias; list is sentinel-terminated */
             for (j = 0; base_rule_list[j] != RULE_ID_SENTINEL; j++) {
@@ -545,7 +545,7 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
                 }
                 else
                 {
-                    val_print(ACS_PRINT_ERR, "\n\n  Rule failed due to NULL entry \n\r ", 0);
+                    val_print(ERROR, "\n\n  Rule failed due to NULL entry \n\r ");
                     base_rule_status = TEST_FAIL;
                 }
                 /* record base rule status */
@@ -579,9 +579,9 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
             }
 
             /* Print end header for alias rule */
-            val_print(ACS_PRINT_TEST, "\n\n  === End tests for rules referenced by ", 0);
-            val_print(ACS_PRINT_TEST, rule_id_string[rule_list[i]], 0);
-            val_print(ACS_PRINT_TEST, " ===\n", 0);
+            val_print(INFO, "\n\n  === End tests for rules referenced by ");
+            val_print(INFO, rule_id_string[rule_list[i]]);
+            val_print(INFO, " ===\n");
 
         } else if (rule_test_map[rule_list[i]].flag == BASE_RULE) {
             /* Base rule would have single test entry, could be wrapper too */
@@ -592,7 +592,7 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
             }
             else
             {
-                val_print(ACS_PRINT_ERR, "\n\n  Rule failed due to NULL entry \n\r ", 0);
+                val_print(ERROR, "\n\n  Rule failed due to NULL entry \n\r ", 0);
                 rule_test_status = TEST_FAIL;
             }
         }
@@ -602,7 +602,6 @@ report_status:
         print_rule_test_status(rule_list[i], 0, rule_test_status);
 
     }
-    val_print(ACS_PRINT_TEST,
-              "\n-------------------- Suite run complete --------------------\n",
-              0);
+    val_print(INFO,
+              "\n-------------------- Suite run complete --------------------\n");
 }

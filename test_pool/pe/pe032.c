@@ -30,9 +30,9 @@ static void payload(void)
     uint64_t data1 = val_pe_reg_read(ID_AA64ISAR1_EL1);
     uint64_t data2 = val_pe_reg_read(ID_AA64ISAR2_EL1);
 
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       ID_AA64ISAR1_EL1.APA[7:4]    = %llx",
+    val_print_primary_pe(DEBUG, "\n       ID_AA64ISAR1_EL1.APA[7:4]    = %llx",
                          VAL_EXTRACT_BITS(data1, 4, 7), index);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       ID_AA64ISAR2_EL1.APA3[15:12] = %llx",
+    val_print_primary_pe(DEBUG, "\n       ID_AA64ISAR2_EL1.APA3[15:12] = %llx",
                          VAL_EXTRACT_BITS(data2, 12, 15), index);
 
     /* Pointer signing is mandatory, Check for pointer signing using standard arm algorithm.

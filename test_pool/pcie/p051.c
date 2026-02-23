@@ -41,7 +41,7 @@ payload(void)
   if (ret == ACS_STATUS_SKIP)
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
   else if (ret) {
-      val_print(ACS_PRINT_ERR, "\nCheck failed - Slot Implemented[8] PCI Express Capabilities", 0);
+      val_print(ERROR, "\nCheck failed - Slot Implemented[8] PCI Express Capabilities");
       val_set_status(pe_index, RESULT_FAIL(TEST_NUM, ret));
   }
   else

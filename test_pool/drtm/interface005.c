@@ -33,7 +33,7 @@ payload(uint32_t num_pe)
 
   /*Status value less than zero are error case*/
   if (status < DRTM_ACS_SUCCESS) {
-    val_print(ACS_PRINT_ERR, "\n       DRTM query DMA protection feature failed err=%d", status);
+    val_print(ERROR, "\n       DRTM query DMA protection feature failed err=%d", status);
     val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
     return;
   }
@@ -48,13 +48,13 @@ payload(uint32_t num_pe)
     /* Check atleast 1 DMA Protection is supported */
     dma_prot_support = VAL_EXTRACT_BITS(g_drtm_features.dma_prot_features.value, 0, 7);
     if (dma_prot_support == 0) {
-      val_print(ACS_PRINT_ERR, "\n       DMA Protection Not Supported", 0);
+      val_print(ERROR, "\n       DMA Protection Not Supported");
       val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
       return;
     }
   } else {
-    val_print(ACS_PRINT_ERR,
-              "\n       DMA protection feature value not available in return value", 0);
+    val_print(ERROR,
+              "\n       DMA protection feature value not available in return value");
     val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
     return;
   }

@@ -48,7 +48,7 @@ void payload(void)
     for (index = 0; index < total_nodes; index++) {
 
         if (!val_mpam_msc_supports_esr(index)) {
-            val_print(ACS_PRINT_DEBUG, "\n       MSC index %d does not support ESR", index);
+            val_print(DEBUG, "\n       MSC index %d does not support ESR", index);
             continue;
         }
 
@@ -66,7 +66,7 @@ void payload(void)
         if (status == ACS_STATUS_SKIP) {
             /* Restore MPAM2_EL2 settings */
             val_mpam_reg_write(MPAM2_EL2, mpam2_el2_temp);
-            val_print(ACS_PRINT_WARN, "\n       MSC PMG range exceeds PE PMG range", 0);
+            val_print(WARN, "\n       MSC PMG range exceeds PE PMG range");
             continue;
         }
 
@@ -78,12 +78,12 @@ void payload(void)
 
         /* Read Error Status Register and check if the error code is recorded */
         esr_errcode = val_mpam_msc_get_errcode(index);
-        val_print(ACS_PRINT_DEBUG, "\n       Error code read is %llx", esr_errcode);
+        val_print(DEBUG, "\n       Error code read is %llx", esr_errcode);
 
         if (esr_errcode != ESR_ERRCODE_REQ_PMG_RANGE)
         {
-            val_print(ACS_PRINT_ERR, "\n       Expected errcode: %d", ESR_ERRCODE_REQ_PMG_RANGE);
-            val_print(ACS_PRINT_ERR, "\n       Actual errcode: %d", esr_errcode);
+            val_print(ERROR, "\n       Expected errcode: %d", ESR_ERRCODE_REQ_PMG_RANGE);
+            val_print(ERROR, "\n       Actual errcode: %d", esr_errcode);
             test_fail++;
         }
 

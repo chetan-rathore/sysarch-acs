@@ -45,7 +45,7 @@ esr(uint64_t interrupt_type, void *context)
   /* Update the ELR to point to next instrcution */
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
-  val_print(ACS_PRINT_ERR, "\n       Received Exception of type %d", interrupt_type);
+  val_print(ERROR, "\n       Received Exception of type %d", interrupt_type);
   val_set_status(index, RESULT_FAIL(test_num, 02));
 }
 
@@ -86,7 +86,7 @@ payload(void)
   status |= val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
   if (status)
   {
-      val_print(ACS_PRINT_ERR, "\n       Failed to install exception handler", 0);
+      val_print(ERROR, "\n       Failed to install exception handler");
       val_set_status(index, RESULT_FAIL(test_num, 01));
       return;
   }
@@ -118,45 +118,45 @@ next_bdf:
 
       offset = BAR0_OFFSET;
 
-      val_print(ACS_PRINT_DEBUG, "\n   BDF under check %.6x", bdf);
+      val_print(DEBUG, "\n   BDF under check %.6x", bdf);
 
       while (offset <= max_bar_offset) {
           val_pcie_read_cfg(bdf, offset, &bar_value);
-          val_print(ACS_PRINT_DEBUG, "\n       The BAR value of bdf %.6x", bdf);
-          val_print(ACS_PRINT_DEBUG, " is %x ", bar_value);
+          val_print(DEBUG, "\n       The BAR value of bdf %.6x", bdf);
+          val_print(DEBUG, " is %x ", bar_value);
           base = 0;
 
           if (bar_value == 0)
           {
               /** This BAR is not implemented **/
-              val_print(ACS_PRINT_DEBUG, "\n       BAR is not implemented for BDF 0x%x", bdf);
+              val_print(DEBUG, "\n       BAR is not implemented for BDF 0x%x", bdf);
               tbl_index++;
               goto next_bdf;
           }
 
           /* Skip for IO address space */
           if (bar_value & BAR_VALUE_IO_MASK) {
-              val_print(ACS_PRINT_DEBUG, "\n       BAR is used for IO address space request", 0);
-              val_print(ACS_PRINT_DEBUG, " for BDF 0x%x", bdf);
+              val_print(DEBUG, "\n       BAR is used for IO address space request");
+              val_print(DEBUG, " for BDF 0x%x", bdf);
               tbl_index++;
               goto next_bdf;
           }
 
           val_pcie_read_cfg(bdf, TYPE01_RIDR, &reg_value);
-          val_print(ACS_PRINT_DEBUG, "\n       Class code is 0x%x", reg_value);
+          val_print(DEBUG, "\n       Class code is 0x%x", reg_value);
           base_cc = reg_value >> TYPE01_BCC_SHIFT;
           if (g_pcie_skip_dp_nic_ms &&
               ((base_cc == UNCLAS_CC) || (base_cc == CNTRL_CC)
               || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC))) {
-              val_print(ACS_PRINT_DEBUG, "\n       Skipping BDF as  0x%x", bdf);
+              val_print(DEBUG, "\n       Skipping BDF as  0x%x", bdf);
               tbl_index++;
               goto next_bdf;
           }
 
           if (BAR_REG(bar_value) == BAR_64_BIT)
           {
-              val_print(ACS_PRINT_INFO,
-                  "\n       BAR supports 64-bit address decoding capability", 0);
+              val_print(TRACE,
+                  "\n       BAR supports 64-bit address decoding capability");
               val_pcie_read_cfg(bdf, offset+4, &bar_value_1);
               base = bar_value_1;
 
@@ -179,8 +179,8 @@ next_bdf:
           }
 
           else {
-              val_print(ACS_PRINT_INFO,
-                  "\n       The BAR supports 32-bit address decoding capability", 0);
+              val_print(TRACE,
+                  "\n       The BAR supports 32-bit address decoding capability");
 
               /* BAR supports 32-bit address. Write all 1's
                * to BARn and identify the size requested
@@ -195,12 +195,12 @@ next_bdf:
               base = bar_value;
           }
 
-          val_print(ACS_PRINT_DEBUG, "\n       BAR size is %x", bar_size);
-          val_print(ACS_PRINT_DEBUG, "\n       BAR base is 0x%llx", base);
+          val_print(DEBUG, "\n       BAR size is %x", bar_size);
+          val_print(DEBUG, "\n       BAR base is 0x%llx", base);
 
           /* Check if bar supports the remap size */
           if (bar_size < 1024) {
-              val_print(ACS_PRINT_ERR, "\n       Bar size less than remap requested size", 0);
+              val_print(ERROR, "\n       Bar size less than remap requested size");
               goto next_bar;
           }
 
@@ -224,7 +224,7 @@ next_bdf:
           else if (status)
           {
             test_fail++;
-            val_print(ACS_PRINT_ERR,
+            val_print(ERROR,
                   "\n       pal_memory_ioremap failed, status: 0x%x", status);
             val_set_status(index, RESULT_FAIL(test_num, test_fail));
             goto next_bar;
@@ -238,13 +238,13 @@ next_bdf:
           old_data = *(uint32_t *)(baseptr);
           *(uint32_t *)(baseptr) = DATA;
           data = *(char *)(baseptr+3);
-          val_print(ACS_PRINT_DEBUG, "\n       Value read: %llx", data);
+          val_print(DEBUG, "\n       Value read: %llx", data);
           *(uint32_t *)(baseptr) = old_data;
 
 exception_return_normal:
           val_memory_unmap(baseptr);
           if (IS_TEST_FAIL(val_get_status(index))) {
-              val_print(ACS_PRINT_ERR, "\n       Normal memory access failed for Bdf: 0x%x", bdf);
+              val_print(ERROR, "\n       Normal memory access failed for Bdf: 0x%x", bdf);
 
               /* Setting the status to Pass to enable next check for current BDF.
                * Failure has been recorded with test_fail.

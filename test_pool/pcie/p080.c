@@ -61,7 +61,7 @@ payload(void)
       /* Check entry is integrated endpoint or rciep */
       if ((dp_type == RCiEP) || (dp_type == iEP_EP) || (dp_type == iEP_RP))
       {
-         val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x", bdf);
+         val_print(DEBUG, "\n       BDF - 0x%x", bdf);
          /* Check if Address Translation Cache is Present in this device. */
          /* If ATC Not present or capabilty not filled, skip the test.*/
          status = val_pcie_is_cache_present(bdf);
@@ -79,7 +79,7 @@ payload(void)
          /* If ATC Present,  ATS Capability must be present. */
          if (val_pcie_find_capability(bdf, PCIE_ECAP, ECID_ATS, &cap_base) != PCIE_SUCCESS)
          {
-             val_print(ACS_PRINT_ERR, "\n       ATS Capability Not Present, Bdf : 0x%x", bdf);
+             val_print(ERROR, "\n       ATS Capability Not Present, Bdf : 0x%x", bdf);
              test_fails++;
          }
       }
@@ -88,8 +88,8 @@ payload(void)
   if (warn_cnt)
       val_set_status(pe_index, RESULT_WARN(TEST_NUM, warn_cnt));
   else if (test_skip) {
-      val_print(ACS_PRINT_DEBUG,
-              "\n       No target device type found with ATC available. Skipping test", 0);
+      val_print(DEBUG,
+              "\n       No target device type found with ATC available. Skipping test");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
   }
   else if (test_fails)

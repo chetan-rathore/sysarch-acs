@@ -40,8 +40,8 @@ payload()
       return;
   }
 
-  val_print(ACS_PRINT_DEBUG, "\n       Number of PE is %d", num_of_pe);
-  val_print(ACS_PRINT_DEBUG, "\n       Gic version is %d", gic_version);
+  val_print(DEBUG, "\n       Number of PE is %d", num_of_pe);
+  val_print(DEBUG, "\n       Gic version is %d", gic_version);
 
   val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
 

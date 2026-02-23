@@ -54,7 +54,7 @@ static void payload(void)
 
         if (VAL_EXTRACT_BITS(data2, 20, 23) == 0x2 || VAL_EXTRACT_BITS(data2, 28, 31) == 0x1)
         {
-            val_print(ACS_PRINT_INFO, "\n System supports both FEAT_LPA & FEAT_LPA2 ", 0);
+            val_print(TRACE, "\n System supports both FEAT_LPA & FEAT_LPA2 ");
             val_set_status(index, RESULT_PASS(TEST_NUM, 01));
             return;
         }

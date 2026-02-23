@@ -110,7 +110,7 @@ ArmGicSetItsCommandQueueBase(
   Address = (uint64_t)val_aligned_alloc(SIZE_64KB, (NUM_PAGES_8 * SIZE_4KB));
 
   if (!Address) {
-    val_print(ACS_PRINT_ERR,  "ITS : Could Not Allocate Memory CmdQ. Test may not pass.\n", 0);
+    val_print(ERROR,  "ITS : Could Not Allocate Memory CmdQ. Test may not pass.\n");
     return 1;
   }
 
@@ -227,14 +227,14 @@ static uint32_t ArmGicSetItsTables(uint32_t its_index)
       // level 1 needs 64 bits i.e 8 bytes
       TableSize = (1 << (lvl1_bits))*ARM_GITS_BASER_INDIRECT_LVL1_ENTRY_SIZE;
       if (TableSize > max_page_size*ARM_GITS_BASER_MAX_PAGES) {
-        val_print(ACS_PRINT_WARN,  "ITS : Level 1 table size exceeded limit", 0);
-        val_print(ACS_PRINT_WARN, "max did size will not be supported..\n", 0);
+        val_print(WARN,  "ITS : Level 1 table size exceeded limit");
+        val_print(WARN, "max did size will not be supported..\n");
         TableSize = max_page_size*ARM_GITS_BASER_MAX_PAGES;
       }
     } else {
-      val_print(ACS_PRINT_WARN, "ITS : Multilevel table not supported and single level table\n", 0);
-      val_print(ACS_PRINT_WARN, "size exceeded limit settings support only upto 24 bit \n", 0);
-      val_print(ACS_PRINT_WARN, "(if entry_size is 8 bytes)", 0);
+      val_print(WARN, "ITS : Multilevel table not supported and single level table\n");
+      val_print(WARN, "size exceeded limit settings support only upto 24 bit \n");
+      val_print(WARN, "(if entry_size is 8 bytes)");
       TableSize = max_page_size*ARM_GITS_BASER_MAX_PAGES;
     }
   }
@@ -250,7 +250,7 @@ static uint32_t ArmGicSetItsTables(uint32_t its_index)
   Address = (uint64_t)val_aligned_alloc(max_page_size, TableSize);
 
   if (!Address) {
-      val_print(ACS_PRINT_ERR,  "ITS : Could Not Allocate Memory DT/CT. Test may not pass.\n", 0);
+      val_print(ERROR,  "ITS : Could Not Allocate Memory DT/CT. Test may not pass.\n");
       return 1;
   }
 
@@ -284,7 +284,7 @@ static uint32_t ArmGicSetItsTables(uint32_t its_index)
   Address = (uint64_t)val_aligned_alloc(SIZE_64KB, (NUM_PAGES_8 * SIZE_4KB));
 
   if (!Address) {
-    val_print(ACS_PRINT_ERR,  "ITS : Could Not Allocate Memory For ITT. Test may not pass.\n", 0);
+    val_print(ERROR,  "ITS : Could Not Allocate Memory For ITT. Test may not pass.\n");
     return 1;
   }
 
@@ -436,8 +436,8 @@ static void PollTillCommandQueueDone(uint32_t its_index)
 
     count++;
     if (count > WAIT_ITS_COMMAND_DONE) {
-      val_print(ACS_PRINT_ERR,
-                "\n       ITS : Command Queue READR not moving, Test may not pass", 0);
+      val_print(ERROR,
+                "\n       ITS : Command Queue READR not moving, Test may not pass");
       break;
     }
 
@@ -631,7 +631,7 @@ uint32_t val_its_init(void)
                                                 sizeof(uint32_t) * (g_gic_its_info->GicNumIts));
 
   if (g_cwriter_ptr == NULL) {
-    val_print(ACS_PRINT_ERR, "ITS : Could Not Allocate Memory CWriteR. Test may not pass.\n", 0);
+    val_print(ERROR, "ITS : Could Not Allocate Memory CWriteR. Test may not pass.\n");
     return 0;
   }
 
@@ -666,12 +666,12 @@ uint32_t val_its_init(void)
 
   g_its_setup_done = 1;
 
-  val_print(ACS_PRINT_INFO, "  ITS : Info Block\n", 0);
+  val_print(TRACE, "  ITS : Info Block\n");
   for (index = 0; index < g_gic_its_info->GicNumIts; index++)
   {
-      val_print(ACS_PRINT_INFO, "  GIC ITS Index: %x", g_gic_its_info->GicIts[index].its_index);
-      val_print(ACS_PRINT_INFO, " ID: %x", g_gic_its_info->GicIts[index].ID);
-      val_print(ACS_PRINT_INFO, " Base: %x\n", g_gic_its_info->GicIts[index].Base);
+      val_print(TRACE, "  GIC ITS Index: %x", g_gic_its_info->GicIts[index].its_index);
+      val_print(TRACE, " ID: %x", g_gic_its_info->GicIts[index].ID);
+      val_print(TRACE, " Base: %x\n", g_gic_its_info->GicIts[index].Base);
   }
 
   return 0;

@@ -60,7 +60,7 @@ payload(uint32_t num_pe)
 
   /* Check if DRTM_SET_TCB_HASH is implemented */
   if (status != DRTM_ACS_SUCCESS) {
-    val_print(ACS_PRINT_DEBUG,
+    val_print(DEBUG,
               "\n       DRTM_SET_TCB_HASH function not supported err=%d", status);
     val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
     return;
@@ -69,7 +69,7 @@ payload(uint32_t num_pe)
   /* If DRTM_SET_TCB_HASH is implemented then DRTM_LOCK_TCB_HASHES must be implemented */
   status = g_drtm_features.lock_tcb_hashes;
   if (status != DRTM_ACS_SUCCESS) {
-    val_print(ACS_PRINT_ERR,
+    val_print(ERROR,
               "\n       DRTM_LOCK_TCB_HASHES function not supported err=%d", status);
     val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
     return;
@@ -77,7 +77,7 @@ payload(uint32_t num_pe)
 
   /* num_hashes value zero indicates that hashes cannot be recorded with DRTM_SET_TCB_HASH */
   if (!num_hashes) {
-    val_print(ACS_PRINT_ERR, "\n       Max Hashes can be recorded with DRTM_SET_TCB_HASH is 0", 0);
+    val_print(ERROR, "\n       Max Hashes can be recorded with DRTM_SET_TCB_HASH is 0");
     val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
   }
 
@@ -87,7 +87,7 @@ payload(uint32_t num_pe)
   drtm_hash_table = (DRTM_TCB_HASH_TABLE *)val_memory_alloc(sizeof(DRTM_TCB_HASH_TABLE_HDR) +
               ((sizeof(uint32_t) + (sizeof(uint8_t) * SHA_256_DIGEST_SIZE_BYTES)) * num_hashes));
   if (!drtm_hash_table) {
-    val_print(ACS_PRINT_ERR, "\n       Failed to allocate tcb hash table", 0);
+    val_print(ERROR, "\n       Failed to allocate tcb hash table");
     val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
     return;
   }
@@ -96,7 +96,7 @@ payload(uint32_t num_pe)
 
   status = val_drtm_set_tcb_hash((uint64_t)drtm_hash_table);
   if (status != DRTM_ACS_OUT_OF_RESOURCE) {
-    val_print(ACS_PRINT_ERR, "\n       DRTM set invalid num of Hashes failed %d", status);
+    val_print(ERROR, "\n       DRTM set invalid num of Hashes failed %d", status);
     val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
     goto free_tcb_hash;
   }

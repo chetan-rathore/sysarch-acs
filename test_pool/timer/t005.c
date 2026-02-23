@@ -35,7 +35,7 @@ isr_sys_timer()
   val_timer_disable_system_timer((addr_t)cnt_base_n);
   val_gic_end_of_interrupt(intid);
   irq_received = 1;
-  val_print(ACS_PRINT_INFO, "\n       System timer interrupt received", 0);
+  val_print(TRACE, "\n       System timer interrupt received");
 }
 
 static
@@ -43,7 +43,7 @@ void
 isr_phy_el1()
 {
   val_timer_set_phy_el1(0);
-  val_print(ACS_PRINT_INFO, "\n       Received el1_phy interrupt   ", 0);
+  val_print(TRACE, "\n       Received el1_phy interrupt   ");
   val_gic_end_of_interrupt(intid_phy);
 }
 
@@ -85,7 +85,7 @@ payload()
   }
 
   if (!ns_timer) {
-      val_print(ACS_PRINT_DEBUG, "\n       No non-secure systimer implemented", 0);
+      val_print(DEBUG, "\n       No non-secure systimer implemented");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -93,7 +93,7 @@ payload()
   /* Start Sys timer*/
   cnt_base_n = val_timer_get_info(TIMER_INFO_SYS_CNT_BASE_N, timer_num);
   if (cnt_base_n == 0) {
-      val_print(ACS_PRINT_WARN, "\n       CNT_BASE_N is zero                 ", 0);
+      val_print(WARN, "\n       CNT_BASE_N is zero                 ");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
       return;
   }
@@ -114,7 +114,7 @@ payload()
   /* Put current PE in to low power mode*/
   status = val_suspend_pe(0, 0);
   if (status) {
-      val_print(ACS_PRINT_DEBUG, "\n       Not able to suspend the PE : %d", status);
+      val_print(DEBUG, "\n       Not able to suspend the PE : %d", status);
       val_timer_disable_system_timer((addr_t)cnt_base_n);
       val_gic_clear_interrupt(intid);
       val_timer_set_phy_el1(0);
@@ -123,7 +123,7 @@ payload()
   }
 
   if (irq_received == 0) {
-      val_print(ACS_PRINT_ERR, "\n       System timer interrupt not generated", 0);
+      val_print(ERROR, "\n       System timer interrupt not generated");
       val_timer_disable_system_timer((addr_t)cnt_base_n);
       val_gic_clear_interrupt(intid);
       val_timer_set_phy_el1(0);
@@ -138,7 +138,7 @@ payload()
   /*Disable PE timer*/
   val_timer_set_phy_el1(0);
 
-  val_print(ACS_PRINT_INFO, "\n       Read back PE timer count :%d", timer_cnt);
+  val_print(TRACE, "\n       Read back PE timer count :%d", timer_cnt);
 
   /* Check whether count is moved or not*/
   if ((timer_cnt < ((pe_timer_ticks - sys_timer_ticks) + (sys_timer_ticks/100)))

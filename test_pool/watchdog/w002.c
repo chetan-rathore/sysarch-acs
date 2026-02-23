@@ -43,11 +43,11 @@ isr()
 {
     val_wd_set_ws0(wd_num, 0);
     g_wd_int_received = 1;
-    val_print(ACS_PRINT_DEBUG, "\n       Received WS0 interrupt                ", 0);
+    val_print(DEBUG, "\n       Received WS0 interrupt                ");
     val_gic_end_of_interrupt(int_id);
 
     val_timer_set_phy_el1(0);
-    val_print(ACS_PRINT_DEBUG, "       Clear Failsafe interrupt\n", 0);
+    val_print(DEBUG, "       Clear Failsafe interrupt\n");
 }
 
 static
@@ -58,7 +58,7 @@ isr_failsafe()
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
 
   val_timer_set_phy_el1(0);
-  val_print(ACS_PRINT_ERR, "       Received Failsafe interrupt\n", 0);
+  val_print(ERROR, "       Received Failsafe interrupt\n");
   g_failsafe_int_received = 1;
 
   /* On some system the failsafe is rcvd just after test interrupt and resulting
@@ -103,7 +103,7 @@ payload()
     wd_num = val_wd_get_info(0, WD_INFO_COUNT);
 
     if (wd_num == 0) {
-        val_print(ACS_PRINT_DEBUG, "\n       No Watchdogs reported          %d  ", wd_num);
+        val_print(DEBUG, "\n       No Watchdogs reported          %d  ", wd_num);
         if (g_build_sbsa || g_build_pcbsa)
             val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
         else
@@ -123,18 +123,18 @@ payload()
         ns_wdg++;
 
         int_id       = val_wd_get_info(wd_num, WD_INFO_GSIV);
-        val_print(ACS_PRINT_DEBUG, "\n       WS0 Interrupt id  %d        ", int_id);
+        val_print(DEBUG, "\n       WS0 Interrupt id  %d        ", int_id);
 
         /* Check intid is SPI or ESPI */
         if (!(IsSpi(int_id)) && !(val_gic_is_valid_espi(int_id))) {
-            val_print(ACS_PRINT_ERR, "\n       Interrupt-%d is neither SPI nor ESPI", int_id);
+            val_print(ERROR, "\n       Interrupt-%d is neither SPI nor ESPI", int_id);
             val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
             return;
         }
 
         /* Install ISR */
         if (val_gic_install_isr(int_id, isr)) {
-            val_print(ACS_PRINT_ERR, "\n       GIC Install Handler Failed...", 0);
+            val_print(ERROR, "\n       GIC Install Handler Failed...");
             val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
             return;
         }
@@ -148,7 +148,7 @@ payload()
         g_wd_int_received = 0;
         status = val_wd_set_ws0(wd_num, timer_expire_ticks);
         if (status) {
-            val_print(ACS_PRINT_ERR, "\n       Setting watchdog timeout failed", 0);
+            val_print(ERROR, "\n       Setting watchdog timeout failed");
             val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
             return;
         }
@@ -165,13 +165,13 @@ payload()
         val_wd_set_ws0(wd_num, 0);
 
         if (g_failsafe_int_received && (g_wd_int_received == 0)) {
-          val_print(ACS_PRINT_ERR, "\n       Failsafe interrupt received, no WS0 interrupt", 0);
+          val_print(ERROR, "\n       Failsafe interrupt received, no WS0 interrupt");
           val_set_status(index, RESULT_FAIL(TEST_NUM, 7));
           return;
         }
 
         if ((timeout == 0) && (g_wd_int_received == 0)) {
-            val_print(ACS_PRINT_ERR, "\n       WS0 Interrupt not rcvd within timeout %d", int_id);
+            val_print(ERROR, "\n       WS0 Interrupt not rcvd within timeout %d", int_id);
             val_set_status(index, RESULT_FAIL(TEST_NUM, 5));
             return;
         }
@@ -180,10 +180,10 @@ payload()
 
     if (!ns_wdg) {
         if (g_build_sbsa || g_build_pcbsa) {
-            val_print(ACS_PRINT_ERR, "\n       No non-secure Watchdogs reported", 0);
+            val_print(ERROR, "\n       No non-secure Watchdogs reported");
             val_set_status(index, RESULT_FAIL(TEST_NUM, 6));
         } else {
-            val_print(ACS_PRINT_WARN, "\n       No non-secure Watchdogs reported", 0);
+            val_print(WARN, "\n       No non-secure Watchdogs reported");
             val_set_status(index, RESULT_SKIP(TEST_NUM, 3));
         }
         return;

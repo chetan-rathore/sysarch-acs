@@ -51,7 +51,7 @@ esr(uint64_t interrupt_type, void *context)
   /* Update the ELR to return to test specified address */
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
-  val_print(ACS_PRINT_INFO, "\n       Received exception of type: %d", interrupt_type);
+  val_print(TRACE, "\n       Received exception of type: %d", interrupt_type);
 }
 
 
@@ -88,7 +88,7 @@ payload(void *arg)
   status |= val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
   if (status)
   {
-      val_print(ACS_PRINT_ERR, "\n       Failed in installing the exception handler", 0);
+      val_print(ERROR, "\n       Failed in installing the exception handler");
       val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 01));
       return;
   }
@@ -100,7 +100,7 @@ payload(void *arg)
 
   if (!dram_buf_virt)
   {
-      val_print(ACS_PRINT_ERR,
+      val_print(ERROR,
             "\n       Unable to allocate memory for buffer of %x pages", TEST_DATA_NUM_PAGES);
       val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 02));
       return;
@@ -116,12 +116,12 @@ payload(void *arg)
           continue;
 
      e_bdf = val_exerciser_get_bdf(instance);
-     val_print(ACS_PRINT_DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
+     val_print(DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
 
       /* Skip this exerciser if it doesn't have mmio BAR */
       val_pcie_get_mmio_bar(e_bdf, &bar_base);
       if (!bar_base) {
-        val_print(ACS_PRINT_DEBUG,
+        val_print(DEBUG,
                  "\n       Exerciser 0x%x does not have MMIO BAR. Skipping exerciser.", e_bdf);
         continue;
       }
@@ -186,7 +186,7 @@ exception_return:
           val_pcie_clear_urd(erp_bdf);
       } else
       {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
                    "\n       Root Port BDF 0x%x BME functionality failure", erp_bdf);
           fail_cnt++;
       }
@@ -199,7 +199,7 @@ exception_return:
       val_pcie_read_cfg(e_bdf, COMMAND_REG_OFFSET, &reg_value);
       if (!((reg_value & MASTER_ABORT_MASK) >> MASTER_ABORT_SHIFT))
       {
-          val_print(ACS_PRINT_ERR, "\n       Exerciser BDF 0x%x BME functionality failure", e_bdf);
+          val_print(ERROR, "\n       Exerciser BDF 0x%x BME functionality failure", e_bdf);
           fail_cnt++;
       }
 

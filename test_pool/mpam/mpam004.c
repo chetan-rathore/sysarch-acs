@@ -50,7 +50,7 @@ static void payload(void)
 
     /* get total number of MSCs reported by MPAM ACPI table */
     msc_node_cnt = val_mpam_get_msc_count();
-    val_print(ACS_PRINT_DEBUG, "\n       MSC count = %d", msc_node_cnt);
+    val_print(DEBUG, "\n       MSC count = %d", msc_node_cnt);
 
     if (!msc_node_cnt) {
         val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
@@ -61,8 +61,8 @@ static void payload(void)
     for (msc_index = 0; msc_index < msc_node_cnt; msc_index++) {
         rsrc_node_cnt = val_mpam_get_info(MPAM_MSC_RSRC_COUNT, msc_index, 0);
 
-        val_print(ACS_PRINT_DEBUG, "\n       msc index  = %d", msc_index);
-        val_print(ACS_PRINT_DEBUG, "\n       Resource count = %d", rsrc_node_cnt);
+        val_print(DEBUG, "\n       msc index  = %d", msc_index);
+        val_print(DEBUG, "\n       Resource count = %d", rsrc_node_cnt);
 
         for (rsrc_index = 0; rsrc_index < rsrc_node_cnt; rsrc_index++) {
 
@@ -72,7 +72,7 @@ static void payload(void)
 
                 /* As per S_L7MP_05, MBWU monitoring must be supported for general purpose mem */
                 if (!val_mpam_msc_supports_mbwumon(msc_index)) {
-                    val_print(ACS_PRINT_ERR, "\n       MBWU MON unsupported by MSC %d", msc_index);
+                    val_print(ERROR, "\n       MBWU MON unsupported by MSC %d", msc_index);
                     test_fails++;
                     break;
                 }
@@ -83,25 +83,25 @@ static void payload(void)
                    else 66 bit.  Check MBWUMON_IDR HAS_LONG[30] and LWD[29] bits. The reg is
                    present only if mbwumon is supported */
                 if (!val_mpam_msc_supports_mbwumon(msc_index)) {
-                    val_print(ACS_PRINT_ERR, "\n       MBWU MON unsupported by MSC %d", msc_index);
+                    val_print(ERROR, "\n       MBWU MON unsupported by MSC %d", msc_index);
                     test_fails++;
                     break;
                 }
                 if (!val_mpam_mbwu_supports_long(msc_index)) {
-                    val_print(ACS_PRINT_ERR, "\n       MBWU long unsupported MSC %d", msc_index);
+                    val_print(ERROR, "\n       MBWU long unsupported MSC %d", msc_index);
                     test_fails++;
                     break;
                 }
                 mbwu_bw = val_mpam_msc_get_mscbw(msc_index, rsrc_index);
                 if (mbwu_bw == HMAT_INVALID_INFO)
                 {
-                    val_print(ACS_PRINT_ERR, "\n       No HMAT info ", 0);
+                    val_print(ERROR, "\n       No HMAT info ");
                     val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
                     return;
                 }
                 if ((val_mpam_mbwu_supports_lwd(msc_index) == MBWU_COUNTER_44BIT)
                             && (mbwu_bw >= MAX_44BIT_COUNTER_BW)) {
-                    val_print(ACS_PRINT_ERR, "\n       MBWU supported b/w %d", mbwu_bw);
+                    val_print(ERROR, "\n       MBWU supported b/w %d", mbwu_bw);
                     test_fails++;
                     break;
                 }

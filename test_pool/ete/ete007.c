@@ -34,7 +34,7 @@ static void payload(void)
 
     /* ID_AA64DFR0_EL1.TraceBuffer, bits [47:44] non-zero value indicate FEAT_TRBE support */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64DFR0_EL1), 44, 47);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       ID_AA64DFR0_EL1.TraceBuffer = %llx",
+    val_print_primary_pe(DEBUG, "\n       ID_AA64DFR0_EL1.TraceBuffer = %llx",
                                                                                 data, index);
 
     if (data == 0) {
@@ -44,7 +44,7 @@ static void payload(void)
 
     /* TRBIDR_EL1.Align[3:0] must be same for all TRBE trace buffers */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(TRBIDR_EL1), 0, 3);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       TRBIDR_EL1.Align = %llx", data, index);
+    val_print_primary_pe(DEBUG, "\n       TRBIDR_EL1.Align = %llx", data, index);
 
     if (index == primary_index)
         min_trace_alignment = data;

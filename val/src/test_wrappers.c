@@ -445,7 +445,7 @@ v_l1wk_02_05_entry(uint32_t num_pe)
 #endif
 
     if (g_el1skiptrap_mask & EL1SKIPTRAP_CNTPCT) {
-        val_print(ACS_PRINT_TEST,
+        val_print(INFO,
                     "\n       Skipping rule as EL1 physical timer access not supported", 0);
         return TEST_SKIP;
     }

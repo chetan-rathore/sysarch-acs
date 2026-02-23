@@ -34,7 +34,7 @@ static void payload(void)
 
     status = val_drtm_features(invalid_fid, &feat1, &feat2);
     if (status != DRTM_ACS_NOT_SUPPORTED) {
-        val_print(ACS_PRINT_ERR, "\n       Invalid function ID test failed, status=%d", status);
+        val_print(ERROR, "\n       Invalid function ID test failed, status=%d", status);
         val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
         return;
     }
@@ -43,7 +43,7 @@ static void payload(void)
     invalid_fid = DRTM_1_0_DRTM_FEATURES_TPM | FEAT_ID_INVALID_RSVD;
     status = val_drtm_features(invalid_fid, &feat1, &feat2);
     if (status != DRTM_ACS_NOT_SUPPORTED) {
-        val_print(ACS_PRINT_WARN,
+        val_print(WARN,
                     "\n       Feature ID Rsvd Bits:[62:8] not zero, status=%d", status);
     }
 
@@ -51,7 +51,7 @@ static void payload(void)
     invalid_fid = DRTM_1_0_FN_DRTM_VERSION | FUNC_ID_INVALID_RSVD;
     status = val_drtm_features(invalid_fid, &feat1, &feat2);
     if (status != DRTM_ACS_NOT_SUPPORTED) {
-        val_print(ACS_PRINT_WARN,
+        val_print(WARN,
                     "\n       Function ID Rsvd Bits:[62:32] not zero, status=%d", status);
     }
 

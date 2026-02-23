@@ -35,7 +35,7 @@ esr(uint64_t interrupt_type, void *context)
 {
   /* Return to the test flow after handling the exception. */
   val_pe_update_elr(context, (uint64_t)branch_to_test);
-  val_print(ACS_PRINT_ERR, "\n       Received exception of type: %d", interrupt_type);
+  val_print(ERROR, "\n       Received exception of type: %d", interrupt_type);
   exception_observed = 1;
 }
 
@@ -78,7 +78,7 @@ payload(void)
   status = val_pe_install_esr(EXCEPT_AARCH64_SYNCHRONOUS_EXCEPTIONS, esr);
   status |= val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
   if (status) {
-    val_print(ACS_PRINT_ERR, "\n       Failed in installing the exception handler", 0);
+    val_print(ERROR, "\n       Failed in installing the exception handler");
     val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
     return;
   }
@@ -90,7 +90,7 @@ payload(void)
   }
 
   if (status != ACS_STATUS_PASS) {
-    val_print(ACS_PRINT_ERR, "\n       Firmware first handling not supported", 0);
+    val_print(ERROR, "\n       Firmware first handling not supported");
     val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
     return;
   }
@@ -117,7 +117,7 @@ payload(void)
 
     status = val_exerciser_set_param(GENERATE_MEFN_VDM, 0, e_bdf, instance);
     if (status != ACS_STATUS_PASS) {
-      val_print(ACS_PRINT_ERR, "\n       MEFN trigger not succesful BDF 0x%x", e_bdf);
+      val_print(ERROR, "\n       MEFN trigger not succesful BDF 0x%x", e_bdf);
       continue;
     }
 
@@ -126,8 +126,8 @@ payload(void)
 
 exception_return:
     if (!exception_observed) {
-      val_print(ACS_PRINT_ERR, "\n      MEFN trigger did not raise exception for BDF 0x%x", e_bdf);
-      val_print(ACS_PRINT_ERR, " RP BDF is 0x%x", rp_bdf);
+      val_print(ERROR, "\n      MEFN trigger did not raise exception for BDF 0x%x", e_bdf);
+      val_print(ERROR, " RP BDF is 0x%x", rp_bdf);
       fail_count++;
     }
   }

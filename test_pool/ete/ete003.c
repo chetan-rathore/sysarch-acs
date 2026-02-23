@@ -53,7 +53,7 @@ void check_timestamp(uint32_t num_pe)
             /* Fail the test */
             pe_timestamp_failed = 1;
             check_failed = 1;
-            val_print(ACS_PRINT_ERR, "\n       Timestamp Fail for PE Index : %d", curr);
+            val_print(ERROR, "\n       Timestamp Fail for PE Index : %d", curr);
         }
 
         if (curr == index)
@@ -66,22 +66,22 @@ void check_timestamp(uint32_t num_pe)
         {
             /* Fail the test and continue */
             pe_timestamp_failed = 1;
-            val_print(ACS_PRINT_ERR, "\n       Timestamp Mismatch for PE : 0x%x", index);
-            val_print(ACS_PRINT_ERR, " and 0x%x", curr);
+            val_print(ERROR, "\n       Timestamp Mismatch for PE : 0x%x", index);
+            val_print(ERROR, " and 0x%x", curr);
         }
 
         /* Debug Prints in case of failures */
         if (pe_timestamp_failed) {
             check_failed = 1;
-            val_print(ACS_PRINT_INFO, "\n       start_timestamp : %llx", start_timestamp[curr]);
-            val_print(ACS_PRINT_INFO, ",  end_timestamp : %llx", end_timestamp[curr]);
+            val_print(TRACE, "\n       start_timestamp : %llx", start_timestamp[curr]);
+            val_print(TRACE, ",  end_timestamp : %llx", end_timestamp[curr]);
         }
     }
 
     if (check_failed) {
-        val_print(ACS_PRINT_INFO,
+        val_print(TRACE,
                   "\n       Primary PE start_timestamp : 0x%llx", start_timestamp[index]);
-        val_print(ACS_PRINT_INFO,
+        val_print(TRACE,
                   "\n       Primary PE end_timestamp   : 0x%llx", end_timestamp[index]);
         val_set_status(index, RESULT_FAIL(0, 06));
     } else
@@ -101,7 +101,7 @@ static void payload(void)
     data = VAL_EXTRACT_BITS(dfr0_value, 44, 47);
     if (data == 0) {
         test_fail = 1;
-        val_print_primary_pe(ACS_PRINT_ERR, "\n       FEAT_TRBE not supported", 0, index);
+        val_print_primary_pe(ERROR, "\n       FEAT_TRBE not supported", 0, index);
         val_set_status(index, RESULT_FAIL(0, 01));
         return;
     }
@@ -110,7 +110,7 @@ static void payload(void)
     data = VAL_EXTRACT_BITS(dfr0_value, 40, 43);
     if (data == 0) {
         test_fail = 1;
-        val_print_primary_pe(ACS_PRINT_ERR, "\n       FEAT_TRF not supported", 0, index);
+        val_print_primary_pe(ERROR, "\n       FEAT_TRF not supported", 0, index);
         val_set_status(index, RESULT_FAIL(0, 02));
         return;
     }
@@ -124,12 +124,12 @@ static void payload(void)
     /* Store Start Timestamp values which will be used later */
     start_timestamp[index] = read_cntpct_el0();
     val_data_cache_ops_by_va((addr_t)(start_timestamp + index), CLEAN_AND_INVALIDATE);
-    val_print_primary_pe(ACS_PRINT_INFO,
+    val_print_primary_pe(TRACE,
                          "\n       Start Timestamp : 0x%llx", start_timestamp[index], index);
 
     /* Generate Trace when SelfHostedTraceEnabled = TRUE */
     traced_timestamp = val_ete_generate_trace(buffer_addr, SH_TRACE_ENABLE_TRUE);
-    val_print_primary_pe(ACS_PRINT_INFO,
+    val_print_primary_pe(TRACE,
                          "\n       Traced Timestamp   : 0x%llx", traced_timestamp, index);
 
 
@@ -139,14 +139,14 @@ static void payload(void)
     /* Read Current Counter Value */
     end_timestamp[index] = read_cntpct_el0();
     val_data_cache_ops_by_va((addr_t)(end_timestamp + index), CLEAN_AND_INVALIDATE);
-    val_print_primary_pe(ACS_PRINT_INFO,
+    val_print_primary_pe(TRACE,
                          "\n       End Timestamp   : 0x%llx", end_timestamp[index], index);
 
     /* If Trace is not generated or timestamp for current PE not updated */
     if (traced_timestamp == ACS_STATUS_FAIL) {
         test_fail = 1;
         val_data_cache_ops_by_va((addr_t)(&test_fail), CLEAN_AND_INVALIDATE);
-        val_print_primary_pe(ACS_PRINT_ERR, "\n       Trace Generation Failed", 0, index);
+        val_print_primary_pe(ERROR, "\n       Trace Generation Failed", 0, index);
         val_set_status(index, RESULT_FAIL(0, 03));
         return;
     }
@@ -155,7 +155,7 @@ static void payload(void)
         /* Timestamp traced 0 or parsing failed*/
         test_fail = 1;
         val_data_cache_ops_by_va((addr_t)(&test_fail), CLEAN_AND_INVALIDATE);
-        val_print_primary_pe(ACS_PRINT_ERR, "\n       Traced Timestamp is 0", 0, index);
+        val_print_primary_pe(ERROR, "\n       Traced Timestamp is 0", 0, index);
         val_set_status(index, RESULT_FAIL(0, 04));
         return;
     }

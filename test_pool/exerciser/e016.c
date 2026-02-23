@@ -43,7 +43,7 @@ esr(uint64_t interrupt_type, void *context)
   /* Update the ELR to point to next instrcution */
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
-  val_print(ACS_PRINT_ERR, "\n       Received Exception of type %d", interrupt_type);
+  val_print(ERROR, "\n       Received Exception of type %d", interrupt_type);
   val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
 }
 
@@ -67,7 +67,7 @@ payload(void)
   branch_to_test = &&exception_return;
   if (status)
   {
-      val_print(ACS_PRINT_ERR, "\n       Failed in installing the exception handler", 0);
+      val_print(ERROR, "\n       Failed in installing the exception handler");
       val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
       return;
   }
@@ -82,15 +82,15 @@ payload(void)
           continue;
 
     bdf = val_exerciser_get_bdf(instance);
-    val_print(ACS_PRINT_DEBUG, "\n       Exerciser BDF - 0x%x", bdf);
+    val_print(DEBUG, "\n       Exerciser BDF - 0x%x", bdf);
 
     /* Get BAR 0 details for this instance */
     status = val_exerciser_get_data(EXERCISER_DATA_MMIO_SPACE, &e_data, instance);
     if (status == NOT_IMPLEMENTED) {
-        val_print(ACS_PRINT_ERR, "\n       pal_exerciser_get_data() for MMIO not implemented", 0);
+        val_print(ERROR, "\n       pal_exerciser_get_data() for MMIO not implemented");
         goto test_fail;
     } else if (status) {
-        val_print(ACS_PRINT_ERR, "\n       Exerciser %d data read error     ", instance);
+        val_print(ERROR, "\n       Exerciser %d data read error     ", instance);
         goto test_fail;
     }
 
@@ -107,8 +107,8 @@ payload(void)
         }
 
         if (status) {
-            val_print(ACS_PRINT_ERR, "\n       Failed in BAR ioremap for instance %x", instance);
-            val_print(ACS_PRINT_DEBUG, "   Status :0x%x", status);
+            val_print(ERROR, "\n       Failed in BAR ioremap for instance %x", instance);
+            val_print(DEBUG, "   Status :0x%x", status);
             goto test_fail;
         }
 
@@ -124,7 +124,7 @@ exception_return:
 
        if ((old_value != new_value && new_value == PCIE_UNKNOWN_RESPONSE) || val_pcie_is_urd(bdf)) {
 
-          val_print(ACS_PRINT_ERR, "\n       Memory access check failed for BDF  0x%x", bdf);
+          val_print(ERROR, "\n       Memory access check failed for BDF  0x%x", bdf);
           val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
           val_pcie_clear_urd(bdf);
           return;

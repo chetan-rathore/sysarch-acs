@@ -47,7 +47,7 @@ payload(void)
   while (tbl_index < bdf_tbl_ptr->num_entries)
   {
       bdf = bdf_tbl_ptr->device[tbl_index++].bdf;
-      val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x", bdf);
+      val_print(DEBUG, "\n       BDF - 0x%x", bdf);
       dp_type = val_pcie_device_port_type(bdf);
 
       /* Check entry is RP/EP/DP/UP. Else move to next BDF. */
@@ -67,8 +67,8 @@ payload(void)
       /* Check Capabilities Pointer is not NULL and is between 40h and FCh */
       if (!((cap_ptr_value != 0x00) && ((cap_ptr_value >= 0x40) && (cap_ptr_value <= 0xFC))))
       {
-          val_print(ACS_PRINT_ERR, "\n       BDF 0x%x", bdf);
-          val_print(ACS_PRINT_ERR, " Cap Ptr Value: 0x%x", cap_ptr_value);
+          val_print(ERROR, "\n       BDF 0x%x", bdf);
+          val_print(ERROR, " Cap Ptr Value: 0x%x", cap_ptr_value);
           test_fails++;
       }
   }

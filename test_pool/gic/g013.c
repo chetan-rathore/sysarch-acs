@@ -43,7 +43,7 @@ payload()
    if (IS_PPI_RESERVED(intid))
    {
        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
-       val_print(ACS_PRINT_ERR, "\n       Interrupt ID is reserved for future SBSA usage ", 0);
+       val_print(ERROR, "\n       Interrupt ID is reserved for future SBSA usage ");
        return;
      }
 
@@ -52,7 +52,7 @@ payload()
    if (IS_PPI_RESERVED(intid))
    {
       val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
-      val_print(ACS_PRINT_ERR, "\n       Interrupt ID is reserved for future SBSA usage ", 0);
+      val_print(ERROR, "\n       Interrupt ID is reserved for future SBSA usage ");
       return;
      }
   }
@@ -61,7 +61,7 @@ payload()
   if (IS_PPI_RESERVED(intid))
   {
       val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
-      val_print(ACS_PRINT_ERR, "\n       Interrupt ID is reserved for future SBSA usage ", 0);
+      val_print(ERROR, "\n       Interrupt ID is reserved for future SBSA usage ");
       return;
   }
 
@@ -70,7 +70,7 @@ payload()
   if (IS_PPI_RESERVED(intid))
   {
       val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
-      val_print(ACS_PRINT_ERR, "\n       Interrupt ID is reserved for future SBSA usage ", 0);
+      val_print(ERROR, "\n       Interrupt ID is reserved for future SBSA usage ");
       return;
   }
 
@@ -79,7 +79,7 @@ payload()
   if (IS_PPI_RESERVED(intid))
   {
       val_set_status(index, RESULT_FAIL(TEST_NUM, 05));
-      val_print(ACS_PRINT_ERR, "\n       Interrupt ID is reserved for future SBSA usage ", 0);
+      val_print(ERROR, "\n       Interrupt ID is reserved for future SBSA usage ");
       return;
   }
 
@@ -88,7 +88,7 @@ payload()
   if (IS_PPI_RESERVED(intid))
   {
       val_set_status(index, RESULT_FAIL(TEST_NUM, 06));
-      val_print(ACS_PRINT_ERR, "\n       Interrupt ID is reserved for future SBSA usage ", 0);
+      val_print(ERROR, "\n       Interrupt ID is reserved for future SBSA usage ");
       return;
   }
 

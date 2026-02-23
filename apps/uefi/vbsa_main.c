@@ -124,8 +124,8 @@ apply_cli_defaults(VOID)
 
     /* Check sanity of value of level */
     if (g_level_value >= VBSA_LEVEL_SENTINEL) {
-        val_print(ACS_PRINT_ERR, "\nInvalid level value passed (%d), ", g_level_value);
-        val_print(ACS_PRINT_ERR, "value should be less than %d.", VBSA_LEVEL_SENTINEL);
+        val_print(ERROR, "\nInvalid level value passed (%d), ", g_level_value);
+        val_print(ERROR, "value should be less than %d.", VBSA_LEVEL_SENTINEL);
         return ACS_STATUS_FAIL;
     }
 
@@ -143,17 +143,17 @@ execute_tests()
         goto exit_acs;
     }
 
-    val_print(ACS_PRINT_TEST, "\n\n VBSA Architecture Compliance Suite", 0);
-    val_print(ACS_PRINT_TEST, "\n          Version %d.", VBSA_ACS_MAJOR_VER);
-    val_print(ACS_PRINT_TEST, "%d.", VBSA_ACS_MINOR_VER);
-    val_print(ACS_PRINT_TEST, "%d\n", VBSA_ACS_SUBMINOR_VER);
+    val_print(INFO, "\n\n VBSA Architecture Compliance Suite");
+    val_print(INFO, "\n          Version %d.", VBSA_ACS_MAJOR_VER);
+    val_print(INFO, "%d.", VBSA_ACS_MINOR_VER);
+    val_print(INFO, "%d\n", VBSA_ACS_SUBMINOR_VER);
 
     /* "Starting tests for level" banner */
-    val_print(ACS_PRINT_TEST, LEVEL_PRINT_FORMAT(g_level_value, g_level_filter_mode,
+    val_print(INFO, LEVEL_PRINT_FORMAT(g_level_value, g_level_filter_mode,
               VBSA_LEVEL_FR), g_level_value);
 
-    val_print(ACS_PRINT_TEST, "(Print level is %2d)\n\n", g_print_level);
-    val_print(ACS_PRINT_TEST, "\n Creating Platform Information Tables\n", 0);
+    val_print(INFO, "(Print level is %2d)\n\n", g_print_level);
+    val_print(INFO, "\n Creating Platform Information Tables\n");
 
     Status = createPeInfoTable();
     if (Status) {
@@ -195,7 +195,7 @@ execute_tests()
 
 print_test_status:
     val_print_acs_test_status_summary();
-    val_print(ACS_PRINT_ERR, "\n      *** VBSA tests complete. Reset the system. ***\n\n", 0);
+    val_print(ERROR, "\n      *** VBSA tests complete. Reset the system. ***\n\n");
 
     freeAcsMem();
 

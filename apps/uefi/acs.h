@@ -61,7 +61,7 @@
 #define PFDI_ACS_MINOR_VER      8
 #define PFDI_ACS_SUBMINOR_VER   0
 
-#define G_PRINT_LEVEL ACS_PRINT_TEST
+#define G_PRINT_LEVEL INFO
 
 #define G_SW_OS                 0
 #define G_SW_HYP                1

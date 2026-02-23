@@ -39,7 +39,7 @@ uint32_t is_flr_failed(uint32_t bdf)
   val_pcie_read_cfg(bdf, TYPE01_CR, &reg_value);
   if (((reg_value >> CR_BME_SHIFT) & CR_BME_MASK) != 0)
   {
-      val_print(ACS_PRINT_ERR, "\n       BME is not cleared", 0);
+      val_print(ERROR, "\n       BME is not cleared");
       check_failed++;
   }
 
@@ -47,7 +47,7 @@ uint32_t is_flr_failed(uint32_t bdf)
   val_pcie_read_cfg(bdf, TYPE01_CR, &reg_value);
   if (((reg_value >> CR_MSE_SHIFT) & CR_MSE_MASK) != 0)
   {
-      val_print(ACS_PRINT_ERR, "\n       MSE is not cleared", 0);
+      val_print(ERROR, "\n       MSE is not cleared");
       check_failed++;
   }
 
@@ -99,8 +99,8 @@ payload(void)
           ((base_cc == UNCLAS_CC) || (base_cc == MAS_CC)
           || (base_cc == CNTRL_CC) || (base_cc == DP_CNTRL_CC)))
       {
-          val_print(ACS_PRINT_DEBUG, "\n       Skipping for BDF - 0x%x ", bdf);
-          val_print(ACS_PRINT_DEBUG, " Classcode is : 0x%x ", base_cc);
+          val_print(DEBUG, "\n       Skipping for BDF - 0x%x ", bdf);
+          val_print(DEBUG, " Classcode is : 0x%x ", base_cc);
           continue;
       }
 
@@ -123,15 +123,15 @@ payload(void)
           /* If memory allocation fail, fail the test */
           if (func_config_space == NULL)
           {
-              val_print(ACS_PRINT_ERR, "\n       Memory allocation fail", 0);
+              val_print(ERROR, "\n       Memory allocation fail");
               val_set_status(pe_index, RESULT_FAIL(TEST_NUM, test_fails));
               return;
           }
 
           /* Get function configuration space address */
           config_space_addr = val_pcie_get_bdf_config_addr(bdf);
-          val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x ", bdf);
-          val_print(ACS_PRINT_INFO, "config space addr 0x%x", config_space_addr);
+          val_print(DEBUG, "\n       BDF - 0x%x ", bdf);
+          val_print(TRACE, "config space addr 0x%x", config_space_addr);
 
           /* Save the function config space to restore after FLR */
           for (idx = 0; idx < PCIE_CFG_SIZE / 4; idx ++) {
@@ -147,7 +147,7 @@ payload(void)
           status = val_time_delay_ms(100 * ONE_MILLISECOND);
           if (status)
           {
-              val_print(ACS_PRINT_ERR, "\n       Failed to time delay for BDF 0x%x ", bdf);
+              val_print(ERROR, "\n       Failed to time delay for BDF 0x%x ", bdf);
               val_memory_free_aligned(func_config_space);
               val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
               return;
@@ -185,7 +185,7 @@ payload(void)
           if ((device_id == DIDR_RRS_MASK) &&
              ((vendor_id == TYPE01_VIDR_MASK) || (vendor_id == VIDR_RRS_MASK)))
           {
-              val_print(ACS_PRINT_ERR, "\n       BDF 0x%x not present", bdf);
+              val_print(ERROR, "\n       BDF 0x%x not present", bdf);
               test_fails++;
               val_memory_free_aligned(func_config_space);
               continue;
@@ -204,8 +204,8 @@ payload(void)
   }
 
   if (test_skip == 1) {
-      val_print(ACS_PRINT_DEBUG,
-        "\n       No target device type with FLR Cap found. Skipping test", 0);
+      val_print(DEBUG,
+        "\n       No target device type with FLR Cap found. Skipping test");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
   }
   else if (test_fails)

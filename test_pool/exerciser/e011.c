@@ -45,7 +45,7 @@ payload (void)
   index = val_pe_get_index_mpid (val_pe_get_mpid());
 
   if (val_gic_get_info(GIC_INFO_NUM_ITS) == 0) {
-      val_print(ACS_PRINT_DEBUG, "\n       Skipping Test as GIC ITS not available", 0);
+      val_print(DEBUG, "\n       Skipping Test as GIC ITS not available");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -66,12 +66,12 @@ payload (void)
 
       /* Get the exerciser BDF */
       e_bdf = val_exerciser_get_bdf(instance);
-      val_print(ACS_PRINT_DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
+      val_print(DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
 
       /* Search for MSI-X Capability */
       if ((val_pcie_find_capability(e_bdf, PCIE_CAP, CID_MSIX, &msi_cap_offset)) &&
           (val_pcie_find_capability(e_bdf, PCIE_CAP, CID_MSI, &msi_cap_offset))) {
-        val_print(ACS_PRINT_DEBUG, "\n       No MSI-X Capability, Skipping for 0x%x", e_bdf);
+        val_print(DEBUG, "\n       No MSI-X Capability, Skipping for 0x%x", e_bdf);
         continue;
       }
 
@@ -82,7 +82,7 @@ payload (void)
                                           PCIE_EXTRACT_BDF_SEG(e_bdf), &device_id,
                                           &stream_id, &its_id);
       if (status) {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
               "\n       Could not get device info for BDF : 0x%x", e_bdf);
           val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
           return;
@@ -91,7 +91,7 @@ payload (void)
       /* Get ITS Group Index for current device */
       status = val_iovirt_get_its_info(ITS_GET_GRP_INDEX_FOR_ID, 0, its_id, &grp_id);
       if (status) {
-          val_print(ACS_PRINT_ERR, "\n       Invalid ITS ID, Failed on BDF 0x%x", e_bdf);
+          val_print(ERROR, "\n       Invalid ITS ID, Failed on BDF 0x%x", e_bdf);
           val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
           return;
       }

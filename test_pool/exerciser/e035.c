@@ -37,7 +37,7 @@ intr_handler(void)
   /* Clear the interrupt pending state */
   irq_pending = 0;
 
-  val_print(ACS_PRINT_INFO, "\n       Received MSI interrupt %x       ", base_lpi_id + instance);
+  val_print(TRACE, "\n       Received MSI interrupt %x       ", base_lpi_id + instance);
   val_gic_end_of_interrupt(base_lpi_id + instance);
   return;
 }
@@ -63,7 +63,7 @@ payload (void)
   index = val_pe_get_index_mpid (val_pe_get_mpid());
 
   if (val_gic_get_info(GIC_INFO_NUM_ITS) < 2) {
-      val_print(ACS_PRINT_DEBUG, "\n       Skipping Test as multiple ITS not available", 0);
+      val_print(DEBUG, "\n       Skipping Test as multiple ITS not available");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -85,12 +85,12 @@ payload (void)
 
     /* Get the exerciser BDF */
     e_bdf = val_exerciser_get_bdf(instance);
-    val_print(ACS_PRINT_DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
+    val_print(DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
 
     /* Search for MSI-X Capability */
     if ((val_pcie_find_capability(e_bdf, PCIE_CAP, CID_MSIX, &msi_cap_offset)) &&
         (val_pcie_find_capability(e_bdf, PCIE_CAP, CID_MSI, &msi_cap_offset))) {
-      val_print(ACS_PRINT_DEBUG, "\n       No MSI-X Capability, Skipping for 0x%x", e_bdf);
+      val_print(DEBUG, "\n       No MSI-X Capability, Skipping for 0x%x", e_bdf);
       continue;
     }
 
@@ -99,7 +99,7 @@ payload (void)
                                         PCIE_EXTRACT_BDF_SEG(e_bdf), &device_id,
                                         &stream_id, &its_id);
     if (status) {
-        val_print(ACS_PRINT_ERR,
+        val_print(ERROR,
             "\n       Could not get device info for BDF : 0x%x", e_bdf);
         val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
         return;
@@ -108,14 +108,14 @@ payload (void)
     /* Get ITS Group Index for current device */
     status = val_iovirt_get_its_info(ITS_GET_GRP_INDEX_FOR_ID, 0, its_id, &grp_id);
     if (status) {
-        val_print(ACS_PRINT_DEBUG, "\n       Invalid ITS ID, Skipping BDF 0x%x", e_bdf);
+        val_print(DEBUG, "\n       Invalid ITS ID, Skipping BDF 0x%x", e_bdf);
         continue;
     }
 
     /* Get Number of ITS Blocks in this Group */
     status = val_iovirt_get_its_info(ITS_GROUP_NUM_BLOCKS, grp_id, 0, &get_value);
     if (status) {
-        val_print(ACS_PRINT_DEBUG, "\n       Invalid ITS Group, Skipping BDF 0x%x", e_bdf);
+        val_print(DEBUG, "\n       Invalid ITS Group, Skipping BDF 0x%x", e_bdf);
         continue;
     }
 
@@ -126,14 +126,14 @@ payload (void)
       /* Run for all the ITS Blocks inside current group */
       status = val_iovirt_get_its_info(ITS_GET_ID_FOR_BLK_INDEX, grp_id, blk_index, &its_id);
       if (status) {
-          val_print(ACS_PRINT_DEBUG, "\n       Invalid ITS Index, Skipping BDF 0x%x", e_bdf);
+          val_print(DEBUG, "\n       Invalid ITS Index, Skipping BDF 0x%x", e_bdf);
           continue;
       }
 
-      val_print(ACS_PRINT_DEBUG, "\n       ITS Check for ITS ID : %x       ", its_id);
+      val_print(DEBUG, "\n       ITS Check for ITS ID : %x       ", its_id);
       status = val_gic_request_msi(e_bdf, device_id, its_id, base_lpi_id + instance, msi_index);
       if (status) {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
               "\n       MSI Assignment failed for bdf : 0x%x", e_bdf);
           val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
           return;
@@ -142,7 +142,7 @@ payload (void)
       status = val_gic_install_isr(base_lpi_id + instance, intr_handler);
 
       if (status) {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
               "\n       Intr handler registration fail, Interrupt : 0x%x", base_lpi_id + instance);
           val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
           return;
@@ -161,11 +161,11 @@ payload (void)
 
       /* Interrupt must not be generated */
       if (timeout == 0) {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
               "\n       Interrupt trigger failed int_id : 0x%x", base_lpi_id + instance);
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
               "\n       BDF : 0x%x, ", e_bdf);
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
               "its_id : 0x%x", its_id);
           val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
           val_gic_free_msi(e_bdf, device_id, its_id, base_lpi_id + instance, msi_index);

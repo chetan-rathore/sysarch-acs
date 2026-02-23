@@ -67,7 +67,7 @@ get_target_exer_bdf(uint32_t req_rp_bdf, uint32_t *tgt_e_bdf,
           status = val_pcie_get_ecam_index(req_rp_bdf, &req_rp_ecam_index);
           if (status)
           {
-             val_print(ACS_PRINT_ERR,
+             val_print(ERROR,
                        "\n       Error Ecam index for req RP BDF: 0x%x", req_rp_bdf);
              goto clean_fail;
           }
@@ -75,7 +75,7 @@ get_target_exer_bdf(uint32_t req_rp_bdf, uint32_t *tgt_e_bdf,
           status = val_pcie_get_ecam_index(erp_bdf, &erp_ecam_index);
           if (status)
           {
-             val_print(ACS_PRINT_ERR, "\n       Error Ecam index for tgt RP BDF: 0x%x", erp_bdf);
+             val_print(ERROR, "\n       Error Ecam index for tgt RP BDF: 0x%x", erp_bdf);
              goto clean_fail;
           }
 
@@ -124,7 +124,7 @@ check_sequence(uint64_t dma_addr, uint32_t tgt_instance, uint32_t req_instance,
   status = val_exerciser_ops(START_TXN_MONITOR, CFG_READ, tgt_instance);
   if (status == PCIE_CAP_NOT_FOUND)
   {
-      val_print(ACS_PRINT_ERR, "\n       Transaction Monitoring capability not found", 0);
+      val_print(ERROR, "\n       Transaction Monitoring capability not found");
       return 1;
   }
 
@@ -135,7 +135,7 @@ check_sequence(uint64_t dma_addr, uint32_t tgt_instance, uint32_t req_instance,
   status = val_exerciser_ops(STOP_TXN_MONITOR, CFG_READ, tgt_instance);
   if (status == PCIE_CAP_NOT_FOUND)
   {
-      val_print(ACS_PRINT_ERR, "\n       Transaction Monitoring capability not found", 0);
+      val_print(ERROR, "\n       Transaction Monitoring capability not found");
       return 1;
   }
 
@@ -143,9 +143,9 @@ check_sequence(uint64_t dma_addr, uint32_t tgt_instance, uint32_t req_instance,
   val_exerciser_get_param(DATA_ATTRIBUTES, &transaction_data, &idx, tgt_instance);
   if (val_memory_compare(&transaction_data, (void *)dma_addr, size))
   {
-      val_print(ACS_PRINT_ERR,
+      val_print(ERROR,
                 "\n       Data mismatch for target exerciser instance: %x", tgt_instance);
-      val_print(ACS_PRINT_ERR, " with value: %x", transaction_data);
+      val_print(ERROR, " with value: %x", transaction_data);
       return 1;
   }
 
@@ -186,7 +186,7 @@ payload(void)
           continue;
 
       req_e_bdf = val_exerciser_get_bdf(req_instance);
-      val_print(ACS_PRINT_DEBUG, "\n       Requester exerciser BDF - 0x%x", req_e_bdf);
+      val_print(DEBUG, "\n       Requester exerciser BDF - 0x%x", req_e_bdf);
 
       /* Get RP of the exerciser */
       if (val_pcie_get_rootport(req_e_bdf, &req_rp_bdf))
@@ -204,7 +204,7 @@ payload(void)
       status = check_sequence((uint64_t)&dma_buffer, tgt_instance, req_instance, bar_base, 2);
       if (status)
       {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
                     "\n       Failed for 2B transaction from exerciser: %x", req_instance);
           fail_cnt++;
       }
@@ -212,7 +212,7 @@ payload(void)
       status = check_sequence((uint64_t)&dma_buffer, tgt_instance, req_instance, bar_base, 4);
       if (status)
       {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
                     "\n       Failed for 4B transaction from exerciser: %x", req_instance);
           fail_cnt++;
       }
@@ -220,7 +220,7 @@ payload(void)
       status = check_sequence((uint64_t)&dma_buffer, tgt_instance, req_instance, bar_base, 8);
       if (status)
       {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
                    "\n       Failed for 8B transaction from exerciser: %x", req_instance);
           fail_cnt++;
       }

@@ -29,7 +29,7 @@ static void payload(void)
 
 
     if (!g_crypto_support) {
-        val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Crypto extension not supported",
+        val_print_primary_pe(DEBUG, "\n       Crypto extension not supported",
                                                                                       0, index);
         val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
         return;

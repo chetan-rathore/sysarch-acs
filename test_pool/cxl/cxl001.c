@@ -39,7 +39,7 @@ payload(void)
 
   num_cxl_hb = val_cxl_get_info(CXL_INFO_NUM_DEVICES, 0);
   if (num_cxl_hb == 0) {
-      val_print(ACS_PRINT_DEBUG, "\n       No CXL devices discovered", 0);
+      val_print(DEBUG, "\n       No CXL devices discovered");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -55,14 +55,14 @@ payload(void)
       vh_capable = 0;
       bdf = val_cxl_get_component_info(CXL_COMPONENT_INFO_BDF_INDEX, index);
       if (val_cxl_find_capability(bdf, CXL_DVSEC_ID_PCIE_FLEXBUS_PORT, &pciecs_base)) {
-          val_print(ACS_PRINT_ERR, "\n CXL Flexbus port capability absent for bdf 0x%0x", bdf);
+          val_print(ERROR, "\n CXL Flexbus port capability absent for bdf 0x%0x", bdf);
           test_fails++;
           continue;
       }
 
       val_pcie_read_cfg(bdf, pciecs_base + CXL_DVSEC_HDR2_OFFSET, &reg_value);
       if ((reg_value & CXL_DVSEC_HDR2_ID_MASK) != CXL_DVSEC_ID_PCIE_FLEXBUS_PORT) {
-          val_print(ACS_PRINT_ERR, "\n CXL Flexbus port ID mismatch for bdf 0x%0x", bdf);
+          val_print(ERROR, "\n CXL Flexbus port ID mismatch for bdf 0x%0x", bdf);
           test_fails++;
           continue;
       }

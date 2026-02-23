@@ -43,7 +43,7 @@ payload()
   uint64_t pe_rdbase;
 
   mpid = val_pe_get_mpid();
-  val_print(ACS_PRINT_DEBUG, "\n       PE MPIDR 0x%x", mpid);
+  val_print(DEBUG, "\n       PE MPIDR 0x%x", mpid);
 
   index = val_pe_get_index_mpid(mpid);
 
@@ -55,7 +55,7 @@ payload()
 
   // Distributor must forward NS Group 1 interrupt
   if (!enable_grp1ns) {
-    val_print(ACS_PRINT_ERR, "\n       Non-secure SGIs not forwarded", 0);
+    val_print(ERROR, "\n       Non-secure SGIs not forwarded");
     val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
     return;
   }
@@ -63,7 +63,7 @@ payload()
     if (are_ns) {
         /* Derive RDbase for PE */
         pe_rdbase = val_gic_get_pe_rdbase(mpid);
-        val_print(ACS_PRINT_DEBUG, "\n       PE RD base address %llx", pe_rdbase);
+        val_print(DEBUG, "\n       PE RD base address %llx", pe_rdbase);
         if (pe_rdbase == 0) {
             val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
             return;
@@ -75,17 +75,17 @@ payload()
             This enables interrupts for the first 8 SGI lines in the GIC Redistributor */
         val_mmio_write(pe_rdbase + RD_FRAME_SIZE + GICR_ISENABLER, data);
         data = val_mmio_read(pe_rdbase + RD_FRAME_SIZE + GICR_ISENABLER) & 0xFF;
-        val_print(ACS_PRINT_DEBUG, "  data 0x%x", data);
+        val_print(DEBUG, "  data 0x%x", data);
         data = VAL_EXTRACT_BITS(data, 0, 7);
         if (data == 0xFF) {
             val_set_status(index, RESULT_PASS(TEST_NUM, 1));
             return;
         }
         else {
-            val_print(ACS_PRINT_DEBUG,
+            val_print(DEBUG,
                 "\n       GICR_ISENABLER0: %X\n ", data);
-            val_print(ACS_PRINT_ERR,
-                "\n       INTID 0 - 7 not implemented as non-secure SGIs", 0);
+            val_print(ERROR,
+                "\n       INTID 0 - 7 not implemented as non-secure SGIs");
             val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
             return;
         }
@@ -100,10 +100,10 @@ payload()
             return;
         }
         else {
-            val_print(ACS_PRINT_DEBUG,
+            val_print(DEBUG,
                 "\n       GICD_IENABLER<n>: %X\n ", data);
-            val_print(ACS_PRINT_ERR,
-                "\n       INTID 0 - 7 not implemented as non-secure SGIs", 0);
+            val_print(ERROR,
+                "\n       INTID 0 - 7 not implemented as non-secure SGIs");
             val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
             return;
         }

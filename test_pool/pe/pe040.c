@@ -35,7 +35,7 @@ static void payload_check_if_pmuv3_5(void)
 
     /* Read ID_AA64DFR0_EL1.PMUVer[11:8] >= 0b0110 and != 0xF for PMU v3.5 or higher support */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64DFR0_EL1), 8, 11);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       ID_AA64DFR0_EL1.PMUVer = %llx",
+    val_print_primary_pe(DEBUG, "\n       ID_AA64DFR0_EL1.PMUVer = %llx",
                                                                             data, index);
 
 
@@ -52,7 +52,7 @@ static void payload_check_if_pmuv3_7(void)
     uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
 
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64DFR0_EL1), 8, 11);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       ID_AA64DFR0_EL1.PMUVer = %llx",
+    val_print_primary_pe(DEBUG, "\n       ID_AA64DFR0_EL1.PMUVer = %llx",
                                                                             data, index);
 
     /* Read ID_AA64DFR0_EL1.PMUVer[11:8] >= 0b0111 and != 0xF for PMU v3.7 or higher support */

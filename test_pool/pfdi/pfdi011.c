@@ -45,9 +45,9 @@ static void payload_regs_preserve_check(void *arg)
   for (i = 0; i < REG_COUNT_X5_X17; i++) {
     if (pre_smc_regs[i] != post_smc_regs[i]) {
       reg_verify_fail++;
-      val_print(ACS_PRINT_ERR, "\n       Reg Verify fail for version X%d ", i + 5);
-      val_print(ACS_PRINT_ERR, "before 0x%llx ", pre_smc_regs[i]);
-      val_print(ACS_PRINT_ERR, "after  0x%llx ", post_smc_regs[i]);
+      val_print(ERROR, "\n       Reg Verify fail for version X%d ", i + 5);
+      val_print(ERROR, "before 0x%llx ", pre_smc_regs[i]);
+      val_print(ERROR, "after  0x%llx ", post_smc_regs[i]);
     }
   }
 
@@ -64,9 +64,9 @@ static void payload_regs_preserve_check(void *arg)
   for (i = 0; i < REG_COUNT_X5_X17; i++) {
     if (pre_smc_regs[i] != post_smc_regs[i]) {
       reg_verify_fail++;
-      val_print(ACS_PRINT_ERR, "\n       Reg Verify fail for PE test ID X%d ", i + 5);
-      val_print(ACS_PRINT_ERR, "before 0x%llx ", pre_smc_regs[i]);
-      val_print(ACS_PRINT_ERR, "after  0x%llx ", post_smc_regs[i]);
+      val_print(ERROR, "\n       Reg Verify fail for PE test ID X%d ", i + 5);
+      val_print(ERROR, "before 0x%llx ", pre_smc_regs[i]);
+      val_print(ERROR, "after  0x%llx ", post_smc_regs[i]);
     }
   }
 
@@ -83,9 +83,9 @@ static void payload_regs_preserve_check(void *arg)
   for (i = 0; i < REG_COUNT_X5_X17; i++) {
     if (pre_smc_regs[i] != post_smc_regs[i]) {
       reg_verify_fail++;
-      val_print(ACS_PRINT_ERR, "\n       Reg Verify fail for Test result X%d ", i + 5);
-      val_print(ACS_PRINT_ERR, "before 0x%llx ", pre_smc_regs[i]);
-      val_print(ACS_PRINT_ERR, "after  0x%llx ", post_smc_regs[i]);
+      val_print(ERROR, "\n       Reg Verify fail for Test result X%d ", i + 5);
+      val_print(ERROR, "before 0x%llx ", pre_smc_regs[i]);
+      val_print(ERROR, "after  0x%llx ", post_smc_regs[i]);
     }
   }
 

@@ -82,9 +82,8 @@ val_memory_free_info_table(void)
         g_memory_info_table = NULL;
     }
     else {
-      val_print(ACS_PRINT_ERR,
-                  "\n WARNING: g_memory_info_table pointer is already NULL",
-        0);
+      val_print(ERROR,
+                  "\n WARNING: g_memory_info_table pointer is already NULL");
     }
 }
 
@@ -103,7 +102,7 @@ val_memory_create_info_table(uint64_t *memory_info_table)
 {
 
   g_memory_info_table = (MEMORY_INFO_TABLE *)memory_info_table;
-  val_print(ACS_PRINT_INFO, " Creating MEMORY INFO table\n", 0);
+  val_print(TRACE, " Creating MEMORY INFO table\n");
 
   pal_memory_create_info_table(g_memory_info_table);
 
@@ -161,7 +160,7 @@ val_memory_get_info(addr_t addr, uint64_t *attr)
           return g_memory_info_table->info[index].type;
        }
        index++;
-      // val_print(ACS_PRINT_INFO," .", 0);
+      // val_print(TRACE," .");
   }
 
   return MEM_TYPE_NOT_POPULATED;
@@ -192,13 +191,13 @@ val_memory_ioremap(void *addr, uint32_t size, uint32_t attr, void **baseptr)
 
   status = val_pe_reg_read_tcr(0 /*for TTBR0*/, &pgt_desc.tcr);
   if (status) {
-    val_print(ACS_PRINT_ERR, "\n       Unable to get translation attributes via TCR", 0);
+    val_print(ERROR, "\n       Unable to get translation attributes via TCR");
     return status;
   }
 
   status = val_pe_reg_read_ttbr(0 /*TTBR0*/, &ttbr);
   if (status) {
-    val_print(ACS_PRINT_ERR, "\n       Unable to get translation table via TBBR", 0);
+    val_print(ERROR, "\n       Unable to get translation table via TBBR");
     return status;
   }
 
@@ -459,7 +458,7 @@ uint32_t val_memory_region_has_52bit_addr(void)
   uint32_t index = 0;
 
   while (g_memory_info_table->info[index].type != MEMORY_TYPE_LAST_ENTRY) {
-      val_print(ACS_PRINT_INFO, " \n       Mem Phy Addr %lx",
+      val_print(TRACE, " \n       Mem Phy Addr %lx",
                                    g_memory_info_table->info[index].phy_addr);
       if (CHECK_ADDR_52BIT(g_memory_info_table->info[index].phy_addr))
           return 1;
@@ -504,8 +503,8 @@ val_memory_get_addr(MEMORY_INFO_e mem_type, uint32_t instance, uint64_t *attr)
       return g_memory_info_table->info[i].phy_addr;
   }
 
-  val_print(ACS_PRINT_INFO, "\n       Instance 0x%x not found ", instance);
-  val_print(ACS_PRINT_INFO, "for memory type 0x%x", mem_type);
+  val_print(TRACE, "\n       Instance 0x%x not found ", instance);
+  val_print(TRACE, "for memory type 0x%x", mem_type);
   return 0;
 }
 

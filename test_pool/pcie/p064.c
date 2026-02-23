@@ -56,7 +56,7 @@ payload(void)
       /* Check entry is iEP */
       if (dp_type == iEP_EP)
       {
-          val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x", bdf);
+          val_print(DEBUG, "\n       BDF - 0x%x", bdf);
           /* Check ARI capability support */
           if (val_pcie_find_capability(bdf, PCIE_ECAP, ECID_ARICS, &cap_base) ==
               PCIE_CAP_NOT_FOUND)
@@ -75,7 +75,7 @@ payload(void)
 
           /* If root port not support ARI forwarding, fail the test */
           if (!ari_frwd_support) {
-            val_print(ACS_PRINT_ERR, "\n       BDF - 0x%x does not support ARI Forwarding. ", bdf);
+            val_print(ERROR, "\n       BDF - 0x%x does not support ARI Forwarding. ", bdf);
             test_fails++;
           }
 
@@ -83,8 +83,8 @@ payload(void)
   }
 
   if (test_skip == 1) {
-      val_print(ACS_PRINT_DEBUG,
-                "\n       No iEP_EP found with ARI Capability Support. Skipping test", 0);
+      val_print(DEBUG,
+                "\n       No iEP_EP found with ARI Capability Support. Skipping test");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
   }
   else if (test_fails)

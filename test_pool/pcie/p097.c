@@ -39,7 +39,7 @@ static uint32_t check_msi_status(uint32_t bdf)
   if ((val_pcie_find_capability(bdf, PCIE_CAP, CID_MSIX, &msi_cap_offset)) ||
       (val_pcie_find_capability(bdf, PCIE_CAP, CID_MSI, &msi_cap_offset)))
   {
-      val_print(ACS_PRINT_DEBUG, "\n       No MSI/MSI-X Capability for bdf 0x%x", bdf);
+      val_print(DEBUG, "\n       No MSI/MSI-X Capability for bdf 0x%x", bdf);
       return 0;
   }
 
@@ -138,8 +138,8 @@ payload (void)
       tbl_index_next = tbl_index + 1;
 
       val_pcie_read_cfg(bdf, TYPE01_RIDR, &class_code);
-      val_print(ACS_PRINT_DEBUG, "\n     Primary  BDF is 0x%x", bdf);
-      val_print(ACS_PRINT_DEBUG, "\n         Class code is 0x%x", class_code);
+      val_print(DEBUG, "\n     Primary  BDF is 0x%x", bdf);
+      val_print(DEBUG, "\n         Class code is 0x%x", class_code);
 
       base_cc = class_code >> TYPE01_BCC_SHIFT;
 
@@ -153,14 +153,14 @@ payload (void)
           || (base_cc > RES_CC))
       {
         tbl_index++;
-        val_print(ACS_PRINT_DEBUG, "\n        Skipping DP/NIC/MAS/RES device.", 0);
+        val_print(DEBUG, "\n        Skipping DP/NIC/MAS/RES device.");
         continue;
       }
 
       dp_type = val_pcie_device_port_type(bdf);
       /* Check entry is EP. Else move to next BDF. */
       if (dp_type == EP) {
-        val_print(ACS_PRINT_DEBUG, "\n        Continuing... device is EP", 0);
+        val_print(DEBUG, "\n        Continuing... device is EP");
         current_dev_bdf = bdf;
         if (!check_msi_status(current_dev_bdf))
         {
@@ -183,8 +183,8 @@ payload (void)
 
                 val_pcie_read_cfg(bdf, TYPE01_RIDR, &class_code);
 
-                val_print(ACS_PRINT_DEBUG, "\n     Secondary  BDF is 0x%x", bdf);
-                val_print(ACS_PRINT_DEBUG, "\n       Class code is 0x%x", class_code);
+                val_print(DEBUG, "\n     Secondary  BDF is 0x%x", bdf);
+                val_print(DEBUG, "\n       Class code is 0x%x", class_code);
 
                 base_cc = class_code >> TYPE01_BCC_SHIFT;
 
@@ -197,7 +197,7 @@ payload (void)
                     || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC)))
                     || (base_cc > RES_CC))
                 {
-                  val_print(ACS_PRINT_DEBUG, "\n        Skipping DP/NIC/MAS/RES device.", 0);
+                  val_print(DEBUG, "\n        Skipping DP/NIC/MAS/RES device.");
                   tbl_index_next++;
                   continue;
                 }
@@ -206,7 +206,7 @@ payload (void)
                 /* Check entry is EP. Else move to next BDF. */
                 if (dp_type == EP)
                 {
-                  val_print(ACS_PRINT_DEBUG, "\n        Continuing...device is EP", 0);
+                  val_print(DEBUG, "\n        Continuing...device is EP");
                   next_dev_bdf = bdf;
                   if (!check_msi_status(next_dev_bdf))
                   {
@@ -242,13 +242,13 @@ payload (void)
         }
       }
       else {
-        val_print (ACS_PRINT_DEBUG, "\n       BDF is not EP 0x%x", bdf);
+        val_print (DEBUG, "\n       BDF is not EP 0x%x", bdf);
       }
       tbl_index++;
   }
 
   if (test_skip) {
-    val_print(ACS_PRINT_ERR, "\n       No MSI vectors found ", 0);;
+    val_print(ERROR, "\n       No MSI vectors found ");;
     val_set_status (index, RESULT_SKIP(TEST_NUM, 01));
   } else  if (!status) {
     val_set_status (index, RESULT_PASS(TEST_NUM, 01));
