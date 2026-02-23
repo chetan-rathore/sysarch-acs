@@ -39,13 +39,13 @@ isr()
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
   uint32_t status;
 
-  val_print(ACS_PRINT_DEBUG, "\n       Received interrupt            ", 0);
+  val_print(DEBUG, "\n       Received interrupt            ");
   if (wakeup_event == SYSTIMER_SEMF)
       val_timer_disable_system_timer((addr_t)cnt_base_n);
   else if (wakeup_event == WATCHDOG_SEMF) {
       status = val_wd_set_ws0(wd_num, 0);
       if (status)
-          val_print(ACS_PRINT_ERR, "\n       Setting watchdog timeout failed", 0);
+          val_print(ERROR, "\n       Setting watchdog timeout failed");
   }
 
   val_set_status(index, RESULT_PASS(TEST_NUM, 1));
@@ -100,7 +100,7 @@ payload_target_pe()
 {
   uint64_t data1, data2;
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
-//  val_print(ACS_PRINT_DEBUG, "\n       Print from target PE     :%X", index);
+//  val_print(DEBUG, "\n       Print from target PE     :%X", index);
   val_get_test_data(index, &data1, &data2);
   val_pe_reg_write(VBAR_EL2, data2);
 
@@ -141,7 +141,7 @@ payload()
   //        if none of these are present in a platform, skip the test
   wakeup_event = wakeup_event_for_semantic_f();
   if (wakeup_event == 0) {
-      val_print(ACS_PRINT_DEBUG, "\n       No Watchdogs and system timers present", 0);
+      val_print(DEBUG, "\n       No Watchdogs and system timers present");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -149,7 +149,7 @@ payload()
   // Step3: Route the interrupt to target PE and install ISR
   val_gic_route_interrupt_to_pe(intid, val_pe_get_mpid_index(target_pe));
   if (val_gic_install_isr(intid, isr)) {
-      val_print(ACS_PRINT_ERR, "\n       GIC Install Handler Failed...", 0);
+      val_print(ERROR, "\n       GIC Install Handler Failed...");
       val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
       val_gic_route_interrupt_to_pe(intid, index);
       return;
@@ -171,7 +171,7 @@ payload()
   else if (wakeup_event == WATCHDOG_SEMF) {
       status = val_wd_set_ws0(wd_num, timer_expire_ticks);
       if (status) {
-          val_print(ACS_PRINT_ERR, "\n       Setting watchdog timeout failed", 0);
+          val_print(ERROR, "\n       Setting watchdog timeout failed");
           val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
           return;
       }
@@ -183,18 +183,18 @@ payload()
   ;
 
   if (timeout == 0)
-      val_print(ACS_PRINT_ERR, "\n       Target PE was not able to wake up successfully "
-                                "from sleep \n       due to watchdog/sytimer interrupt", 0);
+      val_print(ERROR, "\n       Target PE was not able to wake up successfully "
+                                "from sleep \n       due to watchdog/sytimer interrupt");
 
   // Step7: Clear the pending/active interrupt if any
   if (1 == val_gic_get_interrupt_state(intid)) {
-      val_print(ACS_PRINT_ERR, "\n       Pending interrupt was seen for the 1st interrupt", 0);
+      val_print(ERROR, "\n       Pending interrupt was seen for the 1st interrupt");
       if (wakeup_event == SYSTIMER_SEMF)
           val_timer_disable_system_timer((addr_t)cnt_base_n);
       else if (wakeup_event == WATCHDOG_SEMF) {
           status = val_wd_set_ws0(wd_num, 0);
           if (status) {
-              val_print(ACS_PRINT_ERR, "\n       Setting watchdog timeout failed", 0);
+              val_print(ERROR, "\n       Setting watchdog timeout failed");
               val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
               return;
           }
@@ -213,7 +213,7 @@ payload()
   // Step9: Generate timer interrupt again, when target PE is off and make sure it doesn't wakeup
   val_gic_route_interrupt_to_pe(intid, val_pe_get_mpid_index(target_pe));
   if (val_gic_install_isr(intid, isr)) {
-      val_print(ACS_PRINT_ERR, "\n       GIC Install Handler Failed...", 0);
+      val_print(ERROR, "\n       GIC Install Handler Failed...");
       val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
       val_gic_route_interrupt_to_pe(intid, index);
       return;
@@ -225,13 +225,13 @@ payload()
   else if (wakeup_event == WATCHDOG_SEMF) {
       status = val_wd_set_ws0(wd_num, timer_expire_ticks);
           if (status) {
-              val_print(ACS_PRINT_ERR, "\n       Setting watchdog timeout failed", 0);
+              val_print(ERROR, "\n       Setting watchdog timeout failed");
               val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
               return;
           }
   }
 
-  val_print(ACS_PRINT_ERR, "\n       Interrupt generating sequence triggered", 0);
+  val_print(ERROR, "\n       Interrupt generating sequence triggered");
 
   // Step10: wait for interrupt to become active or pending for a timeout duration
   timeout = TIMEOUT_MEDIUM;
@@ -239,16 +239,16 @@ payload()
   ;
 
   if (timeout == 0)
-      val_print(ACS_PRINT_ERR, "\n       No pending interrupt was seen for the 2nd interrupt", 0);
+      val_print(ERROR, "\n       No pending interrupt was seen for the 2nd interrupt");
 
   if (1 == val_gic_get_interrupt_state(intid)) {
-      val_print(ACS_PRINT_ERR, "\n       Pending interrupt was seen for the 2nd interrupt", 0);
+      val_print(ERROR, "\n       Pending interrupt was seen for the 2nd interrupt");
       if (wakeup_event == SYSTIMER_SEMF)
           val_timer_disable_system_timer((addr_t)cnt_base_n);
       else if (wakeup_event == WATCHDOG_SEMF) {
           status = val_wd_set_ws0(wd_num, 0);
           if (status) {
-              val_print(ACS_PRINT_ERR, "\n       Setting watchdog timeout failed", 0);
+              val_print(ERROR, "\n       Setting watchdog timeout failed");
               val_set_status(index, RESULT_FAIL(TEST_NUM, 5));
               return;
           }

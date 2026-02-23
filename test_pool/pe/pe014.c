@@ -50,8 +50,8 @@ payload()
     uint64_t data2 = val_pe_reg_read(ID_AA64ISAR2_EL1);
 
     if (index == primary_pe_idx) {
-        val_print(ACS_PRINT_DEBUG, "\n       ID_AA64ISAR1_EL1 = %llx", data1);
-        val_print(ACS_PRINT_DEBUG, "\n       ID_AA64ISAR2_EL1 = %llx", data2);
+        val_print(DEBUG, "\n       ID_AA64ISAR1_EL1 = %llx", data1);
+        val_print(DEBUG, "\n       ID_AA64ISAR2_EL1 = %llx", data2);
     }
      /* PAuth is optional, For PAuth authentication support atleast one of generic or address
       * authentication of any one of the standard algorithm is needed

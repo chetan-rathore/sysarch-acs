@@ -42,7 +42,7 @@ payload(void)
   target_dev_index = val_dma_get_info(DMA_NUM_CTRL, 0);
 
   if (!target_dev_index) {
-      val_print(ACS_PRINT_DEBUG, "\n       No DMA controllers detected...    ", 0);
+      val_print(DEBUG, "\n       No DMA controllers detected...    ");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -64,9 +64,9 @@ payload(void)
             if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
                 goto test_warn_unimplemented;
             }
-            val_print(ACS_PRINT_ERR, "\n       The DMA addr allocated to device %d ",
+            val_print(ERROR, "\n       The DMA addr allocated to device %d ",
                     target_dev_index);
-            val_print(ACS_PRINT_ERR, "\n       is not present in the SMMU IOVA table\n", 0);
+            val_print(ERROR, "\n       is not present in the SMMU IOVA table\n");
             val_set_status(index, RESULT_FAIL(TEST_NUM, target_dev_index));
             return;
           }

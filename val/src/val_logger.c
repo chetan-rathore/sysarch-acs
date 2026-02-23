@@ -702,22 +702,22 @@ uint32_t val_printf(print_verbosity_t verbosity, const char *msg, ...)
         switch (verbosity)
         {
             case TRACE:
-                 print_raw_string("\t\t");
-                 break;
-            case DEBUG:
-                 print_raw_string("\t\t");
-                 break;
-            case INFO:
                  print_raw_string("\t");
                  break;
+            case DEBUG:
+                 print_raw_string("\t");
+                 break;
+            case INFO:
+                 print_raw_string("");
+                 break;
             case WARN:
-                 print_raw_string("\t\tWARN : ");
+                 print_raw_string("\tWARN : ");
                  break;
             case ERROR:
-                 print_raw_string("\t\tERROR: ");
+                 print_raw_string("\tERROR: ");
                  break;
             case FATAL:
-                 print_raw_string("\t\tFATAL: ");
+                 print_raw_string("\tFATAL: ");
                  break;
             default:
                  break;

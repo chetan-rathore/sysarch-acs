@@ -35,7 +35,7 @@ isr1()
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
 
   val_timer_set_phy_el1(0);
-  val_print(ACS_PRINT_INFO, "       Received EL1 PHY interrupt\n", 0);
+  val_print(TRACE, "       Received EL1 PHY interrupt\n");
   g_el1phy_int_received = 1;
   val_set_status(index, RESULT_PASS(TEST_NUM, 1));
   intid = val_timer_get_info(TIMER_INFO_PHY_EL1_INTID, 0);
@@ -53,7 +53,7 @@ payload1()
 
   intid = val_timer_get_info(TIMER_INFO_PHY_EL1_INTID, 0);
   if (val_gic_install_isr(intid, isr1)) {
-    val_print(ACS_PRINT_WARN, "\n       GIC Install Handler Failed...", 0);
+    val_print(WARN, "\n       GIC Install Handler Failed...");
     val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
     return;
   }
@@ -82,10 +82,10 @@ payload1()
       val_timer_set_phy_el1(0);
       intid = val_timer_get_info(TIMER_INFO_PHY_EL1_INTID, 0);
       val_gic_end_of_interrupt(intid);
-      val_print(ACS_PRINT_DEBUG, "\n       PE wakeup by some other events/int", 0);
+      val_print(DEBUG, "\n       PE wakeup by some other events/int");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
   }
-  val_print(ACS_PRINT_INFO, "\n       delay loop remainig value %d", delay_loop);
+  val_print(TRACE, "\n       delay loop remainig value %d", delay_loop);
   return;
 }
 

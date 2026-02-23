@@ -31,7 +31,7 @@ static void payload(void)
 
     /* ID_AA64DFR0_EL1.BRBE, bits [55:52] non-zero value indicate FEAT_BRBE support */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64DFR0_EL1), 52, 55);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       ID_AA64DFR0_EL1.BRBE = %llx",
+    val_print_primary_pe(DEBUG, "\n       ID_AA64DFR0_EL1.BRBE = %llx",
                                                                             data, index);
 
     if (data == 0) {
@@ -41,7 +41,7 @@ static void payload(void)
 
     /* BRBIDR0_EL1.NUMREC[7:0] = 0x20 or 0x40 indicates atleast 32 branch record buffer support */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(BRBIDR0_EL1), 0, 7);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       BRBIDR0_EL1.NUMREC = %llx",
+    val_print_primary_pe(DEBUG, "\n       BRBIDR0_EL1.NUMREC = %llx",
                                                                          data, index);
 
     if (data == 0x20 || data == 0x40)

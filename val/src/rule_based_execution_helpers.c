@@ -150,42 +150,42 @@ print_rule_test_start(uint32_t rule_enum, uint32_t indent)
     /* Print "Running <module> tests" if module change seen.
        Don't print if MODULE_UNKNOWN was encounterd */
     if (prev_module != curr_module && curr_module != MODULE_UNKNOWN) {
-        val_print(ACS_PRINT_TEST, "\n\n    ", 0);
+        val_print(INFO, "\n\n    ");
         if (indent)
-            val_print(ACS_PRINT_TEST, "    ", 0);
-        val_print(ACS_PRINT_TEST, "*** Running ", 0);
-        val_print(ACS_PRINT_TEST, module_name_string[curr_module], 0);
-        val_print(ACS_PRINT_TEST, " tests ***", 0);
+            val_print(INFO, "    ");
+        val_print(INFO, "*** Running ");
+        val_print(INFO, module_name_string[curr_module]);
+        val_print(INFO, " tests ***");
 
         /* Update prev_module for next call */
         prev_module = curr_module;
     }
 
-    val_print(ACS_PRINT_TEST, "\n\n", 0);
+    val_print(INFO, "\n\n");
     /* Print indent spaces */
     while (indent) {
-        val_print(ACS_PRINT_TEST, "    ", 0);
+        val_print(INFO, "    ");
         indent--;
     }
 
     /* Print rule id */
-    val_print(ACS_PRINT_TEST, rule_id_string[rule_enum], 0);
+    val_print(INFO, rule_id_string[rule_enum]);
 
     /* TODO
        Note: Test ID print would be deprecated in future, please use rule id as primary key to
        identify tests and comment on coverage */
-    val_print(ACS_PRINT_TEST, " : ", 0);
+    val_print(INFO, " : ");
     if (rule_test_map[rule_enum].test_num == INVALID_ENTRY) {
-        val_print(ACS_PRINT_TEST, "-", 0);
+        val_print(INFO, "-");
     }
     else {
-        val_print(ACS_PRINT_TEST, "%d", rule_test_map[rule_enum].test_num);
+        val_print(INFO, "%d", rule_test_map[rule_enum].test_num);
     }
 
-    val_print(ACS_PRINT_TEST, " : ", 0);
+    val_print(INFO, " : ");
     /* Print rule  description */
     if (rule_test_map[rule_enum].flag != INVALID_ENTRY) {
-        val_print(ACS_PRINT_TEST, rule_test_map[rule_enum].rule_desc, 0);
+        val_print(INFO, rule_test_map[rule_enum].rule_desc);
     }
 }
 
@@ -212,25 +212,25 @@ print_pal_validation_info(uint32_t rule_enum, uint32_t indent)
         return;
 
     for (i = 0; i < indent; i++)
-        val_print(ACS_PRINT_TEST, "    ", 0);
+        val_print(INFO, "    ");
 
-    val_print(ACS_PRINT_TEST, "   Rule is validated by ", 0);
+    val_print(INFO, "   Rule is validated by ");
 
     if (other_pals & PLATFORM_BAREMETAL) {
-        val_print(ACS_PRINT_TEST, "Baremetal", 0);
+        val_print(INFO, "Baremetal");
         first = 0;
     }
     if (other_pals & PLATFORM_UEFI) {
-        if (!first) val_print(ACS_PRINT_TEST, "/", 0);
-        val_print(ACS_PRINT_TEST, "UEFI", 0);
+        if (!first) val_print(INFO, "/");
+        val_print(INFO, "UEFI");
         first = 0;
     }
     if (other_pals & PLATFORM_LINUX) {
-        if (!first) val_print(ACS_PRINT_TEST, "/", 0);
-        val_print(ACS_PRINT_TEST, "Linux", 0);
+        if (!first) val_print(INFO, "/");
+        val_print(INFO, "Linux");
     }
 
-    val_print(ACS_PRINT_TEST, " test\n", 0);
+    val_print(INFO, " test\n");
 }
 
 /**
@@ -251,19 +251,19 @@ print_rule_test_status(uint32_t rule_enum, uint32_t indent, uint32_t status)
     /* Only count top-level rules (indent == 0) */
     uint32_t top_level_rule = (indent == 0);
 
-    val_print(ACS_PRINT_TEST, "\n", 0);
+    val_print(INFO, "\n");
     /* Print other PAL(s) that validate this rule */
     if (status == TEST_PAL_NS) {
         print_pal_validation_info(rule_enum, indent);
     }
     /* Print indent spaces */
     while (indent) {
-        val_print(ACS_PRINT_TEST, "    ", 0);
+        val_print(INFO, "    ");
         indent--;
     }
 
-    val_print(ACS_PRINT_TEST, "   Result: ", 0);
-    val_print(ACS_PRINT_TEST, " ", 0);
+    val_print(INFO, "   Result: ");
+    val_print(INFO, " ");
 
     /* Update global counters for top-level rules only */
     if (top_level_rule) {
@@ -272,35 +272,35 @@ print_rule_test_status(uint32_t rule_enum, uint32_t indent, uint32_t status)
 
     switch (status) {
     case TEST_PASS:
-        val_print(ACS_PRINT_TEST, "PASSED", 0);
+        val_print(INFO, "PASSED");
         if (top_level_rule) g_rule_test_stats.passed++;
         break;
     case TEST_PART_COV:
-        val_print(ACS_PRINT_TEST, "PASSED(*PARTIAL)", 0);
+        val_print(INFO, "PASSED(*PARTIAL)");
         if (top_level_rule) g_rule_test_stats.partial_coverage++;
         break;
     case TEST_WARN:
-        val_print(ACS_PRINT_TEST, "WARNING", 0);
+        val_print(INFO, "WARNING");
         if (top_level_rule) g_rule_test_stats.warnings++;
         break;
     case TEST_SKIP:
-        val_print(ACS_PRINT_TEST, "SKIPPED", 0);
+        val_print(INFO, "SKIPPED");
         if (top_level_rule) g_rule_test_stats.skipped++;
         break;
     case TEST_FAIL:
-        val_print(ACS_PRINT_TEST, "FAILED", 0);
+        val_print(INFO, "FAILED");
         if (top_level_rule) g_rule_test_stats.failed++;
         break;
     case TEST_NO_IMP:
-        val_print(ACS_PRINT_TEST, "NOT TESTED (TEST NOT IMPLEMENTED)", 0);
+        val_print(INFO, "NOT TESTED (TEST NOT IMPLEMENTED)");
         if (top_level_rule) g_rule_test_stats.not_implemented++;
         break;
     case TEST_PAL_NS:
-        val_print(ACS_PRINT_TEST, "NOT TESTED (PAL NOT SUPPORTED)", 0);
+        val_print(INFO, "NOT TESTED (PAL NOT SUPPORTED)");
         if (top_level_rule) g_rule_test_stats.pal_not_supported++;
         break;
     default:
-        val_print(ACS_PRINT_TEST, "STATUS:0x%x", status);
+        val_print(INFO, "STATUS:0x%x", status);
     }
     return;
 }

@@ -34,7 +34,7 @@ void payload(void)
     /* Read ID_AA64PFR0_EL1.SVE[35:32] = 0b0001 for SVE */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64PFR0_EL1), 32, 35);
     if (index == primary_pe_idx)
-        val_print(ACS_PRINT_DEBUG, "\n       ID_AA64PFR0_EL1.SVE = %llx", data);
+        val_print(DEBUG, "\n       ID_AA64PFR0_EL1.SVE = %llx", data);
 
     if (data == 0) {
         /* SVE Not Implemented Skip the test */
@@ -45,7 +45,7 @@ void payload(void)
     /* Read ID_AA64DFR0_EL1.PMSVer[35:32] = 0b0010 for v8.3-SPE */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64DFR0_EL1), 32, 35);
     if (index == primary_pe_idx)
-        val_print(ACS_PRINT_DEBUG, "\n       ID_AA64DFR0_EL1.PMSVer = %llx", data);
+        val_print(DEBUG, "\n       ID_AA64DFR0_EL1.PMSVer = %llx", data);
 
     if (data == 0)
         /* SPE Not Implemented Skip the test */

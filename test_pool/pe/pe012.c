@@ -38,7 +38,7 @@ payload()
       val_set_status(index, RESULT_PASS(TEST_NUM, 1));
   else {
       if (index == primary_pe_idx) {
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
           "\n       Number of synchronous watchpoints reported: %d, expected > 3", data);
       }
       val_set_status(index, RESULT_FAIL(TEST_NUM, 1));

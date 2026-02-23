@@ -57,7 +57,7 @@ payload(void)
       /* Check entry is iEP endpoint */
       if (dp_type == iEP_EP)
       {
-          val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x", bdf);
+          val_print(DEBUG, "\n       BDF - 0x%x", bdf);
 
           /* Read endpoint OBFF supported bit value */
           val_pcie_find_capability(bdf, PCIE_CAP, CID_PCIECS, &cap_base);
@@ -78,18 +78,18 @@ payload(void)
           /* As per SBSA spec iRP must have same value as of iEP */
           if (ep_obff_support != rp_obff_support)
            {
-              val_print(ACS_PRINT_ERR, "\n OBFF Support level of iEP and it's iRP is not same", 0);
-              val_print(ACS_PRINT_DEBUG, "\n    iEP 0x%x", bdf);
-              val_print(ACS_PRINT_DEBUG, " OBFF support %d", ep_obff_support);
-              val_print(ACS_PRINT_DEBUG, "\n    iRP 0x%x", rp_bdf);
-              val_print(ACS_PRINT_DEBUG, " OBFF support %d", rp_obff_support);
+              val_print(ERROR, "\n OBFF Support level of iEP and it's iRP is not same");
+              val_print(DEBUG, "\n    iEP 0x%x", bdf);
+              val_print(DEBUG, " OBFF support %d", ep_obff_support);
+              val_print(DEBUG, "\n    iRP 0x%x", rp_bdf);
+              val_print(DEBUG, " OBFF support %d", rp_obff_support);
               test_fails++;
           }
       }
   }
 
   if (test_skip == 1) {
-      val_print(ACS_PRINT_DEBUG, "\n       No iEP_EP type device found. Skipping test", 0);
+      val_print(DEBUG, "\n       No iEP_EP type device found. Skipping test");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
   }
   else if (test_fails)

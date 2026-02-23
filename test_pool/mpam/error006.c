@@ -47,12 +47,12 @@ void payload(void)
     for (msc_index = 0; msc_index < total_nodes; msc_index++) {
 
         if (!val_mpam_msc_supports_esr(msc_index)) {
-            val_print(ACS_PRINT_DEBUG, "\n       MSC index %d does not support ESR", msc_index);
+            val_print(DEBUG, "\n       MSC index %d does not support ESR", msc_index);
             continue;
         }
 
         if (!val_mpam_msc_supports_partid_nrw(msc_index)) {
-            val_print(ACS_PRINT_DEBUG,
+            val_print(DEBUG,
                           "\n       MSC index %d does not support PARTID narrowing", msc_index);
             continue;
         }
@@ -75,26 +75,26 @@ void payload(void)
         /* Scenario 1: Map reqPARTID to out-of-range intPARTID */
         partid = val_mpam_get_max_partid(msc_index);
         max_int_partid = val_mpam_get_max_intpartid(msc_index);
-        val_print(ACS_PRINT_DEBUG, "\n       Max Internal PARTID is 0x%lx", max_int_partid);
+        val_print(DEBUG, "\n       Max Internal PARTID is 0x%lx", max_int_partid);
 
         /* Select valid partid and map it to max_int_partid + 1 to trigger the error */
         data = (1 << MPAMCFG_INTPARTID_INTPARTID_INTERNAL_SHIFT) | (max_int_partid + 1);
         val_mpam_mmr_write(msc_index, REG_MPAMCFG_PART_SEL, partid);
         val_mpam_mmr_write(msc_index, REG_MPAMCFG_INTPARTID, data);
 
-        val_print(ACS_PRINT_DEBUG, "\n       Value write to MPAMCFG_INTPARTD is 0x%llx", data);
+        val_print(DEBUG, "\n       Value write to MPAMCFG_INTPARTD is 0x%llx", data);
 
         /* Wait for some time for the error to be reflected in MPAMF_ESR */
         val_time_delay_ms(100 * ONE_MILLISECOND);
 
         /* Read Error Status Register and check if the error code is recorded */
         esr_errcode = val_mpam_msc_get_errcode(msc_index);
-        val_print(ACS_PRINT_DEBUG, "\n       Error code read is %llx", esr_errcode);
+        val_print(DEBUG, "\n       Error code read is %llx", esr_errcode);
 
         if (esr_errcode != ESR_ERRCODE_INTPARTID_RANGE)
         {
-            val_print(ACS_PRINT_ERR, "\n       Expected errcode: %d", ESR_ERRCODE_INTPARTID_RANGE);
-            val_print(ACS_PRINT_ERR, "\n       Actual errcode: %d", esr_errcode);
+            val_print(ERROR, "\n       Expected errcode: %d", ESR_ERRCODE_INTPARTID_RANGE);
+            val_print(ERROR, "\n       Actual errcode: %d", esr_errcode);
             test_fail++;
         }
 

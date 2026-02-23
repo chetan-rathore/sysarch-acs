@@ -62,14 +62,14 @@ get_target_exer_bdf(uint32_t req_rp_bdf, uint32_t *tgt_e_bdf,
           status = val_pcie_get_ecam_index(req_rp_bdf, &req_rp_ecam_index);
           if (status)
           {
-             val_print(ACS_PRINT_ERR, "\n       Error Ecam index for req RP BDF: 0x%x", req_rp_bdf);
+             val_print(ERROR, "\n       Error Ecam index for req RP BDF: 0x%x", req_rp_bdf);
              goto test_fail;
           }
 
           status = val_pcie_get_ecam_index(erp_bdf, &erp_ecam_index);
           if (status)
           {
-             val_print(ACS_PRINT_ERR, "\n       Error Ecam index for tgt RP BDF: 0x%x", erp_bdf);
+             val_print(ERROR, "\n       Error Ecam index for tgt RP BDF: 0x%x", erp_bdf);
              goto test_fail;
           }
 
@@ -128,7 +128,7 @@ payload(void)
   /* Check If PCIe Hierarchy supports P2P. */
   if (!val_pcie_p2p_support())
   {
-    val_print(ACS_PRINT_DEBUG, "\n       P2P is supported, Skipping Test", 0);
+    val_print(DEBUG, "\n       P2P is supported, Skipping Test");
     val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
     return;
   }
@@ -141,7 +141,7 @@ payload(void)
           continue;
 
       req_e_bdf = val_exerciser_get_bdf(instance);
-      val_print(ACS_PRINT_DEBUG, "\n       Requester exerciser BDF - 0x%x", req_e_bdf);
+      val_print(DEBUG, "\n       Requester exerciser BDF - 0x%x", req_e_bdf);
 
       /* Get RP of the exerciser */
       if (val_pcie_get_rootport(req_e_bdf, &req_rp_bdf))
@@ -152,7 +152,7 @@ payload(void)
       if (get_target_exer_bdf(req_rp_bdf, &tgt_e_bdf, &tgt_rp_bdf, &bar_base))
           continue;
 
-      val_print(ACS_PRINT_DEBUG, "\n       Target exerciser BDF - 0x%x", tgt_e_bdf);
+      val_print(DEBUG, "\n       Target exerciser BDF - 0x%x", tgt_e_bdf);
       test_skip = 0;
 
       /* Check if P2P transaction causes any deadlock */

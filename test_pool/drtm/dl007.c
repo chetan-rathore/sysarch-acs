@@ -54,7 +54,7 @@ payload(uint32_t num_pe)
   num_of_pe = val_pe_get_num();
   if (num_of_pe < 2) {
     /* Skip the test as there is no secondary PE */
-    val_print(ACS_PRINT_ERR, "\n       No secondary PE Present. Skipping", 0);
+    val_print(ERROR, "\n       No secondary PE Present. Skipping");
     val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
     return;
   }
@@ -70,14 +70,14 @@ payload(uint32_t num_pe)
   /* Allocate Memory For DRTM Parameters 4KB Aligned */
   drtm_params = (DRTM_PARAMETERS *)((uint64_t)val_aligned_alloc(DRTM_SIZE_4K, drtm_params_size));
   if (!drtm_params) {
-    val_print(ACS_PRINT_ERR, "\n    Failed to allocate memory for DRTM Params", 0);
+    val_print(ERROR, "\n    Failed to allocate memory for DRTM Params");
     val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
     return;
   }
 
   status = val_drtm_init_drtm_params(drtm_params);
   if (status != ACS_STATUS_PASS) {
-    val_print(ACS_PRINT_ERR, "\n       DRTM Init Params failed err=%d", status);
+    val_print(ERROR, "\n       DRTM Init Params failed err=%d", status);
     val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
     goto free_drtm_params;
   }
@@ -91,14 +91,14 @@ payload(uint32_t num_pe)
   dl_done = 1;
   /* This should return Fail as secondary pe is on */
   if (status != DRTM_ACS_SECONDARY_PE_NOT_OFF) {
-    val_print(ACS_PRINT_ERR, "\n       DRTM Dynamic Launch failed, Expected = %d",
+    val_print(ERROR, "\n       DRTM Dynamic Launch failed, Expected = %d",
                             DRTM_ACS_SECONDARY_PE_NOT_OFF);
-    val_print(ACS_PRINT_ERR, " Found = %d", status);
+    val_print(ERROR, " Found = %d", status);
     val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
     if (status == DRTM_ACS_SUCCESS) {
       status = val_drtm_unprotect_memory();
       if (status < DRTM_ACS_SUCCESS) {
-        val_print(ACS_PRINT_ERR, "\n       DRTM Unprotect Memory failed err=%d", status);
+        val_print(ERROR, "\n       DRTM Unprotect Memory failed err=%d", status);
         val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
       }
     }

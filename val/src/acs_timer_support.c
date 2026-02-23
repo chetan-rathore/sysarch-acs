@@ -29,7 +29,7 @@ uint8_t get_effective_e2h(void)
 
   /* if EL2 is not present, effective E2H will be 0 */
   if (val_pe_reg_read(CurrentEL) == AARCH64_EL1) {
-    val_print(ACS_PRINT_DEBUG, "\n       CurrentEL: AARCH64_EL1", 0);
+    val_print(DEBUG, "\n       CurrentEL: AARCH64_EL1");
     return 0;
   }
 
@@ -37,9 +37,9 @@ uint8_t get_effective_e2h(void)
   uint32_t feat_vhe = VAL_EXTRACT_BITS(read_id_aa64mmfr1_el1(), 8, 11);
   uint32_t e2h0 = VAL_EXTRACT_BITS(read_s3_0_c0_c7_4(), 24, 27);
 
-  val_print(ACS_PRINT_DEBUG, "\n       hcr_e2h   : 0x%x", hcr_e2h);
-  val_print(ACS_PRINT_DEBUG, "\n       feat_vhe  : 0x%x", feat_vhe);
-  val_print(ACS_PRINT_DEBUG, "\n       e2h0 : 0x%x", e2h0);
+  val_print(DEBUG, "\n       hcr_e2h   : 0x%x", hcr_e2h);
+  val_print(DEBUG, "\n       feat_vhe  : 0x%x", feat_vhe);
+  val_print(DEBUG, "\n       e2h0 : 0x%x", e2h0);
 
   if (feat_vhe == 0x0) //ID_AA64MMFR1_EL1.VH
     effective_e2h = 0;
@@ -48,7 +48,7 @@ uint8_t get_effective_e2h(void)
   else
     effective_e2h = hcr_e2h;
 
-  val_print(ACS_PRINT_DEBUG, "\n       effective e2h : 0x%x\n", effective_e2h);
+  val_print(DEBUG, "\n       effective e2h : 0x%x\n", effective_e2h);
   return effective_e2h;
 }
 
@@ -121,12 +121,12 @@ ArmArchTimerReadReg (
 
     case CnthCtl:
     case CnthpCval:
-      val_print(ACS_PRINT_TEST, "The register is related to Hypervisor Mode. \
-      Can't perform requested operation\n ", 0);
+      val_print(INFO, "The register is related to Hypervisor Mode. \
+      Can't perform requested operation\n ");
       break;
 
     default:
-      val_print(ACS_PRINT_TEST, "Unknown ARM Generic Timer register %x.\n ", Reg);
+      val_print(INFO, "Unknown ARM Generic Timer register %x.\n ", Reg);
     }
 
     return 0xFFFFFFFF;
@@ -154,7 +154,7 @@ ArmArchTimerWriteReg (
     switch(Reg) {
 
     case CntPct:
-      val_print(ACS_PRINT_TEST, "Can't write to Read Only Register: CNTPCT\n", 0);
+      val_print(INFO, "Can't write to Read Only Register: CNTPCT\n");
       break;
 
     case CntkCtl:
@@ -193,7 +193,7 @@ ArmArchTimerWriteReg (
       break;
 
     case CntvCt:
-       val_print(ACS_PRINT_TEST, "Can't write to Read Only Register: CNTVCT\n", 0);
+       val_print(INFO, "Can't write to Read Only Register: CNTVCT\n");
       break;
 
     case CntpCval:
@@ -222,11 +222,11 @@ ArmArchTimerWriteReg (
       break;
     case CnthCtl:
     case CnthpCval:
-      val_print(ACS_PRINT_TEST, "The register is related to Hypervisor Mode. \
-      Can't perform requested operation\n", 0);
+      val_print(INFO, "The register is related to Hypervisor Mode. \
+      Can't perform requested operation\n");
       break;
 
     default:
-      val_print(ACS_PRINT_TEST, "Unknown ARM Generic Timer register %x.\n ", Reg);
+      val_print(INFO, "Unknown ARM Generic Timer register %x.\n ", Reg);
     }
 }

@@ -48,7 +48,7 @@ payload(void)
   while (tbl_index < bdf_tbl_ptr->num_entries)
   {
       bdf = bdf_tbl_ptr->device[tbl_index++].bdf;
-      val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x", bdf);
+      val_print(DEBUG, "\n       BDF - 0x%x", bdf);
       dp_type = val_pcie_device_port_type(bdf);
 
       /* Check entry is RP/EP/DP/UP. Else move to next BDF. */
@@ -58,7 +58,7 @@ payload(void)
 
       /* Retrieve the addr of PCI express capability (10h) */
       if (val_pcie_find_capability(bdf, PCIE_CAP, CID_PCIECS, &cap_base) != PCIE_SUCCESS) {
-          val_print(ACS_PRINT_INFO, "\n       PCIe Express Capability not present ", 0);
+          val_print(TRACE, "\n       PCIe Express Capability not present ");
           continue;
       }
 
@@ -74,8 +74,8 @@ payload(void)
       /* Valid payload size between 000b (129-bytes) to 101b (4096 bytes) */
       if (!((max_payload_value >= 0x00) && (max_payload_value <= 0x05)))
       {
-          val_print(ACS_PRINT_ERR, "\n       BDF 0x%x", bdf);
-          val_print(ACS_PRINT_ERR, " Cap Ptr Value: 0x%x", max_payload_value);
+          val_print(ERROR, "\n       BDF 0x%x", bdf);
+          val_print(ERROR, " Cap Ptr Value: 0x%x", max_payload_value);
           test_fails++;
       }
   }

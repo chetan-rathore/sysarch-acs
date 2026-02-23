@@ -97,7 +97,7 @@ payload(void *arg)
       /* Check entry is RCiEP or iEP end point */
       if ((dp_type == RCiEP) || (dp_type == iEP_EP))
       {
-          val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x", bdf);
+          val_print(DEBUG, "\n       BDF - 0x%x", bdf);
 
           /* Check if the EP Supports Multifunction */
           if (val_pcie_multifunction_support(bdf))
@@ -118,7 +118,7 @@ payload(void *arg)
           /* Read the ACS Capability */
           if (val_pcie_find_capability(bdf, PCIE_ECAP, ECID_ACS, &cap_base) != PCIE_SUCCESS)
           {
-              val_print(ACS_PRINT_ERR, "\n       ACS Capability not supported, Bdf : 0x%x", bdf);
+              val_print(ERROR, "\n       ACS Capability not supported, Bdf : 0x%x", bdf);
               test_fails++;
               continue;
           }
@@ -128,33 +128,33 @@ payload(void *arg)
           /* Extract ACS p2p Request Redirect bit */
           data = VAL_EXTRACT_BITS(acs_data, 2, 2);
           if (data == 0) {
-              val_print(ACS_PRINT_DEBUG, "\n       Request Redirect P2P not supported", 0);
+              val_print(DEBUG, "\n       Request Redirect P2P not supported");
               p2p_support_flag++;
           }
 
           /* Extract ACS p2p Completion Redirect bit */
           data = VAL_EXTRACT_BITS(acs_data, 3, 3);
           if (data == 0) {
-              val_print(ACS_PRINT_DEBUG, "\n       Completion Redirect P2P not supported", 0);
+              val_print(DEBUG, "\n       Completion Redirect P2P not supported");
               p2p_support_flag++;
           }
 
           /* Extract ACS p2p Direct Translated bit */
           data = VAL_EXTRACT_BITS(acs_data, 6, 6);
           if (data == 0) {
-              val_print(ACS_PRINT_DEBUG, "\n       Direct Translated P2P not supported", 0);
+              val_print(DEBUG, "\n       Direct Translated P2P not supported");
               p2p_support_flag++;
           }
 
           if (p2p_support_flag > 0) {
-              val_print(ACS_PRINT_ERR, "\n       P2P not supported for bdf: %d", bdf);
+              val_print(ERROR, "\n       P2P not supported for bdf: %d", bdf);
               p2p_support_flag = 0;
               test_fails++;
           }
           /* If device supports ACS then it must have AER Capability */
           if (val_pcie_find_capability(bdf, PCIE_ECAP, ECID_AER, &cap_base) != PCIE_SUCCESS)
           {
-              val_print(ACS_PRINT_ERR, "\n       AER Capability not supported, Bdf : 0x%x", bdf);
+              val_print(ERROR, "\n       AER Capability not supported, Bdf : 0x%x", bdf);
               aer_cap_fail++;
           }
       }
@@ -168,8 +168,8 @@ payload(void *arg)
   }
 
   if (test_skip == 1) {
-      val_print(ACS_PRINT_DEBUG,
-      "\n       No target device type with Multifunction and P2P support.Skipping test", 0);
+      val_print(DEBUG,
+      "\n       No target device type with Multifunction and P2P support.Skipping test");
       val_set_status(pe_index, RESULT_SKIP(test_data->test_num, 01));
   }
   else if (test_fails + aer_cap_fail)

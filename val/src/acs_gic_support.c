@@ -137,7 +137,7 @@ val_gic_install_isr(uint32_t int_id, void (*isr)(void))
 
   if (((int_id > val_get_max_intid()) && (!val_gic_is_valid_lpi(int_id)) &&
       (!val_gic_is_valid_espi(int_id)) && (!val_gic_is_valid_eppi(int_id))) || (int_id == 0)) {
-      val_print(ACS_PRINT_ERR, "\n       Invalid Interrupt ID number 0x%x ", int_id);
+      val_print(ERROR, "\n       Invalid Interrupt ID number 0x%x ", int_id);
       return ACS_STATUS_ERR;
   }
 #endif
@@ -218,8 +218,7 @@ uint32_t val_gic_its_configure()
   /* Allocate memory to store ITS info */
   g_gic_its_info = (GIC_ITS_INFO *) val_aligned_alloc(MEM_ALIGN_4K, 1024);
   if (!g_gic_its_info) {
-      val_print(ACS_PRINT_ERR, "  ITS Configure: memory allocation failed\n",
-                                                                          0);
+      val_print(ERROR, "  ITS Configure: memory allocation failed\n");
       return ACS_STATUS_ERR;
   }
 
@@ -252,14 +251,13 @@ uint32_t val_gic_its_configure()
 
   /* Return if no ITS */
   if (g_gic_its_info->GicNumIts == 0) {
-    val_print(ACS_PRINT_DEBUG, "  ITS Configure: No ITS Found\n", 0);
+    val_print(DEBUG, "  ITS Configure: No ITS Found\n");
     goto its_fail;
   }
 
   /* Base Address Check. */
   if ((g_gic_its_info->GicRdBase == 0) || (g_gic_its_info->GicDBase == 0)) {
-    val_print(ACS_PRINT_DEBUG, "  ITS Configure: GICD/GICRD Base addr failed\n",
-                                                                            0);
+    val_print(DEBUG, "  ITS Configure: GICD/GICRD Base addr failed\n");
     goto its_fail;
   }
 
@@ -267,11 +265,11 @@ uint32_t val_gic_its_configure()
       && val_its_gicr_lpi_support(g_gic_its_info->GicRdBase)) {
     Status = val_its_init();
     if ((Status)) {
-      val_print(ACS_PRINT_DEBUG, "  ITS Configure: its_init failed\n", 0);
+      val_print(DEBUG, "  ITS Configure: its_init failed\n");
       goto its_fail;
     }
   } else {
-    val_print(ACS_PRINT_DEBUG, "  ITS Configure: LPI unsupported\n", 0);
+    val_print(DEBUG, "  ITS Configure: LPI unsupported\n");
     goto its_fail;
   }
 
@@ -281,8 +279,8 @@ uint32_t val_gic_its_configure()
 
 its_fail:
 
-  val_print(ACS_PRINT_DEBUG, "  ITS Init failed: ", 0);
-  val_print(ACS_PRINT_DEBUG, "LPI Interrupt related test may not pass\n", 0);
+  val_print(DEBUG, "  ITS Init failed: ");
+  val_print(DEBUG, "LPI Interrupt related test may not pass\n");
   val_memory_free_aligned((void *)g_gic_its_info);
 
   return ACS_STATUS_ERR;
@@ -478,13 +476,13 @@ void val_gic_free_msi(uint32_t bdf, uint32_t device_id, uint32_t its_id,
   its_index = get_its_index(its_id);
   if (its_index >= g_gic_its_info->GicNumIts)
   {
-    val_print(ACS_PRINT_ERR, "\n       Could not find ITS ID [%x]", its_id);
+    val_print(ERROR, "\n       Could not find ITS ID [%x]", its_id);
     return;
   }
 
   if ((g_gic_its_info->GicRdBase == 0) || (g_gic_its_info->GicDBase == 0))
   {
-    val_print(ACS_PRINT_ERR, "\n       GICD/GICRD Base Invalid value", 0);
+    val_print(ERROR, "\n       GICD/GICRD Base Invalid value");
     return;
   }
 
@@ -522,13 +520,13 @@ uint32_t val_gic_request_msi(uint32_t bdf, uint32_t device_id, uint32_t its_id,
   its_index = get_its_index(its_id);
 
   if (its_index >= g_gic_its_info->GicNumIts) {
-    val_print(ACS_PRINT_ERR, "\n       Could not find ITS ID [%x]", its_id);
+    val_print(ERROR, "\n       Could not find ITS ID [%x]", its_id);
     return ACS_STATUS_ERR;
   }
 
   if ((g_gic_its_info->GicRdBase == 0) || (g_gic_its_info->GicDBase == 0))
   {
-    val_print(ACS_PRINT_DEBUG, "\n       GICD/GICRD Base Invalid value", 0);
+    val_print(DEBUG, "\n       GICD/GICRD Base Invalid value");
     return ACS_STATUS_ERR;
   }
 
@@ -570,7 +568,7 @@ uint32_t val_gic_its_get_base(uint32_t its_id, uint64_t *its_base)
   its_index = get_its_index(its_id);
 
   if (its_index >= g_gic_its_info->GicNumIts) {
-    val_print(ACS_PRINT_ERR, "\n       Could not find ITS ID [%x]", its_id);
+    val_print(ERROR, "\n       Could not find ITS ID [%x]", its_id);
     return ACS_STATUS_ERR;
   }
 

@@ -101,7 +101,7 @@ payload(void)
       continue;
 
     if (check_pm_state(e_bdf, &pm_state_before) != ACS_STATUS_PASS) {
-      val_print(ACS_PRINT_ERR, "\n       PM capability missing for exerciser BDF 0x%x", e_bdf);
+      val_print(ERROR, "\n       PM capability missing for exerciser BDF 0x%x", e_bdf);
       fail_cnt++;
       continue;
     }
@@ -119,15 +119,15 @@ payload(void)
     val_time_delay_ms(1 * ONE_MILLISECOND);
 
     if (check_pm_state(e_bdf, &pm_state_after) != ACS_STATUS_PASS) {
-      val_print(ACS_PRINT_ERR, "\n       Failed to read PMCSR for exerciser BDF 0x%x", e_bdf);
+      val_print(ERROR, "\n       Failed to read PMCSR for exerciser BDF 0x%x", e_bdf);
       fail_cnt++;
       continue;
     }
 
     if ((pm_state_after != PM_STATE_D3HOT) || (pm_state_after == pm_state_before)) {
-      val_print(ACS_PRINT_ERR, "\n       PM state transition failed for BDF 0x%x", e_bdf);
-      val_print(ACS_PRINT_ERR, " (before 0x%x)", pm_state_before);
-      val_print(ACS_PRINT_ERR, " (after 0x%x)", pm_state_after);
+      val_print(ERROR, "\n       PM state transition failed for BDF 0x%x", e_bdf);
+      val_print(ERROR, " (before 0x%x)", pm_state_before);
+      val_print(ERROR, " (after 0x%x)", pm_state_after);
       fail_cnt++;
     }
   }

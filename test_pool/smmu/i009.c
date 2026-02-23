@@ -43,7 +43,7 @@ check_smmuv3_2_or_higher(void)
   num_smmu = val_smmu_get_info(SMMU_NUM_CTRL, 0);
 
   if (num_smmu == 0) {
-      val_print(ACS_PRINT_ERR, "\n       No SMMU Controllers are discovered ", 0);
+      val_print(ERROR, "\n       No SMMU Controllers are discovered ");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
       return;
   }
@@ -51,15 +51,15 @@ check_smmuv3_2_or_higher(void)
   while (num_smmu--) {
       /* Read SMMU major version */
       if (val_smmu_get_info(SMMU_CTRL_ARCH_MAJOR_REV, num_smmu) < 3) {
-          val_print(ACS_PRINT_ERR,
-                    "\n       SMMU implementation must be SMMUv3.2 or higher required.", 0);
+          val_print(ERROR,
+                    "\n       SMMU implementation must be SMMUv3.2 or higher required.");
           fail_cnt++;
       } else {
           /* Read SMMU minor version */
           data = VAL_EXTRACT_BITS(val_smmu_read_cfg(SMMUv3_AIDR, num_smmu), 0, 7);
           if (data < 0x2) { /* SMMUv3.2 or higher not implemented */
-              val_print(ACS_PRINT_ERR,
-                        "\n       SMMU implementation must be SMMUv3.2 or higher required.", 0);
+              val_print(ERROR,
+                        "\n       SMMU implementation must be SMMUv3.2 or higher required.");
               fail_cnt++;
           }
       }
@@ -86,7 +86,7 @@ payload_check_l1_l2_table_resizing(void)
   num_smmu = val_smmu_get_info(SMMU_NUM_CTRL, 0);
 
   if (num_smmu == 0) {
-      val_print(ACS_PRINT_ERR, "\n       No SMMU Controllers are discovered ", 0);
+      val_print(ERROR, "\n       No SMMU Controllers are discovered ");
       val_set_status(index, RESULT_SKIP(TEST_NUM1, 01));
       return;
   }
@@ -98,16 +98,16 @@ payload_check_l1_l2_table_resizing(void)
           data = VAL_EXTRACT_BITS(val_smmu_read_cfg(SMMUv3_IDR3, num_smmu), 11, 12);
           /* Non zero value indicates either level or level 2 is supported */
           if (data == 0) {
-              val_print(ACS_PRINT_ERR,
+              val_print(ERROR,
                        "\n       SMMU index = 0x%x doesn't provide level 1 or level 2 support."
                        , num_smmu);
               fail_cnt++;
           }
       } else {
           /* SMMU_IDR3.BBML is SMMUv3 register check */
-          val_print(ACS_PRINT_ERR,
+          val_print(ERROR,
                     "\n       SMMUv2 implementations cannot provide level 1 or level 2 support."
-                    , 0);
+                    );
           fail_cnt++;
       }
   }
@@ -131,7 +131,7 @@ payload_check_smmuv3_3_or_higher(void)
   num_smmu = val_smmu_get_info(SMMU_NUM_CTRL, 0);
 
   if (num_smmu == 0) {
-      val_print(ACS_PRINT_ERR, "\n       No SMMU Controllers are discovered ", 0);
+      val_print(ERROR, "\n       No SMMU Controllers are discovered ");
       val_set_status(index, RESULT_SKIP(TEST_NUM2, 01));
       return;
   }
@@ -139,15 +139,15 @@ payload_check_smmuv3_3_or_higher(void)
   while (num_smmu--) {
       /* Read SMMU major version */
       if (val_smmu_get_info(SMMU_CTRL_ARCH_MAJOR_REV, num_smmu) < 3) {
-          val_print(ACS_PRINT_ERR,
-                    "\n       SMMU implementation must be SMMUv3.3 or higher required.", 0);
+          val_print(ERROR,
+                    "\n       SMMU implementation must be SMMUv3.3 or higher required.");
           fail_cnt++;
       } else {
           /* Read SMMU minor version */
           data = VAL_EXTRACT_BITS(val_smmu_read_cfg(SMMUv3_AIDR, num_smmu), 0, 7);
           if (data < 0x3) { /* SMMUv3.3 or higher not implemented */
-              val_print(ACS_PRINT_ERR,
-                        "\n       SMMU implementation must be SMMUv3.3 or higher required.", 0);
+              val_print(ERROR,
+                        "\n       SMMU implementation must be SMMUv3.3 or higher required.");
               fail_cnt++;
           }
 

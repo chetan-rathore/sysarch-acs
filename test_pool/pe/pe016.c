@@ -93,7 +93,7 @@ pe016_entry(uint32_t num_pe)
 
   smbios_slots = val_get_num_smbios_slots();
   if (smbios_slots == 0) {
-    val_print(ACS_PRINT_WARN, "\n       SMBIOS Table Not Found, Skipping the test\n", 0);
+    val_print(WARN, "\n       SMBIOS Table Not Found, Skipping the test\n");
     status = ACS_STATUS_SKIP;
     val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
 
@@ -105,7 +105,7 @@ pe016_entry(uint32_t num_pe)
   if (status != TEST_SKIP_VAL) {
     g_sve_reg_info = (sve_reg_details *) val_memory_calloc(num_pe, sizeof(sve_reg_details));
     if (g_sve_reg_info == NULL) {
-      val_print(ACS_PRINT_ERR, "\n       Memory Allocation for SVE Register data Failed", 0);
+      val_print(ERROR, "\n       Memory Allocation for SVE Register data Failed");
       return ACS_STATUS_FAIL;
     }
 
@@ -114,17 +114,17 @@ pe016_entry(uint32_t num_pe)
 
     for (i = 0; i < num_pe; i++) {
       reg_buffer = g_sve_reg_info + i;
-      val_print(ACS_PRINT_DEBUG, "\n       PE Index = %d", i);
+      val_print(DEBUG, "\n       PE Index = %d", i);
 
       if (reg_buffer->status == ACS_STATUS_SKIP)
-        val_print(ACS_PRINT_DEBUG, "\n       Processor is not v9, Skipping the test", 0);
+        val_print(DEBUG, "\n       Processor is not v9, Skipping the test");
       else if (reg_buffer->status == ACS_STATUS_ERR)
-        val_print(ACS_PRINT_DEBUG, "\n       Processor Family Not Found in SMBIOS Table", 0);
+        val_print(DEBUG, "\n       Processor Family Not Found in SMBIOS Table");
       else if (reg_buffer->status == ACS_STATUS_FAIL) {
-        val_print(ACS_PRINT_DEBUG, "\n       Processor is v9 and FEAT_SVE2 is not implemented.", 0);
-        val_print(ACS_PRINT_DEBUG, " ID_AA64ZFR0_EL1.SVEver 0x%llx  FAIL", reg_buffer->data);
+        val_print(DEBUG, "\n       Processor is v9 and FEAT_SVE2 is not implemented.");
+        val_print(DEBUG, " ID_AA64ZFR0_EL1.SVEver 0x%llx  FAIL", reg_buffer->data);
       } else
-        val_print(ACS_PRINT_DEBUG, "\n       ID_AA64ZFR0_EL1.SVEver 0x%llx PASS", reg_buffer->data);
+        val_print(DEBUG, "\n       ID_AA64ZFR0_EL1.SVEver 0x%llx PASS", reg_buffer->data);
     }
 
     val_memory_free((void *) g_sve_reg_info);

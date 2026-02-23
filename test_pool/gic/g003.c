@@ -42,7 +42,7 @@ payload()
     data = val_gic_get_info(GIC_INFO_NUM_ITS);
     if (data == 0)
     {
-        val_print(ACS_PRINT_ERR, "\n       GICv3 and PCIe : ITS Not Present", 0);
+        val_print(ERROR, "\n       GICv3 and PCIe : ITS Not Present");
         val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
         return;
     }
@@ -50,7 +50,7 @@ payload()
     data = VAL_EXTRACT_BITS(val_mmio_read(val_get_gicd_base() + GICD_TYPER), 17, 17);
     if (data == 0)
     {
-        val_print(ACS_PRINT_ERR, "\n       GICv3 and PCIe : LPI Not Supported", 0);
+        val_print(ERROR, "\n       GICv3 and PCIe : LPI Not Supported");
         val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
         return;
     }

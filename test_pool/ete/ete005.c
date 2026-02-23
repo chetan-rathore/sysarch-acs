@@ -31,7 +31,7 @@ static void payload(void)
 
     /* ID_AA64DFR0_EL1.TraceBuffer, bits [47:44] non-zero value indicate FEAT_TRBE support */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64DFR0_EL1), 44, 47);
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       ID_AA64DFR0_EL1.TraceBuffer = %llx",
+    val_print_primary_pe(DEBUG, "\n       ID_AA64DFR0_EL1.TraceBuffer = %llx",
                                                                                 data, index);
 
     if (data == 0) {

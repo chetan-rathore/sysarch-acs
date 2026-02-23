@@ -50,7 +50,7 @@ isr()
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
   /* We received our interrupt, so disable PMUIRQ from generating further interrupts */
   val_pe_reg_write(PMOVSCLR_EL0, 0x1);
-  val_print(ACS_PRINT_INFO, "\n       Received PMUIRQ ", 0);
+  val_print(TRACE, "\n       Received PMUIRQ ");
   val_set_status(index, RESULT_PASS(TEST_NUM, 01));
   val_gic_end_of_interrupt(int_id);
 
@@ -70,7 +70,7 @@ payload()
 
   if (int_id != 23) {
       timeout = 0;
-      val_print(ACS_PRINT_ERR, "\n       Incorrect PPI value      %d       ", int_id);
+      val_print(ERROR, "\n       Incorrect PPI value      %d       ", int_id);
       val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
       return;
   }

@@ -172,24 +172,22 @@ test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE
         min_monitor_cnt = PMU_SYS_2_MON_COUNT;
         event_ptr = scenario_2_events;
     } else {
-        val_print(ACS_PRINT_ERR, "\n       Undefined scenario passed to sys_pmu_test_scenario ()",
-                0);
+        val_print(ERROR, "\n       Undefined scenario passed to sys_pmu_test_scenario ()");
         return TEST_FAIL;
     }
 
     /* Validate node_type passed */
     if (node_type != PMU_NODE_MEM_CNTR && node_type != PMU_NODE_PCIE_RC) {
-        val_print(ACS_PRINT_ERR, "\n       Invalid node_type passed to sys_pmu_test_scenario ()",
-                0);
+        val_print(ERROR, "\n       Invalid node_type passed to sys_pmu_test_scenario ()");
         return TEST_FAIL;
     }
 
     /* Get PMU node index corresponding to the node instance primary */
     node_index = val_pmu_get_node_index(node_primary_instance, node_type);
     if (node_index == PMU_INVALID_INDEX) {
-        val_print(ACS_PRINT_ERR, "\n       Node primary instance : 0x%lx ",
+        val_print(ERROR, "\n       Node primary instance : 0x%lx ",
                 node_primary_instance);
-        val_print(ACS_PRINT_ERR, "\n       Node type : 0x%x has no PMU associated with it",
+        val_print(ERROR, "\n       Node type : 0x%x has no PMU associated with it",
                 (uint32_t)node_type);
         return TEST_FAIL;
     }
@@ -197,7 +195,7 @@ test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE
     /* Based on scenario to run check if minimum event counters are met*/
     data = val_pmu_get_monitor_count(node_index);
     if (data < min_monitor_cnt) {
-        val_print(ACS_PRINT_ERR, "\n       PMU node must support atleast %d counter for "
+        val_print(ERROR, "\n       PMU node must support atleast %d counter for "
                     "\n       measuring current scenario ", min_monitor_cnt);
         return TEST_FAIL;
     }
@@ -209,7 +207,7 @@ test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE
         addr_len = val_srat_get_info(SRAT_MEM_ADDR_LEN, node_primary_instance);
         if ((base_addr == SRAT_INVALID_INFO) || (addr_len == SRAT_INVALID_INFO) ||
             (addr_len <= 2 * BUFFER_SIZE)) {
-            val_print(ACS_PRINT_ERR,
+            val_print(ERROR,
                         "\n       Invalid base address for proximity domain : 0x%lx",
                         node_primary_instance);
             return TEST_FAIL;
@@ -220,7 +218,7 @@ test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE
         if (num_ecam == 0) {
             /* If APMT has PCIE RC entry we shouldn't have entered this if(), if we
             did, something's wrong with system information */
-            val_print(ACS_PRINT_ERR, "\n       No ECAMs reported by system", 0);
+            val_print(ERROR, "\n       No ECAMs reported by system");
             return TEST_FAIL;
         }
     }
@@ -230,9 +228,9 @@ test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE
     for (i = 0; i < min_monitor_cnt; i++) {
         status = val_pmu_configure_monitor(node_index, event_ptr[i], i);
         if (status) {
-            val_print(ACS_PRINT_ERR,
+            val_print(ERROR,
                         "\n       Required PMU Event 0x%x not supported", event_ptr[i]);
-            val_print(ACS_PRINT_ERR, " at node %d", node_index);
+            val_print(ERROR, " at node %d", node_index);
             return TEST_FAIL;
         }
     }
@@ -245,7 +243,7 @@ test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE
     if (node_type == PMU_NODE_MEM_CNTR) {
         status = generate_mem_traffic(base_addr, BUFFER_SIZE / 2);
         if (status) {
-            val_print(ACS_PRINT_ERR, "\n       Memory allocation failed", node_index);
+            val_print(ERROR, "\n       Memory allocation failed", node_index);
             val_pmu_disable_all_monitors(node_index);
             return TEST_FAIL;
         }
@@ -268,7 +266,7 @@ test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE
     if (node_type == PMU_NODE_MEM_CNTR) {
         status = generate_mem_traffic(base_addr, BUFFER_SIZE);
         if (status) {
-            val_print(ACS_PRINT_ERR, "\n       Memory allocation failed", node_index);
+            val_print(ERROR, "\n       Memory allocation failed", node_index);
             val_pmu_disable_all_monitors(node_index);
             return TEST_FAIL;
         }
@@ -286,7 +284,7 @@ test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE
     for (i = 0; i < min_monitor_cnt ; i++) {
         /* Check for FAIL */
         if (monitor_data[i].t1_value > monitor_data[i].t2_value) {
-            val_print(ACS_PRINT_ERR, "\n       Monitors didn't move in expected proportions"
+            val_print(ERROR, "\n       Monitors didn't move in expected proportions"
                     " for PMU node index: 0x%x",
                     node_index);
             /* Disable PMU monitors */
@@ -328,7 +326,7 @@ static void payload_check_sys_pmu_scenario(void *arg)
     /* Get number of memory ranges from SRAT table */
     num_mem_range = val_srat_get_info(SRAT_MEM_NUM_MEM_RANGE, 0);
     if (num_mem_range == 0 || num_mem_range == SRAT_INVALID_INFO) {
-        val_print(ACS_PRINT_ERR, "\n       No Proximity domains in the system", 0);
+        val_print(ERROR, "\n       No Proximity domains in the system");
         val_set_status(index, RESULT_FAIL(test_data->test_num, 02));
         return;
     }
@@ -339,7 +337,7 @@ static void payload_check_sys_pmu_scenario(void *arg)
         /* Get proximity domain mapped to the memory range */
         mc_prox_domain = val_srat_get_prox_domain(mem_range_index);
         if (mc_prox_domain == SRAT_INVALID_INFO) {
-            val_print(ACS_PRINT_ERR, "\n       Proximity domain not found", 0);
+            val_print(ERROR, "\n       Proximity domain not found");
             fail_cnt++;
             continue;
         }
@@ -368,7 +366,7 @@ static void payload_check_sys_pmu_scenario(void *arg)
     }
 
     if (!run_flag) {
-        val_print(ACS_PRINT_ERR, "\n       No PMU associated with PCIe interface", 0);
+        val_print(ERROR, "\n       No PMU associated with PCIe interface");
         val_set_status(index, RESULT_FAIL(test_data->test_num, 03));
         return;
     }

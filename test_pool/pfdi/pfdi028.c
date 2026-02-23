@@ -149,7 +149,7 @@ payload_check_pe_locality(void *arg)
   pfdi_fun_status *same_first;
 
   if (num_pe < 2) {
-    val_print(ACS_PRINT_WARN, "\n       Test requires minimum 2 PEs, skipping", 0);
+    val_print(WARN, "\n       Test requires minimum 2 PEs, skipping");
     val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
     return;
   }
@@ -159,7 +159,7 @@ payload_check_pe_locality(void *arg)
   g_pfdi_pe_locality_check = (pfdi_pe_locality_check *)
       val_memory_calloc(1, sizeof(pfdi_pe_locality_check));
   if (g_pfdi_pe_locality_check == NULL) {
-    val_print(ACS_PRINT_ERR, "\n       Memory allocation failed", 0);
+    val_print(ERROR, "\n       Memory allocation failed");
     val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
     return;
   }
@@ -186,7 +186,7 @@ payload_check_pe_locality(void *arg)
   while ((--timeout) && (IS_RESULT_PENDING(val_get_status(other_pe_index))));
 
   if (timeout == 0) {
-    val_print(ACS_PRINT_ERR, "\n       **Timed out** waiting for other PE index = %d",
+    val_print(ERROR, "\n       **Timed out** waiting for other PE index = %d",
               other_pe_index);
     val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
     goto free_locality_buffer;
@@ -208,35 +208,35 @@ payload_check_pe_locality(void *arg)
     idx = i;
 
     if (err->x0[idx] == PFDI_ACS_ERROR) {
-      val_print(ACS_PRINT_WARN, "\n       FORCE_ERROR %a error; skipping checks",
+      val_print(WARN, "\n       FORCE_ERROR %a error; skipping checks",
                 (uint64_t)pfdi_fn_names[idx]);
-      val_print(ACS_PRINT_WARN, " on PE index %d", index);
+      val_print(WARN, " on PE index %d", index);
       test_skip++;
       continue;
     }
 
     if (err->x0[idx] != PFDI_ACS_SUCCESS) {
-      val_print(ACS_PRINT_ERR, "\n       PFDI Force Error failed for %a",
+      val_print(ERROR, "\n       PFDI Force Error failed for %a",
                 (uint64_t)pfdi_fn_names[idx]);
-      val_print(ACS_PRINT_ERR, " x0=%ld", err->x0[idx]);
-      val_print(ACS_PRINT_ERR, " on PE index %d", index);
+      val_print(ERROR, " x0=%ld", err->x0[idx]);
+      val_print(ERROR, " on PE index %d", index);
       test_fail++;
       continue;
     }
 
     if (cross_pe->x0[idx] == PFDI_ACS_UNKNOWN) {
-      val_print(ACS_PRINT_ERR, "\n       Other PE saw injected error for %a",
+      val_print(ERROR, "\n       Other PE saw injected error for %a",
                 (uint64_t)pfdi_fn_names[idx]);
-      val_print(ACS_PRINT_ERR, " x0=%ld", cross_pe->x0[idx]);
-      val_print(ACS_PRINT_ERR, " on PE index %d", other_pe_index);
+      val_print(ERROR, " x0=%ld", cross_pe->x0[idx]);
+      val_print(ERROR, " on PE index %d", other_pe_index);
       test_fail++;
     }
 
     if (same_first->x0[idx] != PFDI_ACS_UNKNOWN) {
-      val_print(ACS_PRINT_ERR, "\n       Calling PE did not see injected error for %a",
+      val_print(ERROR, "\n       Calling PE did not see injected error for %a",
                 (uint64_t)pfdi_fn_names[idx]);
-      val_print(ACS_PRINT_ERR, " x0=%ld", same_first->x0[idx]);
-      val_print(ACS_PRINT_ERR, " on PE index %d", index);
+      val_print(ERROR, " x0=%ld", same_first->x0[idx]);
+      val_print(ERROR, " on PE index %d", index);
       test_fail++;
     }
 

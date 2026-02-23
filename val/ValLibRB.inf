@@ -82,6 +82,7 @@
   src/rule_enum_string_map.c
   src/rule_lookup.c
   src/test_wrappers.c
+  src/val_logger.c
 
 [Packages]
   MdePkg/MdePkg.dec

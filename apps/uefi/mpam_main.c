@@ -404,8 +404,8 @@ execute_tests()
 
     /* check if PE supports MPAM extension, else skip all MPAM tests */
     if (val_pe_feat_check(PE_FEAT_MPAM)) {
-        val_print(ACS_PRINT_TEST,
-                  "\n       PE MPAM extension unimplemented. Skipping all MPAM tests\n", 0);
+        val_print(INFO,
+                  "\n       PE MPAM extension unimplemented. Skipping all MPAM tests\n");
         goto print_test_status;
     }
 
@@ -430,7 +430,7 @@ execute_tests()
     /* Get total number of MSCs reported by MPAM ACPI table */
     msc_node_cnt = val_mpam_get_msc_count();
     if (msc_node_cnt == 0) {
-        val_print(ACS_PRINT_TEST, "\n      *** Exiting suite - No MPAM nodes *** \n", 0);
+        val_print(INFO, "\n      *** Exiting suite - No MPAM nodes *** \n");
         goto print_test_status;
     }
 
@@ -454,11 +454,11 @@ execute_tests()
     FreeMpamAcsMem();
 
 print_test_status:
-    val_print(ACS_PRINT_ERR, "\n     ------------------------------------------------------- \n", 0);
-    val_print(ACS_PRINT_ERR, "     Total Tests run  = %4d;", g_acs_tests_total);
-    val_print(ACS_PRINT_ERR, "  Tests Passed  = %4d", g_acs_tests_pass);
-    val_print(ACS_PRINT_ERR, "  Tests Failed = %4d\n", g_acs_tests_fail);
-    val_print(ACS_PRINT_ERR, "     --------------------------------------------------------- \n", 0);
+    val_print(ERROR, "\n     ------------------------------------------------------- \n");
+    val_print(ERROR, "     Total Tests run  = %4d;", g_acs_tests_total);
+    val_print(ERROR, "  Tests Passed  = %4d", g_acs_tests_pass);
+    val_print(ERROR, "  Tests Failed = %4d\n", g_acs_tests_fail);
+    val_print(ERROR, "     --------------------------------------------------------- \n");
 
     if (g_acs_log_file_handle) {
         ShellCloseFile(&g_acs_log_file_handle);

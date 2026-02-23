@@ -48,7 +48,7 @@ static void payload(void)
     /* Check for interface type is System Register Based */
     status = val_ras_get_info(RAS_INFO_INTF_TYPE, node_index, &value);
     if (status) {
-      val_print(ACS_PRINT_DEBUG, "\n       Interface Type not found index %d", node_index);
+      val_print(DEBUG, "\n       Interface Type not found index %d", node_index);
       fail_cnt++;
       break;
     }
@@ -59,12 +59,12 @@ static void payload(void)
     status = val_ras_get_info(RAS_INFO_ERI_ID, node_index, &eri_id);
     if (status) {
       /* No ERI Support for this node */
-      val_print(ACS_PRINT_DEBUG, "\n       ERI Not supported for node %d", node_index);
+      val_print(DEBUG, "\n       ERI Not supported for node %d", node_index);
     } else {
       test_skip = 0;
       /* ERI Support, Check for PPI */
       if ((eri_id < 16) || (eri_id > 31)) {
-        val_print(ACS_PRINT_ERR, "\n       ERI Not PPI for node %d", node_index);
+        val_print(ERROR, "\n       ERI Not PPI for node %d", node_index);
         fail_cnt++;
         continue;
       }
@@ -74,12 +74,12 @@ static void payload(void)
     status = val_ras_get_info(RAS_INFO_FHI_ID, node_index, &fhi_id);
     if (status) {
       /* No FHI Support for this node */
-      val_print(ACS_PRINT_DEBUG, "\n       FHI Not supported for node %d", node_index);
+      val_print(DEBUG, "\n       FHI Not supported for node %d", node_index);
     } else {
       test_skip = 0;
       /* FHI Support, Check for PPI */
       if ((fhi_id < 16) || (fhi_id > 31)) {
-        val_print(ACS_PRINT_ERR, "\n       FHI Not PPI for node %d", node_index);
+        val_print(ERROR, "\n       FHI Not PPI for node %d", node_index);
         fail_cnt++;
         continue;
       }

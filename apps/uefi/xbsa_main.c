@@ -193,12 +193,12 @@ execute_tests()
     }
 
     /* Print ACS header */
-    val_print(ACS_PRINT_TEST, "\n\nxBSA Architecture Compliance Suite", 0);
-    val_print(ACS_PRINT_TEST, "\n          Version %d.", XBSA_ACS_MAJOR_VER);
-    val_print(ACS_PRINT_TEST, "%d.", XBSA_ACS_MINOR_VER);
-    val_print(ACS_PRINT_TEST, "%d\n", XBSA_ACS_SUBMINOR_VER);
-    val_print(ACS_PRINT_TEST, "(Print level is %2d)\n\n", g_print_level);
-    val_print(ACS_PRINT_TEST, "\n       Creating Platform Information Tables\n", 0);
+    val_print(INFO, "\n\nxBSA Architecture Compliance Suite");
+    val_print(INFO, "\n          Version %d.", XBSA_ACS_MAJOR_VER);
+    val_print(INFO, "%d.", XBSA_ACS_MINOR_VER);
+    val_print(INFO, "%d\n", XBSA_ACS_SUBMINOR_VER);
+    val_print(INFO, "(Print level is %2d)\n\n", g_print_level);
+    val_print(INFO, "\n       Creating Platform Information Tables\n");
 
 
     /* Create info tables */
@@ -253,7 +253,7 @@ execute_tests()
     }
 
     val_print_acs_test_status_summary();
-    val_print(ACS_PRINT_ERR, "\n      *** ACS tests complete. Reset the system. ***\n\n", 0);
+    val_print(ERROR, "\n      *** ACS tests complete. Reset the system. ***\n\n");
 
     freeAcsMem();
 

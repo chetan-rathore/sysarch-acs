@@ -30,7 +30,7 @@ void
 isr_vir()
 {
   val_timer_set_vir_el1(0);
-  val_print(ACS_PRINT_INFO, "\n       Received virt el1 interrupt   ", 0);
+  val_print(TRACE, "\n       Received virt el1 interrupt   ");
   val_set_status(0, RESULT_PASS(TEST_NUM, 1));
   val_gic_end_of_interrupt(intid);
 }
@@ -53,11 +53,11 @@ payload()
   intid = val_timer_get_info(TIMER_INFO_VIR_EL1_INTID, 0);
 
   if ((intid < 16 || intid > 31) && (!val_gic_is_valid_eppi(intid)))
-      val_print(ACS_PRINT_WARN,
+      val_print(WARN,
           "\n       EL0-Virtual timer not mapped to PPI recommended range, INTID: %d   ", intid);
 
   if (val_gic_install_isr(intid, isr_vir)) {
-      val_print(ACS_PRINT_ERR, "\n       GIC Install Handler Failed...", 0);
+      val_print(ERROR, "\n       GIC Install Handler Failed...");
       val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
       return;
   }
@@ -69,7 +69,7 @@ payload()
   }
 
   if (timeout == 0) {
-    val_print(ACS_PRINT_ERR,
+    val_print(ERROR,
         "\n       EL0-Virtual timer interrupt not received on INTID: %d   ", intid);
     val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
     return;

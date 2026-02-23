@@ -120,14 +120,14 @@ apply_user_config_and_defaults(void)
     }
 
     /* Check sanity of print level, default accordingly */
-    if (g_print_level < ACS_PRINT_INFO) {
-        val_print(ACS_PRINT_ERR, "\nPrint Level %d is not supported.\n", g_print_level);
-        val_print(ACS_PRINT_ERR, "\nSetting Print level to %d\n", ACS_PRINT_INFO);
-        g_print_level = ACS_PRINT_INFO;
-    } else if (g_print_level > ACS_PRINT_ERR) {
-        val_print(ACS_PRINT_ERR, "\nPrint Level %d is not supported.\n", g_print_level);
-        val_print(ACS_PRINT_ERR, "\nSetting Print level to %d\n", ACS_PRINT_ERR);
-        g_print_level = ACS_PRINT_ERR;
+    if (g_print_level < TRACE) {
+        val_print(ERROR, "\nPrint Level %d is not supported.\n", g_print_level);
+        val_print(ERROR, "\nSetting Print level to %d\n", TRACE);
+        g_print_level = TRACE;
+    } else if (g_print_level > ERROR) {
+        val_print(ERROR, "\nPrint Level %d is not supported.\n", g_print_level);
+        val_print(ERROR, "\nSetting Print level to %d\n", ERROR);
+        g_print_level = ERROR;
     }
 
     return ACS_STATUS_PASS;
@@ -149,7 +149,7 @@ ShellAppMainpcbsa(void)
 
     Status = apply_user_config_and_defaults();
     if (Status != ACS_STATUS_PASS) {
-        val_print(ACS_PRINT_ERR, "\napply_user_config_and_defaults() failed, Exiting...\n", 0);
+        val_print(ERROR, "\napply_user_config_and_defaults() failed, Exiting...\n");
         goto exit_acs;
     }
 
@@ -163,7 +163,7 @@ ShellAppMainpcbsa(void)
     acs_apply_el3_params();
 
 #if ACS_ENABLE_MMU
-    val_print(ACS_PRINT_TEST, " Enabling MMU\n", 0);
+    val_print(INFO, " Enabling MMU\n");
 
     /* Create MMU page tables before enabling the MMU at EL2 */
     if (val_setup_mmu())
@@ -173,20 +173,20 @@ ShellAppMainpcbsa(void)
     if (val_enable_mmu())
         return ACS_STATUS_FAIL;
 #else
-    val_print(ACS_PRINT_TEST, "Skipping MMU setup/enable (ACS_ENABLE_MMU=0)\n", 0);
+    val_print(INFO, "Skipping MMU setup/enable (ACS_ENABLE_MMU=0)\n");
 #endif
 
-    val_print(ACS_PRINT_TEST, "\n\n PC BSA Architecture Compliance Suite\n", 0);
-    val_print(ACS_PRINT_TEST, "\n          Version %d.", PC_BSA_ACS_MAJOR_VER);
-    val_print(ACS_PRINT_TEST, "%d.", PC_BSA_ACS_MINOR_VER);
-    val_print(ACS_PRINT_TEST, "%d\n", PC_BSA_ACS_SUBMINOR_VER);
+    val_print(INFO, "\n\n PC BSA Architecture Compliance Suite\n");
+    val_print(INFO, "\n          Version %d.", PC_BSA_ACS_MAJOR_VER);
+    val_print(INFO, "%d.", PC_BSA_ACS_MINOR_VER);
+    val_print(INFO, "%d\n", PC_BSA_ACS_SUBMINOR_VER);
 
-    val_print(ACS_PRINT_TEST, LEVEL_PRINT_FORMAT(g_level_value, g_level_filter_mode,
+    val_print(INFO, LEVEL_PRINT_FORMAT(g_level_value, g_level_filter_mode,
                 PCBSA_LEVEL_FR), g_level_value);
 
-    val_print(ACS_PRINT_TEST, "(Print level is %2d)\n\n", g_print_level);
+    val_print(INFO, "(Print level is %2d)\n\n", g_print_level);
 
-    val_print(ACS_PRINT_TEST, " Creating Platform Information Tables\n", 0);
+    val_print(INFO, " Creating Platform Information Tables\n");
 
     Status = createPeInfoTable();
     if (Status)
@@ -261,20 +261,20 @@ ShellAppMainpcbsa(void)
         /* Merge arch rules if any, then apply CLI filters (-skip, -m, -skipmodule) */
         g_rule_count = filter_rule_list_by_cli(&g_rule_list, g_rule_count);
         if (g_rule_count == 0 || g_rule_list == NULL) {
-            val_print(ACS_PRINT_ERR, "\nRule list empty, nothing to execute, Exiting...\n", 0);
+            val_print(ERROR, "\nRule list empty, nothing to execute, Exiting...\n");
             return -1;
         }
 
         /* Run rule based test orchestrator */
         run_tests(g_rule_list, g_rule_count);
     } else {
-        val_print(ACS_PRINT_ERR, "\nInvalid rule list or arch selected, Exiting...\n", 0);
+        val_print(ERROR, "\nInvalid rule list or arch selected, Exiting...\n");
         return -1;
     }
 
 print_test_status:
     val_print_acs_test_status_summary();
-    val_print(ACS_PRINT_ERR, "\n      *** PC BSA tests complete. Reset the system. ***\n\n", 0);
+    val_print(INFO, "\n      *** PC BSA tests complete. Reset the system. ***\n\n");
 
 exit_acs:
     freeAcsMem();

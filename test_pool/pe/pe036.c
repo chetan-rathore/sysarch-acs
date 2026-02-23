@@ -32,7 +32,7 @@ static void payload(void)
     /* Read ID_AA64MMFR2_EL1[27:24] for enhanced Nested Virtualization support */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64MMFR2_EL1), 24, 27);
     if (index == primary_pe_idx) {
-        val_print(ACS_PRINT_DEBUG, "\n       ID_AA64MMFR2_EL1.NV  = %llx", data);
+        val_print(DEBUG, "\n       ID_AA64MMFR2_EL1.NV  = %llx", data);
     }
 
     /* Read ID_AA64MMFR2_EL1.NV[27:24] == 2 indicates FEAT_NV2 support

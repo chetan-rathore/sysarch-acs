@@ -41,7 +41,7 @@ static void payload(void)
 
   /* Get the number of Root Complex in the system */
   if (!num_pcie_rc) {
-     val_print(ACS_PRINT_DEBUG, "\n       Skip because no PCIe RC detected  ", 0);
+     val_print(DEBUG, "\n       Skip because no PCIe RC detected  ");
      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
      return;
   }
@@ -57,7 +57,7 @@ static void payload(void)
 
       if (!rc_ats_supp)
       {
-          val_print(ACS_PRINT_ERR, "\n       ATS Capability Not Present for RC: %x", num_pcie_rc);
+          val_print(ERROR, "\n       ATS Capability Not Present for RC: %x", num_pcie_rc);
           test_fails++;
       }
   }

@@ -47,7 +47,7 @@ payload(void)
   /* Allocate memory for interrupt mappings */
   intr_map = val_aligned_alloc(MEM_ALIGN_4K, sizeof(PERIPHERAL_IRQ_MAP));
   if (!intr_map) {
-    val_print(ACS_PRINT_ERR, "\n       Memory allocation error", 0);
+    val_print(ERROR, "\n       Memory allocation error");
     val_set_status(pe_index, RESULT_FAIL (TEST_NUM, 1));
     return;
   }
@@ -64,7 +64,7 @@ payload(void)
       if ((dp_type != RP) && (dp_type != EP) && (dp_type != DP) && (dp_type != UP))
           continue;
 
-      val_print(ACS_PRINT_DEBUG, "\n       BDF - 0x%x", bdf);
+      val_print(DEBUG, "\n       BDF - 0x%x", bdf);
 
       /* Read Interrupt Line Register */
       val_pcie_read_cfg(bdf, TYPE01_ILR, &reg_value);
@@ -80,7 +80,7 @@ payload(void)
             val_set_status(pe_index, RESULT_WARN(TEST_NUM, 1));
             return;
         } else {
-            val_print (ACS_PRINT_DEBUG,
+            val_print (DEBUG,
                         "\n       PCIe Legacy IRQs unmapped. Skipping BDF %llx", bdf);
             val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 2));
             continue;
@@ -96,10 +96,10 @@ payload(void)
       if ((intr_line >= 32 && intr_line <= 1019) ||
           (val_gic_espi_supported() && (intr_line >= 4096 &&
                             intr_line <= val_gic_max_espi_val())))  {
-          val_print(ACS_PRINT_INFO, "\n Int is SPI", 0);
+          val_print(TRACE, "\n Int is SPI");
       }
       else {
-          val_print(ACS_PRINT_ERR, "\n Int id %d is not SPI", intr_line);
+          val_print(ERROR, "\n Int id %d is not SPI", intr_line);
           val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 3));
           return;
       }
@@ -116,8 +116,8 @@ payload(void)
       }
 
       if (trigger_type != INTR_TRIGGER_INFO_LEVEL_HIGH) {
-        val_print(ACS_PRINT_ERR,
-            "\n       Legacy interrupt programmed with incorrect trigger type", 0);
+        val_print(ERROR,
+            "\n       Legacy interrupt programmed with incorrect trigger type");
         val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 5));
         return;
       }

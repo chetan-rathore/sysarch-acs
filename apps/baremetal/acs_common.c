@@ -77,8 +77,8 @@ acs_apply_el3_params(void)
     return;
 
   if (!g_el3_param_addr) {
-    val_print(ACS_PRINT_WARN,
-              "EL3 param magic set but param address is 0, ignoring\n", 0);
+    val_print(WARN,
+              "EL3 param magic set but param address is 0, ignoring\n");
     return;
   }
 
@@ -86,15 +86,15 @@ acs_apply_el3_params(void)
 
   /* Optional: version check (kept minimal, versioned for future proofing) */
   if (params->version != ACS_EL3_PARAM_VERSION) {
-    val_print(ACS_PRINT_WARN,
+    val_print(WARN,
               "Unsupported EL3 param version %ld, ignoring\n", params->version);
     return;
   }
 
-  val_print(ACS_PRINT_DEBUG, "EL3 params: tests=0x%lx", params->rule_array_addr);
-  val_print(ACS_PRINT_DEBUG, " (%ld),", params->rule_array_count);
-  val_print(ACS_PRINT_DEBUG, " modules=0x%lx", params->module_array_addr);
-  val_print(ACS_PRINT_DEBUG, " (%ld)\n", params->module_array_count);
+  val_print(DEBUG, "EL3 params: tests=0x%lx", params->rule_array_addr);
+  val_print(DEBUG, " (%ld),", params->rule_array_count);
+  val_print(DEBUG, " modules=0x%lx", params->module_array_addr);
+  val_print(DEBUG, " (%ld)\n", params->module_array_count);
 
   /* Override tests if provided */
   if (params->rule_array_addr && params->rule_array_count) {
@@ -130,10 +130,10 @@ acs_apply_compile_params(void)
    */
   g_print_level = ACS_VERBOSE_LEVEL;
 
-  if (g_print_level < ACS_PRINT_INFO)
-    g_print_level = ACS_PRINT_INFO;
-  else if (g_print_level > ACS_PRINT_ERR)
-    g_print_level = ACS_PRINT_ERR;
+  if (g_print_level < TRACE)
+    g_print_level = TRACE;
+  else if (g_print_level > ERROR)
+    g_print_level = ERROR;
 #endif
 
   return;

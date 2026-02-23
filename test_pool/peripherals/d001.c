@@ -41,7 +41,7 @@ test_status_t check_for_usb_intrf (uint32_t usb_type)
     uint32_t usb_pref, usb_alt, progif_pref, progif_alt;
     uint64_t count = val_peripheral_get_info(NUM_USB, 0);
 
-    val_print(ACS_PRINT_DEBUG, "\n       Num of  USB CTRL %d detected", count);
+    val_print(DEBUG, "\n       Num of  USB CTRL %d detected", count);
     /* If USB peripheral count is zero, skip the test */
     if (count == 0) {
         return TEST_SKIP;
@@ -63,48 +63,47 @@ test_status_t check_for_usb_intrf (uint32_t usb_type)
     while (count != 0) {
         /* If DT system */
         if (val_peripheral_get_info(USB_PLATFORM_TYPE, count - 1) == PLATFORM_TYPE_DT) {
-            val_print(ACS_PRINT_INFO, "\n       USB %d info from DT table", count - 1);
+            val_print(TRACE, "\n       USB %d info from DT table", count - 1);
 
             interface = val_peripheral_get_info(USB_INTERFACE_TYPE, count - 1);
-            val_print(ACS_PRINT_DEBUG, "\n       USB interface is %d", interface);
+            val_print(DEBUG, "\n       USB interface is %d", interface);
             if (interface != usb_pref) {
                 /* Continue if USB implements allowed alternative else fail */
                 if (interface == usb_alt) {
                     count--;
                     continue;
                 } else {
-                    val_print(ACS_PRINT_WARN, "\n       Detected USB CTRL %d supports", count - 1);
-                    val_print(ACS_PRINT_WARN, " %x interface and not EHCI/XHCI", interface);
+                    val_print(WARN, "\n       Detected USB CTRL %d supports", count - 1);
+                    val_print(WARN, " %x interface and not EHCI/XHCI", interface);
                     fail_cnt++;
                 }
             }
         /* For non-DT system */
         } else {
             bdf = val_peripheral_get_info(USB_BDF, count - 1);
-            val_print(ACS_PRINT_DEBUG, "\n       USB bdf %lx info from non DT table", bdf);
-            val_print(ACS_PRINT_DEBUG, "\n       USB %d info from non DT", count - 1);
+            val_print(DEBUG, "\n       USB bdf %lx info from non DT table", bdf);
+            val_print(DEBUG, "\n       USB %d info from non DT", count - 1);
 
             ret = val_pcie_read_cfg(bdf, TYPE01_CCR_SHIFT, &interface);
             /* Extract programming interface field as per PCI Code and ID Assignment
                Specification */
             interface = (interface >> TYPE01_CCR_SHIFT) & 0xFF;
-            val_print(ACS_PRINT_DEBUG, "\n       USB interface value is %lx", interface);
+            val_print(DEBUG, "\n       USB interface value is %lx", interface);
 
             if (ret == PCIE_NO_MAPPING || (interface < PCIE_PROGIF_EHCI) || (interface == 0xFF)) {
-                val_print(ACS_PRINT_INFO, "\n       WARN: USB CTRL ECAM access failed 0x%x  ",
+                val_print(TRACE, "\n       WARN: USB CTRL ECAM access failed 0x%x  ",
                           interface);
-                val_print(ACS_PRINT_INFO, "\n       Re-checking using PCIIO protocol",
-                          0);
+                val_print(TRACE, "\n       Re-checking using PCIIO protocol");
                 ret = val_pcie_io_read_cfg(bdf, TYPE01_CCR_SHIFT, &interface);
                 if (ret == PCIE_NO_MAPPING) {
-                    val_print(ACS_PRINT_DEBUG,
+                    val_print(DEBUG,
                               "\n       Reading device class code using PciIo protocol failed "
-                              , 0);
+                              );
                     fail_cnt++;
                 }
 
                 interface = (interface >> TYPE01_CCR_SHIFT) & 0xFF;
-                val_print(ACS_PRINT_DEBUG, "\n       (PCIIO) USB interface value is %lx",
+                val_print(DEBUG, "\n       (PCIIO) USB interface value is %lx",
                                                                                         interface);
 
                 if (interface != progif_pref) {
@@ -113,9 +112,9 @@ test_status_t check_for_usb_intrf (uint32_t usb_type)
                         count--;
                         continue;
                     } else {
-                        val_print(ACS_PRINT_WARN, "\n       Detected USB CTRL %d supports",
+                        val_print(WARN, "\n       Detected USB CTRL %d supports",
                                   count - 1);
-                        val_print(ACS_PRINT_WARN, " %x interface and not EHCI/XHCI", interface);
+                        val_print(WARN, " %x interface and not EHCI/XHCI", interface);
                         fail_cnt++;
                     }
                 }

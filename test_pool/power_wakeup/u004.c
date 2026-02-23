@@ -38,7 +38,7 @@ isr_failsafe()
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
 
   val_timer_set_phy_el1(0);
-  val_print(ACS_PRINT_ERR, "       Received Failsafe interrupt\n", 0);
+  val_print(ERROR, "       Received Failsafe interrupt\n");
   g_failsafe_int_received = 1;
   /* On some system the failsafe is rcvd just after test interrupt and resulting
      in incorrect fail, to avoid this ensure set test as fail only when failsafe
@@ -58,12 +58,12 @@ isr4()
   uint32_t intid;
 
   val_wd_set_ws0(wd_num, 0);
-  val_print(ACS_PRINT_INFO, "       Received WS0 interrupt\n", 0);
+  val_print(TRACE, "       Received WS0 interrupt\n");
   g_wd_int_received = 1;
   intid = val_wd_get_info(wd_num, WD_INFO_GSIV);
   val_gic_end_of_interrupt(intid);
   val_timer_set_phy_el1(0);
-  val_print(ACS_PRINT_DEBUG, "       Clear Failsafe interrupt\n", 0);
+  val_print(DEBUG, "       Clear Failsafe interrupt\n");
 }
 
 static
@@ -102,7 +102,7 @@ payload4()
   val_set_status(index, RESULT_PASS(TEST_NUM, 1));
 
   if (!wd_num) {
-      val_print(ACS_PRINT_DEBUG, "\n       No watchdog implemented      ", 0);
+      val_print(DEBUG, "\n       No watchdog implemented      ");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -129,7 +129,7 @@ payload4()
 	  status = val_wd_set_ws0(wd_num, timer_expire_val);
           if (status) {
               wakeup_clear_failsafe();
-    	      val_print(ACS_PRINT_ERR, "\n       Setting watchdog timeout failed", 0);
+    	      val_print(ERROR, "\n       Setting watchdog timeout failed");
               val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
               return;
           }
@@ -158,12 +158,12 @@ payload4()
               intid = val_wd_get_info(wd_num, WD_INFO_GSIV);
 	      val_gic_clear_interrupt(intid);
               val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
-    	      val_print(ACS_PRINT_DEBUG,
-                        "\n       PE wakeup by some other events/int or didn't enter WFI", 0);
+    	      val_print(DEBUG,
+                        "\n       PE wakeup by some other events/int or didn't enter WFI");
 	  }
-	  val_print(ACS_PRINT_DEBUG, "\n       delay loop remainig value %d", delay_loop);
+	  val_print(DEBUG, "\n       delay loop remainig value %d", delay_loop);
       } else {
-          val_print(ACS_PRINT_WARN, "\n       GIC Install Handler Failed...", 0);
+          val_print(WARN, "\n       GIC Install Handler Failed...");
           val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
       }
 
@@ -172,7 +172,7 @@ payload4()
   }
 
   if (!ns_wdg) {
-      val_print(ACS_PRINT_DEBUG, "       No non-secure watchdog implemented\n", 0);
+      val_print(DEBUG, "       No non-secure watchdog implemented\n");
       val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
       return;
   }

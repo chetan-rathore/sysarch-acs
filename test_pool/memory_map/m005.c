@@ -45,7 +45,7 @@ static void payload_check_s2_64kb_granule_support(void)
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64PFR0_EL1), 8, 11);
 
     if (data == 0) {
-        val_print(ACS_PRINT_DEBUG, "\n       EL2 not implemented, Skipping the test.", 0);
+        val_print(DEBUG, "\n       EL2 not implemented, Skipping the test.");
         val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
         return;
     }
@@ -55,7 +55,7 @@ static void payload_check_s2_64kb_granule_support(void)
        implemented hence not checking ID_AA64MMFR0_EL1.TGran64 field.*/
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64MMFR0_EL1), 36, 39);
     if (data != 0x2) {
-        val_print(ACS_PRINT_ERR, "\n       64KB granule not supported at stage 2.", 0);
+        val_print(ERROR, "\n       64KB granule not supported at stage 2.");
         val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
         return;
     }
@@ -77,7 +77,7 @@ static void payload_check_peripheral_addr_64kb_apart(void)
     peri_count = val_peripheral_get_info(NUM_ALL, 0);
 
     if (peri_count < 2) {
-        val_print(ACS_PRINT_DEBUG, "\n       No or one peripherals reported by the system.", 0);
+        val_print(DEBUG, "\n       No or one peripherals reported by the system.");
         val_set_status(pe_index, RESULT_SKIP(TEST_NUM1, 01));
         return;
     }
@@ -88,8 +88,8 @@ static void payload_check_peripheral_addr_64kb_apart(void)
 
             peri_addr1 = val_peripheral_get_info(ANY_BASE0, peri_index);
             peri_addr2 = val_peripheral_get_info(ANY_BASE0, peri_index1);
-            val_print(ACS_PRINT_INFO, "\n   addr of Peripheral 1 is  %llx", peri_addr1);
-            val_print(ACS_PRINT_INFO, "\n   addr of Peripheral 2 is  %llx", peri_addr2);
+            val_print(TRACE, "\n   addr of Peripheral 1 is  %llx", peri_addr1);
+            val_print(TRACE, "\n   addr of Peripheral 2 is  %llx", peri_addr2);
 
            if ((peri_addr1 == 0) || (peri_addr2 == 0)) {
                 continue;
@@ -99,7 +99,7 @@ static void payload_check_peripheral_addr_64kb_apart(void)
                          peri_addr1 - peri_addr2 : peri_addr2 - peri_addr1;
 
             if (addr_diff < MEM_SIZE_64KB) {
-                val_print(ACS_PRINT_ERR,
+                val_print(ERROR,
                          "\n  Peripheral base addresses isn't atleast 64Kb apart %llx", addr_diff);
                 fail_cnt++;
             }

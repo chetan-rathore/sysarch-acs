@@ -55,7 +55,7 @@ payload()
           val_set_status(index, RESULT_PASS(TEST_NUM, 1));
       else {
           if (index == primary_pe_idx) {
-              val_print(ACS_PRINT_ERR,
+              val_print(ERROR,
               "\n       Number of PMU counters reported: %d, expected >= 4", data);
           }
           val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
@@ -80,7 +80,7 @@ payload_check_for_pmuv3()
   data = fetch_pmu_version();
   if (data == 0x0 || data == 0xF) {
       val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
-      val_print_primary_pe(ACS_PRINT_ERR,
+      val_print_primary_pe(ERROR,
             "\n       PMUv3 not implemented, ID_AA64DFR0_EL1 PMUVer: 0x%lx", data, primary_pe_idx);
       return;
   }

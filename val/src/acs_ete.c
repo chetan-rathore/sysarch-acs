@@ -69,13 +69,13 @@ uint64_t parse_tracestream(uint8_t *trace_bytes, uint64_t trace_size)
     uint64_t trcidr0_read = val_pe_reg_read(TRCIDR0);
     uint32_t pe_index = val_pe_get_index_mpid(val_pe_get_mpid());
 
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Trace Size: %d ", trace_size, pe_index);
+    val_print_primary_pe(DEBUG, "\n       Trace Size: %d ", trace_size, pe_index);
 
     /* Iterate through trace stream bytes until all are parsed */
     while (byte_index < trace_size) {
-        val_print_primary_pe(ACS_PRINT_DEBUG, "\n       byte_value: %d ",
+        val_print_primary_pe(DEBUG, "\n       byte_value: %d ",
                                                          trace_bytes[byte_index], pe_index);
-        val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Trace index of the byte value: %d ",
+        val_print_primary_pe(DEBUG, "\n       Trace index of the byte value: %d ",
                                                          byte_index, pe_index);
 
         /* Identify and handle packet type based on current header packet byte */
@@ -301,7 +301,7 @@ uint64_t parse_tracestream(uint8_t *trace_bytes, uint64_t trace_size)
                        ((header & Q_EXACT_MATCH_PKT_MASK) == Q_EXACT_MATCH_PKT_VAL))
                 pkt_len = 1 + trace_cbit_len(trace_bytes, byte_index, 1, 5);
               else {
-                  val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Reserved or Invalid Trace Packet",
+                  val_print_primary_pe(DEBUG, "\n       Reserved or Invalid Trace Packet",
                                                                              0, pe_index);
                   return TRACE_PKT_INVALID;
               }
@@ -328,7 +328,7 @@ uint64_t val_ete_get_trace_timestamp(uint64_t buffer_address)
   val_memcpy(trace_bytes, (void *)buffer_address, 100);
   ts_start_byte = parse_tracestream(trace_bytes, sizeof(trace_bytes));
   if (ts_start_byte == TRACE_PKT_INVALID) {
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n      ETE Parsing failed", 0, index);
+    val_print_primary_pe(DEBUG, "\n      ETE Parsing failed", 0, index);
     return 0;
   }
 
@@ -346,11 +346,11 @@ uint64_t val_ete_get_trace_timestamp(uint64_t buffer_address)
   }
 
   if (timestamp == 0) {
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Timestamp Parsing failed", 0, index);
+    val_print_primary_pe(DEBUG, "\n       Timestamp Parsing failed", 0, index);
     return 0;
   }
   else
-    val_print_primary_pe(ACS_PRINT_DEBUG, "\n       Timestamp Value: 0x%llx", timestamp, index);
+    val_print_primary_pe(DEBUG, "\n       Timestamp Value: 0x%llx", timestamp, index);
 
   return timestamp;
 }

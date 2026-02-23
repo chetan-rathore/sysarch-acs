@@ -39,8 +39,8 @@ payload_check_system_counter_presence()
   counter_freq = val_timer_get_info(TIMER_INFO_CNTFREQ, 0);
 
   if (counter_freq == 0) {
-      val_print(ACS_PRINT_DEBUG, "\n       Generic system counter not implemented,"
-                                 " CNTFRQ_EL0 = 0", 0);
+      val_print(DEBUG, "\n       Generic system counter not implemented,"
+                                 " CNTFRQ_EL0 = 0");
       val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
       return;
   } else {
@@ -72,9 +72,9 @@ payload_check_system_timer_freq()
 
   /* Print counter frequency in DEBUG verbosity */
   if (print_mhz)
-      val_print(ACS_PRINT_DEBUG, "\n       Counter frequency is %ld MHz", print_freq);
+      val_print(DEBUG, "\n       Counter frequency is %ld MHz", print_freq);
   else
-      val_print(ACS_PRINT_DEBUG, "\n       Counter frequency is %ld KHz", print_freq);
+      val_print(DEBUG, "\n       Counter frequency is %ld KHz", print_freq);
 
   /* Check if Generic system counter frequency is greater than 10MHz */
   if (counter_freq > 10*1000*1000) {
@@ -84,9 +84,9 @@ payload_check_system_timer_freq()
 
   /* If 10Mhz check fails, print frequency in ERROR verbosity */
   if (print_mhz)
-      val_print(ACS_PRINT_ERR, "\n       Counter frequency is %ld MHz", print_freq);
+      val_print(ERROR, "\n       Counter frequency is %ld MHz", print_freq);
   else
-      val_print(ACS_PRINT_ERR, "\n       Counter frequency is %ld KHz", print_freq);
+      val_print(ERROR, "\n       Counter frequency is %ld KHz", print_freq);
 
   val_set_status(index, RESULT_FAIL(TEST_NUM1, 1));
 }

@@ -33,7 +33,7 @@ payload(void)
 
   num_cxl_hb = val_cxl_get_info(CXL_INFO_NUM_DEVICES, 0);
   if (num_cxl_hb == 0) {
-      val_print(ACS_PRINT_DEBUG, "\n       No CXL devices discovered", 0);
+      val_print(DEBUG, "\n       No CXL devices discovered");
       val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
       return;
   }
@@ -42,7 +42,7 @@ payload(void)
       cxl_hb_base = val_cxl_get_info(CXL_INFO_COMPONENT_BASE, index);
       cxl_hb_len = val_cxl_get_info(CXL_INFO_COMPONENT_LENGTH, index);
       if ((cxl_hb_base == 0) || (cxl_hb_len == 0)) {
-          val_print(ACS_PRINT_ERR, "\n   CHBCR address map failed for CXL HB %x", index);
+          val_print(ERROR, "\n   CHBCR address map failed for CXL HB %x", index);
           test_fails++;
       }
   }

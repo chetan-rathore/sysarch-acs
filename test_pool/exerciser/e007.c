@@ -83,7 +83,7 @@ uint32_t test_sequence2(void *dram_buf1_virt, void *dram_buf1_phys, uint32_t ins
 
   /* Compare the contents of ddr_buf1 and ddr_buf2 for NEW_DATA */
   if (val_memory_compare(dram_buf1_virt, dram_buf2_virt, dma_len)) {
-      val_print(ACS_PRINT_ERR, "\n        I/O coherency failure for Exerciser %4x", instance);
+      val_print(ERROR, "\n        I/O coherency failure for Exerciser %4x", instance);
       return 1;
   }
 
@@ -124,7 +124,7 @@ uint32_t test_sequence1(void *dram_buf1_virt, void *dram_buf1_phys, uint32_t ins
 
   /* Compare the contents of ddr_buf1 and ddr_buf2 for NEW_DATA */
   if (val_memory_compare(dram_buf1_virt, dram_buf2_virt, dma_len)) {
-      val_print(ACS_PRINT_ERR, "\n        I/O coherency failure for Exerciser %4x", instance);
+      val_print(ERROR, "\n        I/O coherency failure for Exerciser %4x", instance);
       return 1;
   }
 
@@ -170,7 +170,7 @@ payload (void)
 
     /* Get the exerciser BDF */
     e_bdf = val_exerciser_get_bdf(instance);
-    val_print(ACS_PRINT_DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
+    val_print(DEBUG, "\n       Exerciser BDF - 0x%x", e_bdf);
 
     /* Find SMMU node index for this exerciser instance */
     smmu_index = val_iovirt_get_rc_smmu_index(PCIE_EXTRACT_BDF_SEG(e_bdf),
@@ -185,7 +185,7 @@ payload (void)
      */
     if (smmu_index != ACS_INVALID_INDEX) {
         if (val_smmu_disable(smmu_index)) {
-            val_print(ACS_PRINT_ERR, "\n       Exerciser %x smmu disable error", instance);
+            val_print(ERROR, "\n       Exerciser %x smmu disable error", instance);
             val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
             return;
         }
@@ -194,7 +194,7 @@ payload (void)
     /* Get a WB, outer shareable DDR Buffer of size TEST_DATA_BLK_SIZE */
     dram_buf1_virt = val_memory_alloc_cacheable(e_bdf, TEST_DATA_BLK_SIZE, &dram_buf1_phys);
     if (!dram_buf1_virt) {
-      val_print(ACS_PRINT_ERR, "\n       WB and OSH mem alloc failure %x", 2);
+      val_print(ERROR, "\n       WB and OSH mem alloc failure %x", 2);
       val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
       return;
     }
@@ -204,7 +204,7 @@ payload (void)
      * No snoop bit in exerciser control register.
      */
     if (val_exerciser_ops(TXN_NO_SNOOP_DISABLE, 0, instance)) {
-       val_print(ACS_PRINT_ERR, "\n       Exerciser %x No Snoop disable error", instance);
+       val_print(ERROR, "\n       Exerciser %x No Snoop disable error", instance);
        goto test_fail;
     }
 

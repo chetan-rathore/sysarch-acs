@@ -35,7 +35,7 @@ esr(uint64_t interrupt_type, void *context)
   /* Update the ELR to return to test specified address */
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
-  val_print(ACS_PRINT_ERR, "\n       Received exception of type: %d", interrupt_type);
+  val_print(ERROR, "\n       Received exception of type: %d", interrupt_type);
 }
 
 static
@@ -55,7 +55,7 @@ payload()
   /* Get Number of nodes with RAS Functionality */
   status = val_ras_get_info(RAS_INFO_NUM_NODES, 0, &num_node);
   if (status || (num_node == 0)) {
-    val_print(ACS_PRINT_DEBUG, "\n       RAS Nodes not found. Skipping...", 0);
+    val_print(DEBUG, "\n       RAS Nodes not found. Skipping...");
     val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
     return;
   }
@@ -66,7 +66,7 @@ payload()
     /* Get Error Record number for this Node */
     status = val_ras_get_info(RAS_INFO_START_INDEX, node_index, &rec_index);
     if (status) {
-      val_print(ACS_PRINT_DEBUG, "\n       Could not get Start Index for index %d", node_index);
+      val_print(DEBUG, "\n       Could not get Start Index for index %d", node_index);
       fail_cnt++;
       continue;
     }
@@ -83,7 +83,7 @@ payload()
     status |= val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
     if (status)
     {
-      val_print(ACS_PRINT_ERR, "\n      Failed in installing the exception handler", 0);
+      val_print(ERROR, "\n      Failed in installing the exception handler");
       val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
       return;
     }
@@ -102,7 +102,7 @@ payload()
       warn_cnt++;
       break;
     } else if (status) {
-      val_print(ACS_PRINT_ERR, "\n       val_ras_inject_error failed, node %d", node_index);
+      val_print(ERROR, "\n       val_ras_inject_error failed, node %d", node_index);
       fail_cnt++;
       break;
     }
@@ -111,7 +111,7 @@ exception_return:
     /* Read Status Register for RAS Nodes */
     status = val_ras_check_err_record(node_index, err_in_params.ras_error_type);
     if (status) {
-      val_print(ACS_PRINT_ERR, "\n       Err Status Check Failed, for node %d", node_index);
+      val_print(ERROR, "\n       Err Status Check Failed, for node %d", node_index);
       fail_cnt++;
       continue;
     }

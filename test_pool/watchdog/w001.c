@@ -37,7 +37,7 @@ payload()
     uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
     uint32_t data, ns_wdg = 0;
 
-    val_print(ACS_PRINT_DEBUG,
+    val_print(DEBUG,
             "\n       Found %d watchdogs in table             ",
             wd_num);
 
@@ -58,9 +58,9 @@ payload()
 
         ns_wdg++;
         refresh_base = val_wd_get_info(wd_num, WD_INFO_REFRESH_BASE);
-        val_print(ACS_PRINT_INFO, "\n       Watchdog Refresh base is %llx ", refresh_base);
+        val_print(TRACE, "\n       Watchdog Refresh base is %llx ", refresh_base);
         ctrl_base    = val_wd_get_info(wd_num, WD_INFO_CTRL_BASE);
-        val_print(ACS_PRINT_INFO, "\n       Watchdog CTRL base is  %llx      ", ctrl_base);
+        val_print(TRACE, "\n       Watchdog CTRL base is  %llx      ", ctrl_base);
 
         data = val_mmio_read(ctrl_base);
         /*Control register bits 31:3 are reserved 0*/
@@ -86,10 +86,10 @@ payload()
 
     if (!ns_wdg) {
         if (g_build_sbsa || g_build_pcbsa) {
-            val_print(ACS_PRINT_ERR, "\n       No non-secure Watchdogs reported", 0);
+            val_print(ERROR, "\n       No non-secure Watchdogs reported");
             val_set_status(index, RESULT_FAIL(TEST_NUM, 5));
         } else {
-            val_print(ACS_PRINT_WARN, "\n       No non-secure Watchdogs reported", 0);
+            val_print(WARN, "\n       No non-secure Watchdogs reported");
             val_set_status(index, RESULT_SKIP(TEST_NUM, 3));
         }
         return;

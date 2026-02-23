@@ -72,19 +72,19 @@ void payload(void)
     for (msc_index = 0; msc_index < total_nodes; msc_index++) {
 
         if (!val_mpam_msc_supports_esr(msc_index)) {
-            val_print(ACS_PRINT_DEBUG, "\n       MSC index %d does not support ESR", msc_index);
+            val_print(DEBUG, "\n       MSC index %d does not support ESR", msc_index);
             continue;
         }
 
         if (!val_mpam_msc_supports_ris(msc_index)) {
-            val_print(ACS_PRINT_DEBUG,
+            val_print(DEBUG,
                         "\n       MSC index %d does not support RIS", msc_index);
             continue;
         }
 
         /* Error cannot be generated if MSMON_CFG_MON_SEL register is not implemented */
         if (!val_mpam_msc_supports_mon(msc_index)) {
-            val_print(ACS_PRINT_DEBUG,
+            val_print(DEBUG,
                           "\n       MSC index %d does not implement MSMON", msc_index);
             continue;
         }
@@ -107,7 +107,7 @@ void payload(void)
             BITFIELD_SET(MON_SEL_RIS, (max_ris_index + 1));
 
         val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MON_SEL, data);
-        val_print(ACS_PRINT_DEBUG, "\n       Value written to MSMON_CFG_MON_SEL is %llx", data);
+        val_print(DEBUG, "\n       Value written to MSMON_CFG_MON_SEL is %llx", data);
 
         /* Access MSMON_CFG_* register to cause the error */
         val_mpam_mmr_read(msc_index, REG_MSMON_CFG_MON_SEL);
@@ -117,17 +117,17 @@ void payload(void)
 
         /* Read Error Status Register and check if the error code is recorded */
         esr_errcode = val_mpam_msc_get_errcode(msc_index);
-        val_print(ACS_PRINT_DEBUG, "\n       Error code read is %llx", esr_errcode);
+        val_print(DEBUG, "\n       Error code read is %llx", esr_errcode);
 
         if (esr_errcode != ESR_ERRCODE_UNDEF_RIS_MON_SEL)
         {
-            val_print(ACS_PRINT_ERR, "\n       Expected errcode: %d",
+            val_print(ERROR, "\n       Expected errcode: %d",
                                                                 ESR_ERRCODE_UNDEF_RIS_MON_SEL);
-            val_print(ACS_PRINT_ERR, "\n       Actual errcode: %d", esr_errcode);
+            val_print(ERROR, "\n       Actual errcode: %d", esr_errcode);
             status = check_for_raz_wi(msc_index, REG_MSMON_CFG_MON_SEL);
             if (status == ACS_STATUS_FAIL) {
-                val_print(ACS_PRINT_ERR,
-                    "\n       MSMON_CFG_MON_SEL is not RAZ/WI with out-of-range RIS programmed", 0);
+                val_print(ERROR,
+                    "\n       MSMON_CFG_MON_SEL is not RAZ/WI with out-of-range RIS programmed");
                 test_fail++;
             }
         }

@@ -79,8 +79,8 @@ apply_cli_defaults(void)
   }
 
   if (g_level_value >= PFDI_LEVEL_SENTINEL) {
-      val_print(ACS_PRINT_ERR, "\nInvalid level value passed (%d), ", g_level_value);
-      val_print(ACS_PRINT_ERR, "value should be less than %d.", PFDI_LEVEL_SENTINEL);
+      val_print(ERROR, "\nInvalid level value passed (%d), ", g_level_value);
+      val_print(ERROR, "value should be less than %d.", PFDI_LEVEL_SENTINEL);
       return ACS_STATUS_FAIL;
   }
 
@@ -97,13 +97,13 @@ execute_tests()
       goto exit_close;
   }
 
-  val_print(ACS_PRINT_TEST, "\n\n PFDI Architecture Compliance Suite", 0);
-  val_print(ACS_PRINT_TEST, "\n          Version %d.", PFDI_ACS_MAJOR_VER);
-  val_print(ACS_PRINT_TEST, "%d.", PFDI_ACS_MINOR_VER);
-  val_print(ACS_PRINT_TEST, "%d\n", PFDI_ACS_SUBMINOR_VER);
+  val_print(INFO, "\n\n PFDI Architecture Compliance Suite");
+  val_print(INFO, "\n          Version %d.", PFDI_ACS_MAJOR_VER);
+  val_print(INFO, "%d.", PFDI_ACS_MINOR_VER);
+  val_print(INFO, "%d\n", PFDI_ACS_SUBMINOR_VER);
 
-  val_print(ACS_PRINT_TEST, "\n Starting tests with print level : %2d\n\n", g_print_level);
-  val_print(ACS_PRINT_TEST, "\n Creating Platform Information Tables\n", 0);
+  val_print(INFO, "\n Starting tests with print level : %2d\n\n", g_print_level);
+  val_print(INFO, "\n Creating Platform Information Tables\n");
 
   Status = createPeInfoTable();
   if (Status)
@@ -117,7 +117,7 @@ execute_tests()
 
   Status = val_pfdi_check_implementation();
   if (Status == PFDI_ACS_NOT_IMPLEMENTED) {
-      val_print(ACS_PRINT_ERR, "\n      PFDI not implemented - Skipping all PFDI tests\n", 0);
+      val_print(ERROR, "\n      PFDI not implemented - Skipping all PFDI tests\n");
       goto exit_summary;
   } else if (Status != ACS_STATUS_PASS) {
       goto exit_summary;
@@ -131,12 +131,12 @@ execute_tests()
       print_selection_summary();
       run_tests(g_rule_list, g_rule_count);
   } else {
-    val_print(ACS_PRINT_TEST, "\nNo rules selected for execution.\n", 0);
+    val_print(INFO, "\nNo rules selected for execution.\n");
   }
 
 exit_summary:
   val_print_acs_test_status_summary();
-  val_print(ACS_PRINT_ERR, "\n      *** PFDI tests complete. *** \n\n", 0);
+  val_print(ERROR, "\n      *** PFDI tests complete. *** \n\n");
 
 exit_close:
   freePfdiAcsMem();
