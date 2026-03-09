@@ -2914,6 +2914,14 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_CXL_TEST_NUM_BASE  +  1,
         },
+        [CXL_02] = {
+            .test_entry_id    = CXL_02_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL Type1/2 SMMU ATS",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  2,
+        },
         [CXL_03] = {
             .test_entry_id    = CXL003_ENTRY,
             .module_id        = CXL,
@@ -3015,6 +3023,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [E036_ENTRY] = e036_entry,
     [E038_ENTRY] = e038_entry,
     [E039_ENTRY] = e039_entry, // used in wrapper.
+    [E040_ENTRY] = e040_entry, // used in wrapper.
     [ETE001_ENTRY] = ete001_entry,
     [ETE002_ENTRY] = ete002_entry,
     [ETE003_ENTRY] = ete003_entry,
@@ -3064,6 +3073,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [RE_REG_1_ENTRY]   = re_reg_1_entry,
     [V_L1PE_02_ENTRY]  = v_l1pe_02_entry,
     [RI_SMU_1_ENTRY]   = ri_smu_1_entry,
+    [CXL_02_ENTRY]     = cxl_02_entry,
     [G013_ENTRY] = g013_entry,
     [G014_ENTRY] = g014_entry,
     [G015_ENTRY] = g015_entry,
@@ -3258,6 +3268,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PE067_ENTRY] = pe067_entry,
     [PE068_ENTRY] = pe068_entry,
     [CXL001_ENTRY] = cxl001_entry,
+    [CXL002_ENTRY] = cxl002_entry,
     [CXL003_ENTRY] = cxl003_entry,
     [CXL004_ENTRY] = cxl004_entry,
     [CXL010_ENTRY] = cxl010_entry,
@@ -3591,6 +3602,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [E028_ENTRY] = e028_entry,
     [E022_ENTRY] = e022_entry,
     [E023_ENTRY] = e023_entry,
+    [E040_ENTRY] = e040_entry, // used in wrapper.
     [MPAM006_ENTRY] = mpam006_entry, // used in wrapper.
     [MPAM005_ENTRY] = mpam005_entry,
     [MPAM001_ENTRY] = mpam001_entry,
@@ -3635,6 +3647,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PMU011_ENTRY] = pmu011_entry,
     [PMU001_ENTRY] = pmu001_entry,
     [CXL001_ENTRY] = cxl001_entry,
+    [CXL002_ENTRY] = cxl002_entry,
     [CXL003_ENTRY] = cxl003_entry,
     [CXL004_ENTRY] = cxl004_entry,
 #endif /* BAREMETAL_BSA_BUILD */
@@ -3732,6 +3745,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [RE_REC_1_ENTRY]   = re_rec_1_entry,
     [RE_REG_1_ENTRY]   = re_reg_1_entry,
     [RI_SMU_1_ENTRY]   = ri_smu_1_entry,
+    [CXL_02_ENTRY]     = cxl_02_entry,
     [G002_ENTRY] = g002_entry,
     [ITS002_ENTRY] = its002_entry,
     [ITS005_ENTRY] = its005_entry,
@@ -4237,6 +4251,7 @@ RULE_ID_e s_l8shd_1_rule_list[]   = {
 RULE_ID_e s_l8cxl_rule_list[] = {
     /* SBSA CXL Rules */
     CXL_01,
+    CXL_02,
     CXL_03,
     CXL_04,
     CXL_10,

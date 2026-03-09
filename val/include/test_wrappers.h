@@ -43,6 +43,7 @@ uint32_t pci_li_01_entry(uint32_t num_pe);
 uint32_t pci_mm_01_entry(uint32_t num_pe);
 uint32_t pci_mm_03_entry(uint32_t num_pe);
 uint32_t ri_smu_1_entry(uint32_t num_pe);
+uint32_t cxl_02_entry(uint32_t num_pe);
 uint32_t ie_reg_2_entry(uint32_t num_pe);
 uint32_t ie_reg_4_entry(uint32_t num_pe);
 uint32_t pci_in_13_entry(uint32_t num_pe);

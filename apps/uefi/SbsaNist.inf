@@ -165,6 +165,7 @@
   ../../test_pool/exerciser/e029.c
   ../../test_pool/exerciser/e030.c
   ../../test_pool/exerciser/e036.c
+  ../../test_pool/exerciser/e040.c
   ../../test_pool/pmu/pmu001.c
   ../../test_pool/pmu/pmu002.c
   ../../test_pool/pmu/pmu003.c
@@ -204,6 +205,7 @@
   ../../test_pool/ete/ete007.c
   ../../test_pool/ete/ete008.c
   ../../test_pool/cxl/cxl001.c
+  ../../test_pool/cxl/cxl002.c
   ../../test_pool/cxl/cxl003.c
   ../../test_pool/cxl/cxl004.c
   ../../test_pool/cxl/cxl010.c
