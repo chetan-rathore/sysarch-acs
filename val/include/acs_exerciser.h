@@ -165,5 +165,6 @@ uint32_t e036_entry(uint32_t num_pe);
 uint32_t e038_entry(uint32_t num_pe);
 uint32_t e039_entry(uint32_t num_pe);
 uint32_t e040_entry(uint32_t num_pe);
+uint32_t e041_entry(uint32_t num_pe);
 
 #endif

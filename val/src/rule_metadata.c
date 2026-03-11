@@ -2946,6 +2946,22 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_CXL_TEST_NUM_BASE  +  10,
         },
+        [CXL_11] = {
+            .test_entry_id    = CXL_11_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL.mem writeback and AER status",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  11,
+        },
+        [CXL_12] = {
+            .test_entry_id    = CXL_12_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL.cache coherency with exerciser",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  12,
+        },
     };
 
 /* Following structure maps test entry enums with entry function pointers
@@ -3024,6 +3040,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [E038_ENTRY] = e038_entry,
     [E039_ENTRY] = e039_entry, // used in wrapper.
     [E040_ENTRY] = e040_entry, // used in wrapper.
+    [E041_ENTRY] = e041_entry, // used in wrapper.
     [ETE001_ENTRY] = ete001_entry,
     [ETE002_ENTRY] = ete002_entry,
     [ETE003_ENTRY] = ete003_entry,
@@ -3074,6 +3091,8 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [V_L1PE_02_ENTRY]  = v_l1pe_02_entry,
     [RI_SMU_1_ENTRY]   = ri_smu_1_entry,
     [CXL_02_ENTRY]     = cxl_02_entry,
+    [CXL_11_ENTRY]     = cxl_11_entry,
+    [CXL_12_ENTRY]     = cxl_12_entry,
     [G013_ENTRY] = g013_entry,
     [G014_ENTRY] = g014_entry,
     [G015_ENTRY] = g015_entry,
@@ -3272,6 +3291,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [CXL003_ENTRY] = cxl003_entry,
     [CXL004_ENTRY] = cxl004_entry,
     [CXL010_ENTRY] = cxl010_entry,
+    [CXL011_ENTRY] = cxl011_entry,
 /* The following test entries are excluded from compilation for the BSA DT UEFI App, as they are
    not required for the BSA DT build. These tests invoke VAL APIs, which in turn call PAL APIs,
    and PAL_DT lacks a few necessary implementations.*/
@@ -3603,6 +3623,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [E022_ENTRY] = e022_entry,
     [E023_ENTRY] = e023_entry,
     [E040_ENTRY] = e040_entry, // used in wrapper.
+    [E041_ENTRY] = e041_entry, // used in wrapper.
     [MPAM006_ENTRY] = mpam006_entry, // used in wrapper.
     [MPAM005_ENTRY] = mpam005_entry,
     [MPAM001_ENTRY] = mpam001_entry,
@@ -3746,6 +3767,8 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [RE_REG_1_ENTRY]   = re_reg_1_entry,
     [RI_SMU_1_ENTRY]   = ri_smu_1_entry,
     [CXL_02_ENTRY]     = cxl_02_entry,
+    [CXL_11_ENTRY]     = cxl_11_entry,
+    [CXL_12_ENTRY]     = cxl_12_entry,
     [G002_ENTRY] = g002_entry,
     [ITS002_ENTRY] = its002_entry,
     [ITS005_ENTRY] = its005_entry,
@@ -4255,6 +4278,8 @@ RULE_ID_e s_l8cxl_rule_list[] = {
     CXL_03,
     CXL_04,
     CXL_10,
+    CXL_11,
+    CXL_12,
 
     RULE_ID_SENTINEL
 };

@@ -346,6 +346,9 @@ uint32_t pal_exerciser_set_param(EXERCISER_PARAM_TYPE Type, uint64_t Value1, uin
                              pal_exerciser_get_pcie_config_offset(Bdf), Data);
         return 0;
 
+      case ENABLE_CACHE_TXN:
+        return 1;
+
       default:
           return 1;
   }

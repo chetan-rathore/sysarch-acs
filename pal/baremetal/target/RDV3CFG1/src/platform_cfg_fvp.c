@@ -265,13 +265,17 @@ PCIE_ROOT_INFO_TABLE platform_root_pcie_cfg = {
 };
 
 CXL_INFO_TABLE platform_cxl_cfg = {
-    .num_entries                    = PLATFORM_OVERRIDE_NUM_CXL_HB,
+    .num_entries                     = PLATFORM_OVERRIDE_NUM_CXL_HB,
+    .device[0].cfmws_count           = PLATFORM_OVERRIDE_CXL0_WINDOW_COUNT,
     .device[0].uid                   = PLATFORM_OVERRIDE_CXL0_UID,
     .device[0].component_reg_type    = PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_TYPE,
     .device[0].component_reg_base    = PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_BASE,
     .device[0].component_reg_length  = PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_LENGTH,
     .device[0].cxl_version           = PLATFORM_OVERRIDE_CXL0_CXL_VERSION,
     .device[0].cxl_struct_type       = PLATFORM_OVERRIDE_CXL0_CXL_STRUCT_TYPE,
+    .device[0].cfmws_base[0]         = PLATFORM_OVERRIDE_CXL0_WINDOW_BASE,
+    .device[0].cfmws_length[0]       = PLATFORM_OVERRIDE_CXL0_WINDOW_SIZE,
+    .device[0].cfmws_window[0]       = PLATFORM_OVERRIDE_CXL0_WINDOW_RESTRICTIONS,
 
 /** Configure more CXL info details as per specification for more than 1 HB
     Refer to platform_override_fvp.h file for an example

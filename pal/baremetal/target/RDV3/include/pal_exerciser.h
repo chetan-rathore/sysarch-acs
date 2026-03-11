@@ -1,6 +1,6 @@
 
 /** @file
- * Copyright (c) 2025, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2025-2026, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -150,7 +150,8 @@ typedef enum {
     ENABLE_POISON_MODE  = 0xE,
     ENABLE_RAS_CTRL     = 0xF,
     DISABLE_POISON_MODE = 0x10,
-    CLEAR_TXN           = 0x11
+    CLEAR_TXN           = 0x11,
+    ENABLE_CACHE_TXN    = 0x12
 } EXERCISER_PARAM_TYPE;
 
 typedef enum {

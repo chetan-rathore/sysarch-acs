@@ -32,8 +32,24 @@ payload(void)
 {
   uint32_t pe_index;
   uint32_t dpb_field;
+  uint32_t num_cxl_hb, index;
 
   pe_index = val_pe_get_index_mpid(val_pe_get_mpid());
+
+  num_cxl_hb = val_cxl_get_info(CXL_INFO_NUM_DEVICES, 0);
+  if (num_cxl_hb == 0) {
+      val_print(ACS_PRINT_DEBUG, "\n       No CXL devices discovered", 0);
+      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      return;
+  }
+
+  for (index = 0; index < num_cxl_hb; index++) {
+      if (val_cxl_check_persistent_memory(index)) {
+          val_print(ACS_PRINT_DEBUG, "\n       No Persistent memory supported", 0);
+          val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 2));
+          return;
+      }
+  }
 
   dpb_field = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64ISAR1_EL1), 0, 3);
 

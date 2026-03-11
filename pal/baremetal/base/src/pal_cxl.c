@@ -25,7 +25,9 @@ void
 pal_cxl_create_info_table(CXL_INFO_TABLE *CxlTable)
 {
 
-  uint32_t i = 0;
+  uint32_t i = 0, k = 0;
+  uint32_t host_count, window_count;
+  uint32_t max_windows;
 
   if (CxlTable == NULL) {
     print(ACS_PRINT_ERR, "Input CXL Table Pointer is NULL. Cannot create CXL INFO Table\n");
@@ -39,17 +41,31 @@ pal_cxl_create_info_table(CXL_INFO_TABLE *CxlTable)
     return;
   }
 
+  host_count = platform_cxl_cfg.num_entries;
 
-  for (i = 0; i < platform_cxl_cfg.num_entries; i++)
-  {
-      CxlTable->device[i].uid                   = platform_cxl_cfg.device[i].uid;
-      CxlTable->device[i].component_reg_type    = platform_cxl_cfg.device[i].component_reg_type;
-      CxlTable->device[i].component_reg_base    = platform_cxl_cfg.device[i].component_reg_base;
-      CxlTable->device[i].component_reg_length  = platform_cxl_cfg.device[i].component_reg_length;
-      CxlTable->device[i].cxl_version           = platform_cxl_cfg.device[i].cxl_version;
-      CxlTable->device[i].cxl_struct_type       = platform_cxl_cfg.device[i].cxl_struct_type;
-      CxlTable->num_entries++;
-   }
+  max_windows = CXL_MAX_CFMWS_WINDOWS;
+  for (i = 0; i < host_count; i++) {
+    CxlTable->device[i].cxl_struct_type = platform_cxl_cfg.device[i].cxl_struct_type;
+    CxlTable->device[i].uid = platform_cxl_cfg.device[i].uid;
+    CxlTable->device[i].component_reg_type = platform_cxl_cfg.device[i].component_reg_type;
+    CxlTable->device[i].component_reg_base = platform_cxl_cfg.device[i].component_reg_base;
+    CxlTable->device[i].component_reg_length = platform_cxl_cfg.device[i].component_reg_length;
+    CxlTable->device[i].cxl_version = platform_cxl_cfg.device[i].cxl_version;
+
+    window_count = platform_cxl_cfg.device[i].cfmws_count;
+    if (window_count > max_windows) {
+      window_count = max_windows;
+      print(ACS_PRINT_WARN, "CFMWS count exceeds per-host capacity. Truncating\n");
+    }
+    CxlTable->device[i].cfmws_count = window_count;
+
+    for (k = 0; k < window_count; k++) {
+      CxlTable->device[i].cfmws_base[k] = platform_cxl_cfg.device[i].cfmws_base[k];
+      CxlTable->device[i].cfmws_length[k] = platform_cxl_cfg.device[i].cfmws_length[k];
+      CxlTable->device[i].cfmws_window[k] = platform_cxl_cfg.device[i].cfmws_window[k];
+    }
+  }
+  CxlTable->num_entries = host_count;
   return;
 }
 

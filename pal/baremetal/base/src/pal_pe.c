@@ -323,6 +323,9 @@ DataCacheCleanVA(uint64_t addr);
 void
 DataCacheInvalidateVA(uint64_t addr);
 
+void
+DataCacheInvalidateVAPoC(uint64_t addr);
+
 /**
   @brief Perform cache maintenance operation on an address
 
@@ -343,6 +346,9 @@ pal_pe_data_cache_ops_by_va(uint64_t addr, uint32_t type)
       break;
       case INVALIDATE:
           DataCacheInvalidateVA(addr);
+      break;
+      case CLEAN_POC:
+          DataCacheInvalidateVAPoC(addr);
       break;
       default:
           DataCacheCleanInvalidateVA(addr);

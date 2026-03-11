@@ -625,6 +625,10 @@
 #define PLATFORM_OVERRIDE_CXL0_COMPONENT_REG_LENGTH  0x0  /* Length of the range */
 #define PLATFORM_OVERRIDE_CXL0_CXL_VERSION           0x0  /* CXL Version */
 #define PLATFORM_OVERRIDE_CXL0_CXL_STRUCT_TYPE       0x0  /* Type of CXL Structure [CHBS/CFMWS] */
+#define PLATFORM_OVERRIDE_CXL0_WINDOW_COUNT          0x0  /* CXL Window count */
+#define PLATFORM_OVERRIDE_CXL0_WINDOW_BASE           0x0  /* CFMWS Base*/
+#define PLATFORM_OVERRIDE_CXL0_WINDOW_SIZE           0x0  /* CFMWS Length*/
+#define PLATFORM_OVERRIDE_CXL0_WINDOW_RESTRICTIONS   0x0  /* CFMWS Window restrictions*/
 
 /* -----------------------------  Peripheral info  ----------------------------- */
 #define PLATFORM_OVERRIDE_PERIPHERAL_COUNT 2  //UART + USB + SATA

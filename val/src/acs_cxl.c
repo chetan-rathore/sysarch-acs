@@ -227,6 +227,7 @@ val_cxl_print_component_summary(void)
       val_print(ACS_PRINT_INFO, "     CompReg Len   : 0x%llx", entry->component_reg_length);
     }
 
+
     val_print(ACS_PRINT_INFO, "   HDM Decoder Count  : %u", entry->hdm_decoder_count);
   }
 }
@@ -1146,6 +1147,7 @@ val_cxl_create_info_table(uint64_t *cxl_info_table)
 
   uint32_t num_cxl_hb = 0;
   uint32_t index;
+  uint32_t window;
 
   if (cxl_info_table == NULL) {
     val_print(ACS_PRINT_ERR, " CXL_INFO: Input table pointer is NULL ", 0);
@@ -1178,6 +1180,14 @@ val_cxl_create_info_table(uint64_t *cxl_info_table)
     val_print(ACS_PRINT_INFO, "   Component Base     : 0x%llx\n", entry->component_reg_base);
     val_print(ACS_PRINT_INFO, "   Component Length   : 0x%llx\n", entry->component_reg_length);
     val_print(ACS_PRINT_INFO, "   Revision           : 0x%x\n", entry->cxl_version);
+
+    val_print(ACS_PRINT_INFO, "   CFMWS Count        : %u", entry->cfmws_count);
+
+    for (window = 0; window < entry->cfmws_count && window < CXL_MAX_CFMWS_WINDOWS; window++) {
+      val_print(ACS_PRINT_INFO, "     CFMWS Index       : %u\n", window);
+      val_print(ACS_PRINT_INFO, "       Base            : 0x%llx\n", entry->cfmws_base[window]);
+      val_print(ACS_PRINT_INFO, "       Length          : 0x%llx\n", entry->cfmws_length[window]);
+    }
   }
 
   val_cxl_create_table();
@@ -1238,3 +1248,143 @@ val_cxl_get_info(CXL_INFO_e type, uint32_t index)
 
   return 0;
 }
+
+/**
+  @brief  Return number of CFMWS windows associated with a host bridge.
+  @param  host_index  Host bridge index in CXL info table.
+  @return CFMWS window count or 0 on error.
+**/
+uint32_t
+val_cxl_get_cfmws_count(uint32_t host_index)
+{
+  if (g_cxl_info_table == NULL)
+    return 0;
+
+  if (host_index >= g_cxl_info_table->num_entries)
+    return 0;
+
+  CXL_INFO_BLOCK *entry = &g_cxl_info_table->device[host_index];
+  uint32_t count = entry->cfmws_count;
+  uint32_t max_windows = (uint32_t)(sizeof(entry->cfmws_base) /
+                                    sizeof(entry->cfmws_base[0]));
+
+  if (count > max_windows)
+    count = max_windows;
+
+  return count;
+}
+
+uint32_t
+val_cxl_get_cfmws(uint32_t index,
+                  uint32_t window_index,
+                  uint64_t *base,
+                  uint64_t *length)
+{
+  if ((g_cxl_info_table == NULL) || (base == NULL) || (length == NULL))
+    return 1;
+
+  if (index >= g_cxl_info_table->num_entries)
+    return 1;
+
+  CXL_INFO_BLOCK *entry = &g_cxl_info_table->device[index];
+
+  if (window_index >= entry->cfmws_count)
+    return 1;
+
+  if (window_index >= (uint32_t)(sizeof(entry->cfmws_base) /
+                                 sizeof(entry->cfmws_base[0])))
+    return 1;
+
+  *base   = entry->cfmws_base[window_index];
+  *length = entry->cfmws_length[window_index];
+  return 0;
+}
+
+/**
+  @brief  Return base and length of a CFMWS window for a host bridge.
+  @param  host_index    Host bridge index in CXL info table.
+  @param  window_index  CFMWS slot index.
+  @param  base          Output base HPA.
+  @param  length        Output window length.
+  @return ACS_STATUS_PASS on success.
+**/
+uint32_t
+val_cxl_get_cfmws_window(uint32_t host_index, uint64_t *base, uint64_t *size)
+{
+  uint32_t window_count, idx;
+  uint64_t candidate_base;
+  uint64_t candidate_size;
+
+  window_count = val_cxl_get_cfmws_count(host_index);
+  for (idx = 0; idx < window_count; ++idx)
+  {
+    candidate_base = 0;
+    candidate_size = 0;
+
+    if (val_cxl_get_cfmws(host_index, idx, &candidate_base, &candidate_size) != 0u)
+      continue;
+
+    if ((candidate_base == 0) || (candidate_size == 0))
+      continue;
+
+    if (((candidate_base | candidate_size) & CXL_HDM_ALIGNMENT_MASK) != 0u)
+      continue;
+
+    *base = candidate_base;
+    *size = candidate_size;
+    return ACS_STATUS_PASS;
+  }
+
+  return ACS_STATUS_SKIP;
+
+}
+
+/**
+  @brief  Return if a CXL device is cache capable or not
+
+  @param  bdf    BDf of CXL device.
+
+  @return 1 if cache capable. else return 0
+**/
+uint32_t
+val_cxl_device_cache_capable(uint32_t bdf)
+{
+  uint32_t dvsec_off;
+  uint32_t reg_value;
+  uint32_t cxl_caps;
+
+  if (val_cxl_find_capability(bdf, CXL_DVSEC_ID_DEVICE, &dvsec_off)) {
+      val_print(ACS_PRINT_DEBUG, "DVSEC Capability not found for bdf 0x%x", bdf);
+      return 0;
+  }
+
+  val_pcie_read_cfg(bdf, dvsec_off + CXL_DVSEC_HDR2_OFFSET, &reg_value);
+  cxl_caps = (reg_value >> CXL_DVSEC_CXL_CAPABILITY_SHIFT) & CXL_DVSEC_CXL_CAPABILITY_MASK;
+
+  return ((cxl_caps & CXL_DVSEC_CXL_CAP_CACHE_CAPABLE) != 0);
+}
+
+uint32_t
+val_cxl_check_persistent_memory(uint32_t index)
+{
+  uint32_t window_count, idx;
+  uint32_t memory_type;
+
+  if (g_cxl_info_table == NULL)
+    return 1;
+
+  if (index >= g_cxl_info_table->num_entries)
+    return 1;
+
+  CXL_INFO_BLOCK *entry = &g_cxl_info_table->device[index];
+
+  window_count = val_cxl_get_cfmws_count(index);
+  for (idx = 0; idx < window_count; ++idx)
+  {
+      memory_type = entry->cfmws_window[idx];
+      if (((memory_type & PERSISTENT_MASK) >> PERSISTENT_SHIFT) == 1)
+          return 0;
+  }
+  return 1;
+}
+

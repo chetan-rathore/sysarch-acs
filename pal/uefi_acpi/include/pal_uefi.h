@@ -166,6 +166,7 @@ VOID     pal_pe_data_cache_ops_by_va(UINT64 addr, UINT32 type);
 #define CLEAN_AND_INVALIDATE  0x1
 #define CLEAN                 0x2
 #define INVALIDATE            0x3
+#define CLEAN_POC             0x4
 
 typedef struct {
   UINT32   gic_version;
@@ -299,6 +300,7 @@ typedef enum {
   PREFETCH_MEMORY = 0x1
 }PCIE_MEM_TYPE_INFO_e;
 
+#define CXL_MAX_CFMWS_WINDOWS  2
 /*
  * CXL info table describing per-host bridge component register windows and
  * discovered capability flags from firmware (CEDT) or overrides.
@@ -311,6 +313,10 @@ typedef struct {
   UINT64 component_reg_length; ///< Length of the range
   UINT32 cxl_version;          ///< CXL Version
   UINT32 hdm_decoder_count;    ///< No. of HDM decoders
+  UINT32 cfmws_count;
+  UINT64 cfmws_base[CXL_MAX_CFMWS_WINDOWS];
+  UINT64 cfmws_length[CXL_MAX_CFMWS_WINDOWS];
+  UINT32 cfmws_window[CXL_MAX_CFMWS_WINDOWS];
 } CXL_INFO_BLOCK;
 
 typedef struct {

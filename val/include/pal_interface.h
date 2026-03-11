@@ -459,6 +459,7 @@ uint32_t pal_pcie_get_rp_transaction_frwd_support(uint32_t seg, uint32_t bus,
 uint32_t pal_pcie_dsm_ste_tags(void);
 uint32_t pal_pcie_check_bus_valid(uint32_t bus_index);
 
+#define CXL_MAX_CFMWS_WINDOWS  2
 /*
  * CXL info table definitions capture host bridge component register windows
  * and capability metadata discovered via CEDT or overrides.
@@ -471,6 +472,10 @@ typedef struct {
   uint64_t component_reg_length; ///< Length of the range
   uint32_t cxl_version;          ///< CXL Version
   uint32_t hdm_decoder_count;    ///< No. of HDM decoders
+  uint32_t cfmws_count;
+  uint64_t cfmws_base[CXL_MAX_CFMWS_WINDOWS];
+  uint64_t cfmws_length[CXL_MAX_CFMWS_WINDOWS];
+  uint32_t cfmws_window[CXL_MAX_CFMWS_WINDOWS];
 } CXL_INFO_BLOCK;
 
 typedef struct {
@@ -834,6 +839,7 @@ void     pal_pe_data_cache_ops_by_va(uint64_t addr, uint32_t type);
 #define CLEAN_AND_INVALIDATE  0x1
 #define CLEAN                 0x2
 #define INVALIDATE            0x3
+#define CLEAN_POC             0x4
 
 /* Exerciser definitions */
 #define MAX_ARRAY_SIZE 32
@@ -879,7 +885,8 @@ typedef enum {
     ENABLE_POISON_MODE = 0xE,
     ENABLE_RAS_CTRL = 0xF,
     DISABLE_POISON_MODE = 0x10,
-    CLEAR_TXN = 0x11
+    CLEAR_TXN = 0x11,
+    ENABLE_CACHE_TXN = 0x12
 } EXERCISER_PARAM_TYPE;
 
 typedef enum {

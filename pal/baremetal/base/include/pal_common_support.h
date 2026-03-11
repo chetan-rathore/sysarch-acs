@@ -178,7 +178,7 @@ void pal_warn_not_implemented(const char *api_name);
 #define CLEAN_AND_INVALIDATE  0x1
 #define CLEAN                 0x2
 #define INVALIDATE            0x3
-
+#define CLEAN_POC             0x4
 #define HEAP_INITIALISED      0xDC
 
 #define MEM_SIZE_64K              0x10000
@@ -457,6 +457,7 @@ typedef struct {
   pcie_device_attr device[];         ///< in the format of Segment/Bus/Dev/Func
 } pcie_device_bdf_table;
 
+#define CXL_MAX_CFMWS_WINDOWS  2
 /*
  * CXL info table describing per-host bridge component register windows and
  * discovered capability flags from firmware (CEDT) or overrides.
@@ -469,6 +470,10 @@ typedef struct {
   uint64_t component_reg_length; ///< Length of the range
   uint32_t cxl_version;          ///< CXL Version
   uint32_t hdm_decoder_count;    ///< No. of HDM decoders
+  uint32_t cfmws_count;
+  uint64_t cfmws_base[CXL_MAX_CFMWS_WINDOWS];
+  uint64_t cfmws_length[CXL_MAX_CFMWS_WINDOWS];
+  uint32_t cfmws_window[CXL_MAX_CFMWS_WINDOWS];
 } CXL_INFO_BLOCK;
 
 typedef struct {
@@ -737,7 +742,8 @@ typedef enum {
     ENABLE_POISON_MODE = 0xE,
     ENABLE_RAS_CTRL = 0xF,
     DISABLE_POISON_MODE = 0x10,
-    CLEAR_TXN = 0x11
+    CLEAR_TXN = 0x11,
+    ENABLE_CACHE_TXN = 0x12
 } EXERCISER_PARAM_TYPE;
 
 typedef enum {

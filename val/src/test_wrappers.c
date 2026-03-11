@@ -312,6 +312,24 @@ cxl_02_entry(uint32_t num_pe)
     return run_pcie_static_and_exerciser(cxl_list, e_list, num_pe);
 }
 
+/* RCXL_11 */
+uint32_t
+cxl_11_entry(uint32_t num_pe)
+{
+    TEST_ENTRY_ID_e tst_entry_list[] = {CXL011_ENTRY, TEST_ENTRY_SENTINEL};
+
+    return run_test_entries(tst_entry_list, num_pe);
+}
+
+/* RCXL_12 */
+uint32_t
+cxl_12_entry(uint32_t num_pe)
+{
+    TEST_ENTRY_ID_e tst_entry_list[] = {E041_ENTRY, TEST_ENTRY_SENTINEL};
+
+    return run_test_entries(tst_entry_list, num_pe);
+}
+
 /* IE_REG_2 */
 uint32_t
 ie_reg_2_entry(uint32_t num_pe)

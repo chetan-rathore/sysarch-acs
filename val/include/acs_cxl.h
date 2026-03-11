@@ -154,18 +154,20 @@
 #define CXL_DEV_CAP_MAX_GUARD             64
 
 /* ---- HDM Decoder capability offsets ---- */
-#define CXL_HDM_CAP_REG_OFFSET              0x00
-#define CXL_HDM_GLOBAL_CTRL_OFFSET          0x04
-#define CXL_HDM_DECODER_STRIDE              0x20
-#define CXL_HDM_DECODER_BASE_LOW(n)   (0x10 + (n) * CXL_HDM_DECODER_STRIDE)
-#define CXL_HDM_DECODER_BASE_HIGH(n)  (0x14 + (n) * CXL_HDM_DECODER_STRIDE)
-#define CXL_HDM_DECODER_SIZE_LOW(n)   (0x18 + (n) * CXL_HDM_DECODER_STRIDE)
-#define CXL_HDM_DECODER_SIZE_HIGH(n)  (0x1C + (n) * CXL_HDM_DECODER_STRIDE)
-#define CXL_HDM_DECODER_CTRL(n)       (0x20 + (n) * CXL_HDM_DECODER_STRIDE)
-#define CXL_HDM_DECODER_TARGET_LOW(n) (0x24 + (n) * CXL_HDM_DECODER_STRIDE)
+#define CXL_HDM_CAP_REG_OFFSET         0x00
+#define CXL_HDM_GLOBAL_CTRL_OFFSET     0x04
+#define CXL_HDM_DECODER_STRIDE         0x20
+#define CXL_HDM_ALIGNMENT_SHIFT        28
+#define CXL_HDM_ALIGNMENT_MASK         ((1ULL << CXL_HDM_ALIGNMENT_SHIFT) - 1ULL)
+#define CXL_HDM_DECODER_BASE_LOW(n)    (0x10 + (n) * CXL_HDM_DECODER_STRIDE)
+#define CXL_HDM_DECODER_BASE_HIGH(n)   (0x14 + (n) * CXL_HDM_DECODER_STRIDE)
+#define CXL_HDM_DECODER_SIZE_LOW(n)    (0x18 + (n) * CXL_HDM_DECODER_STRIDE)
+#define CXL_HDM_DECODER_SIZE_HIGH(n)   (0x1C + (n) * CXL_HDM_DECODER_STRIDE)
+#define CXL_HDM_DECODER_CTRL(n)        (0x20 + (n) * CXL_HDM_DECODER_STRIDE)
+#define CXL_HDM_DECODER_TARGET_LOW(n)  (0x24 + (n) * CXL_HDM_DECODER_STRIDE)
 #define CXL_HDM_DECODER_TARGET_HIGH(n) (0x28 + (n) * CXL_HDM_DECODER_STRIDE)
-#define CXL_HDM_DECODER_COUNT_MASK          0xFu
-#define CXL_HDM_DECODER_COUNT_SHIFT         0
+#define CXL_HDM_DECODER_COUNT_MASK     0xF
+#define CXL_HDM_DECODER_COUNT_SHIFT    0
 
 /* ---- CXL Component Register Primary Array ---- */
 #define CXL_COMPONENT_CAP_ARRAY_OFFSET 0x0
@@ -181,6 +183,8 @@
 #define CXL_MAX_DECODER_SLOTS  2
 #define CXL_COMPONENT_INVALID_INDEX  0xFFFFFFFFu
 
+#define PERSISTENT_MASK       0x8
+#define PERSISTENT_SHIFT      3
 
 #define PGT_SHAREABLITY_SHIFT 6
 #define PGT_ENTRY_ACCESS      (0x1 << 8)
@@ -276,15 +280,20 @@ void     val_cxl_free_component_table(void);
 uint32_t val_cxl_create_table(void);
 uint64_t val_cxl_get_info(CXL_INFO_e type, uint32_t index);
 uint64_t val_cxl_get_component_info(CXL_COMPONENT_INFO_e type, uint32_t index);
+uint32_t val_cxl_get_cfmws_count(uint32_t host_index);
+uint32_t val_cxl_get_cfmws_window(uint32_t host_index, uint64_t *base, uint64_t *length);
 uint32_t val_cxl_find_capability(uint32_t bdf, uint32_t cid, uint32_t *cid_offset);
 uint32_t val_cxl_find_comp_capability(uint32_t index, uint32_t cap_id);
+uint32_t val_cxl_device_cache_capable(uint32_t bdf);
 const char *val_cxl_cap_name(uint16_t id);
 uint32_t val_cxl_device_is_cxl(uint32_t bdf);
+uint32_t val_cxl_check_persistent_memory(uint32_t index);
 
 uint32_t cxl001_entry(uint32_t num_pe);
 uint32_t cxl002_entry(uint32_t num_pe);
 uint32_t cxl003_entry(uint32_t num_pe);
 uint32_t cxl004_entry(uint32_t num_pe);
 uint32_t cxl010_entry(uint32_t num_pe);
+uint32_t cxl011_entry(uint32_t num_pe);
 
 #endif
