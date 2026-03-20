@@ -134,6 +134,7 @@ pmu003.c
 pmu004.c
 pmu005.c
 pmu006.c
+pmu008.c
 pmu009.c
 mpam001.c
 mpam002.c
@@ -152,7 +153,6 @@ ras008.c
 ras009.c
 ras010.c
 ras011.c
-ras012.c
 ras013.c
 ras014.c
 ras016.c

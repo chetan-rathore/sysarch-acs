@@ -15,28 +15,28 @@
  * limitations under the License.
 **/
 
-#include "include/rule_based_execution.h"
-#include "include/acs_val.h"
-#include "include/acs_smmu.h"
-#include "include/acs_pcie.h"
-#include "include/acs_common.h"
-#include "include/val_interface.h"
-#include "include/acs_smmu.h"
-#include "include/acs_pe.h"
-#include "include/acs_memory.h"
-#include "include/acs_gic.h"
-#include "include/acs_wd.h"
-#include "include/acs_exerciser.h"
-#include "include/acs_mpam.h"
-#include "include/acs_pmu.h"
-#include "include/acs_ras.h"
-#include "include/acs_nist.h"
-#include "include/acs_ete.h"
-#include "include/acs_timer.h"
-#include "include/acs_peripherals.h"
-#include "include/acs_tpm.h"
-#include "include/acs_wakeup.h"
-#include "include/test_wrappers.h"
+#include "rule_based_execution.h"
+#include "acs_val.h"
+#include "acs_smmu.h"
+#include "acs_pcie.h"
+#include "acs_common.h"
+#include "val_interface.h"
+#include "acs_smmu.h"
+#include "acs_pe.h"
+#include "acs_memory.h"
+#include "acs_gic.h"
+#include "acs_wd.h"
+#include "acs_exerciser.h"
+#include "acs_mpam.h"
+#include "acs_pmu.h"
+#include "acs_ras.h"
+#include "acs_nist.h"
+#include "acs_ete.h"
+#include "acs_timer.h"
+#include "acs_peripherals.h"
+#include "acs_tpm.h"
+#include "acs_wakeup.h"
+#include "test_wrappers.h"
 
 /*
  * Per-rule test status map
@@ -903,13 +903,14 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_PMU_TEST_NUM_BASE + 5,
         },
-        // [PMU_SYS_5] = {
-        //     .test_entry_id    = pmu008_entry,
-        //     .module_id        = PMU,
-        //     .rule_desc        = "Check System PMU for NUMA systems",
-        //     .platform_bitmask = 0,
-        //     .flag             = BASE_RULE,
-        // },
+        [PMU_SYS_5] = {
+            .test_entry_id    = PMU008_ENTRY,
+            .module_id        = PMU,
+            .rule_desc        = "Check System PMU for NUMA systems",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_PMU_TEST_NUM_BASE + 8
+        },
         [PMU_SYS_6] = {
             .test_entry_id    = PMU009_ENTRY,
             .module_id        = PMU,
@@ -957,6 +958,20 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
             .flag             = BASE_RULE,
             .test_num         = ACS_PMU_TEST_NUM_BASE + 6,
+        },
+        [S_L7PMU] = {
+            .test_entry_id    = NULL_ENTRY,
+            .module_id        = PMU,
+            .rule_desc        = "Check for PMU Features",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = ALIAS_RULE,
+        },
+        [S_L8SHD_1] = {
+            .test_entry_id    = NULL_ENTRY,
+            .module_id        = ETE,
+            .rule_desc        = "Check for ETE Features",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = ALIAS_RULE,
         },
     /* RAS */
         [RAS_01] = {
@@ -1055,9 +1070,9 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .test_num         = ACS_RAS_TEST_NUM_BASE + 10,
         },
         [SYS_RAS_2] = {
-            .test_entry_id    = SYS_RAS_2_ENTRY,
+            .test_entry_id    = RAS011_ENTRY,
             .module_id        = RAS,
-            .rule_desc        = "Check Pseudo Fault Injection",
+            .rule_desc        = "Check Poison Storage & Forwarding",
             .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
             .flag             = BASE_RULE,
         },
@@ -3199,6 +3214,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PMU005_ENTRY] = pmu005_entry,
     [PMU006_ENTRY] = pmu006_entry,
     [PMU007_ENTRY] = pmu007_entry,
+    [PMU008_ENTRY] = pmu008_entry,
     [PMU009_ENTRY] = pmu009_entry,
     [PMU010_ENTRY] = pmu010_entry,
     [PMU011_ENTRY] = pmu011_entry,
@@ -3212,15 +3228,13 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [RAS008_ENTRY] = ras008_entry,
     [RAS009_ENTRY] = ras009_entry,
     [RAS010_ENTRY] = ras010_entry,
-    [RAS011_ENTRY] = ras011_entry, // used in wrapper.
-    [RAS012_ENTRY] = ras012_entry, // used in wrapper.
+    [RAS011_ENTRY] = ras011_entry,
     [RAS013_ENTRY] = ras013_entry,
     [RAS014_ENTRY] = ras014_entry,
     [RAS015_ENTRY] = ras015_entry,
     [RAS016_ENTRY] = ras016_entry,
     [RAS017_ENTRY] = ras017_entry,
     [RAS018_ENTRY] = ras018_entry,
-    [SYS_RAS_2_ENTRY]  = sys_ras_2_entry,
     [TPM001_ENTRY] = tpm001_entry,
     [TPM002_ENTRY] = tpm002_entry,
 #endif
@@ -3501,10 +3515,9 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [RAS009_ENTRY] = ras009_entry,
     [RAS002_ENTRY] = ras002_entry,
     [RAS004_ENTRY] = ras004_entry,
-    [RAS011_ENTRY] = ras011_entry, // used in wrapper.
+    [RAS011_ENTRY] = ras011_entry,
     [RAS015_ENTRY] = ras015_entry,
     [RAS006_ENTRY] = ras006_entry,
-    [RAS012_ENTRY] = ras012_entry, // used in wrapper.
     [RAS008_ENTRY] = ras008_entry,
     [RAS014_ENTRY] = ras014_entry,
     [RAS005_ENTRY] = ras005_entry,
@@ -3551,6 +3564,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [P086_ENTRY] = p086_entry,
     [P046_ENTRY] = p046_entry,
     [PMU003_ENTRY] = pmu003_entry,
+    [PMU008_ENTRY] = pmu008_entry,
     [PMU009_ENTRY] = pmu009_entry,
     [PMU006_ENTRY] = pmu006_entry,
     [PMU004_ENTRY] = pmu004_entry,
@@ -3633,7 +3647,6 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [B_PPI_00_ENTRY]   = b_ppi_00_entry,
     [B_WAK_03_07_ENTRY] = b_wak_03_07_entry,
     [S_L7MP_03_ENTRY]  = s_l7mp_03_entry,
-    [SYS_RAS_2_ENTRY]  = sys_ras_2_entry,
     [APPENDIX_I_6_ENTRY] = appendix_i_6_entry,
     [IE_REG_1_ENTRY]   = ie_reg_1_entry,
     [IE_REG_2_ENTRY]   = ie_reg_2_entry,
@@ -4136,6 +4149,23 @@ RULE_ID_e sys_ras_rule_list[] = {
 
 /* S_PCIe_10 */
 RULE_ID_e s_pcie_10_rule_list[]   = {B_PCIe_10, B_PCIe_11, RULE_ID_SENTINEL};
+RULE_ID_e s_l7pmu_rule_list[]   = {
+                                    PMU_PE_02, PMU_PE_03, PMU_SYS_1,
+                                    PMU_SYS_2, PMU_SYS_5, PMU_SYS_6, PMU_MEM_1,
+                                    PMU_BM_1, PMU_BM_2,  PMU_EV_11, PMU_SPE,
+                                    /* Not covered or Not implemented*/
+                                    PMU_PE_01, PMU_EV_01, PMU_EV_02, PMU_EV_03,
+                                    PMU_EV_04, PMU_EV_05, PMU_EV_06, PMU_EV_07,
+                                    PMU_EV_08, PMU_EV_09, PMU_EV_10, PMU_BM_3,
+                                    PMU_BM_4, PMU_SYS_7, PMU_SEC_1,
+                                    /********/
+                                    RULE_ID_SENTINEL};
+
+RULE_ID_e s_l8shd_1_rule_list[]   = {
+                                    ETE_01, ETE_02, ETE_03, ETE_04, ETE_05,
+                                    ETE_06, ETE_07, ETE_08, ETE_09, ETE_10,
+                                    RULE_ID_SENTINEL
+};
 
 /* PCBSA alias lists */
 /* P_L2WD_01 */
@@ -4223,6 +4253,8 @@ alias_rule_map_t alias_rule_map[] = {
     {S_L6PCI_1, s_l6pci_1_rule_list},
     {S_L6PE_01, s_l6pe_01_rule_list},
     {S_PCIe_10, s_pcie_10_rule_list},
+    {S_L7PMU,   s_l7pmu_rule_list},
+    {S_L8SHD_1, s_l8shd_1_rule_list},
     {SYS_RAS,   sys_ras_rule_list},
     {LVQBC,     lvqbc_rule_list},
 

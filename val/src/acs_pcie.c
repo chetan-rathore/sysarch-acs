@@ -15,14 +15,14 @@
  * limitations under the License.
  **/
 
-#include "include/acs_val.h"
-#include "include/acs_common.h"
-#include "include/acs_pcie_enumeration.h"
-#include "include/val_interface.h"
-#include "include/acs_pcie.h"
-#include "include/acs_cxl.h"
-#include "include/acs_memory.h"
-#include "driver/pcie/pcie.h"
+#include "acs_val.h"
+#include "acs_common.h"
+#include "acs_pcie_enumeration.h"
+#include "val_interface.h"
+#include "acs_pcie.h"
+#include "acs_memory.h"
+#include "pcie.h"
+#include "acs_cxl.h"
 
 #define WARN_STR_LEN 7
 

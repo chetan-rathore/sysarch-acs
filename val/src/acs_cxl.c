@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-#include "include/acs_val.h"
-#include "include/acs_common.h"
-#include "include/acs_cxl.h"
-#include "include/val_interface.h"
-#include "include/acs_pcie.h"
-#include "include/acs_memory.h"
-#include "include/acs_mmu.h"
-#include "include/acs_pgt.h"
-#include "include/acs_pe.h"
+#include "acs_val.h"
+#include "acs_common.h"
+#include "acs_cxl.h"
+#include "val_interface.h"
+#include "acs_pcie.h"
+#include "acs_memory.h"
+#include "acs_mmu.h"
+#include "acs_pgt.h"
+#include "acs_pe.h"
 
 static CXL_INFO_TABLE *g_cxl_info_table;
 static CXL_COMPONENT_TABLE *g_cxl_component_table;

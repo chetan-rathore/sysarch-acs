@@ -27,9 +27,9 @@
 #include <Protocol/AcpiTable.h>
 #include "Include/IndustryStandard/Acpi61.h"
 
-#include "include/pal_uefi.h"
-#include "include/pal_pmu.h"
-#include "include/pal_mpam.h"
+#include "pal_uefi.h"
+#include "pal_pmu.h"
+#include "pal_mpam.h"
 
 UINT64
 pal_get_madt_ptr();

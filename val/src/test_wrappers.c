@@ -1,5 +1,5 @@
 /** @file
- * Copyright (c) 2025-20226, Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2025-2026, Arm Limited or its affiliates. All rights reserved.
  * SPDX-License-Identifier : Apache-2.0
 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,17 +18,17 @@
 /* @brief files contains test wrappers, which wraps multiple test entry functions required by
    single base rule into one single test entry function */
 
-#include "include/acs_val.h"
-#include "include/val_interface.h"
-#include "include/acs_pcie.h"
-#include "include/acs_gic.h"
-#include "include/acs_wakeup.h"
-#include "include/acs_mpam.h"
-#include "include/acs_ras.h"
-#include "include/acs_pe.h"
-#include "include/acs_exerciser.h"
-#include "include/test_wrappers.h"
-#include "include/rule_based_execution.h"
+#include "acs_val.h"
+#include "val_interface.h"
+#include "acs_pcie.h"
+#include "acs_gic.h"
+#include "acs_wakeup.h"
+#include "acs_mpam.h"
+#include "acs_ras.h"
+#include "acs_pe.h"
+#include "acs_exerciser.h"
+#include "test_wrappers.h"
+#include "rule_based_execution.h"
 
 extern test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL];
 extern RULE_ID_e g_base_rule;
@@ -107,15 +107,6 @@ s_l7mp_03_entry(uint32_t num_pe)
 {
     TEST_ENTRY_ID_e tst_entry_list[] = {MPAM002_ENTRY, MPAM006_ENTRY, MPAM007_ENTRY,
                                         TEST_ENTRY_SENTINEL};
-
-    return run_test_entries(tst_entry_list, num_pe);
-}
-
-/* SYS_RAS_2 */
-uint32_t
-sys_ras_2_entry(uint32_t num_pe)
-{
-    TEST_ENTRY_ID_e tst_entry_list[] = {RAS011_ENTRY, RAS012_ENTRY, TEST_ENTRY_SENTINEL};
 
     return run_test_entries(tst_entry_list, num_pe);
 }

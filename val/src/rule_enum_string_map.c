@@ -15,7 +15,7 @@
  * limitations under the License.
 **/
 
-#include "include/rule_based_execution_enum.h"
+#include "rule_based_execution_enum.h"
 
 /* Following array provided rule string to rule enum map */
 char *rule_id_string[RULE_ID_SENTINEL] = {
@@ -148,6 +148,21 @@ char *rule_id_string[RULE_ID_SENTINEL] = {
     [S_L3MM_02]   = "S_L3MM_02",
 
     /* PMU rules */
+    [PMU_PE_01]   = "PMU_PE_01",
+    [PMU_EV_01]   = "PMU_EV_01",
+    [PMU_EV_02]   = "PMU_EV_02",
+    [PMU_EV_03]   = "PMU_EV_03",
+    [PMU_EV_04]   = "PMU_EV_04",
+    [PMU_EV_05]   = "PMU_EV_05",
+    [PMU_EV_06]   = "PMU_EV_06",
+    [PMU_EV_07]   = "PMU_EV_07",
+    [PMU_EV_08]   = "PMU_EV_08",
+    [PMU_EV_09]   = "PMU_EV_09",
+    [PMU_EV_10]   = "PMU_EV_10",
+    [PMU_BM_3]    = "PMU_BM_3",
+    [PMU_BM_4]    = "PMU_BM_4",
+    [PMU_SYS_7]   = "PMU_SYS_7",
+    [PMU_SEC_1]   = "PMU_SEC_1",
     [PMU_PE_02]   = "PMU_PE_02",
     [PMU_PE_03]   = "PMU_PE_03",
     [PMU_SYS_1]   = "PMU_SYS_1",
@@ -267,6 +282,7 @@ char *rule_id_string[RULE_ID_SENTINEL] = {
     [S_L7MP_08]   = "S_L7MP_08",
 
     /* ETE */
+    [ETE_01]      = "ETE_01",
     [ETE_02]      = "ETE_02",
     [ETE_03]      = "ETE_03",
     [ETE_04]      = "ETE_04",

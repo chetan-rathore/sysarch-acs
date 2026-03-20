@@ -17,8 +17,8 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/UefiLib.h>
 #include "Include/IndustryStandard/Acpi64.h"
-#include "include/pal_uefi.h"
-#include "include/pcie_enum.h"
+#include "pal_uefi.h"
+#include "pcie_enum.h"
 
 /**
   @brief   Build the platform CXL info table from ACPI CEDT data.
