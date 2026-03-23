@@ -584,6 +584,7 @@ typedef enum {
     CXL_10,
     CXL_11,
     CXL_12,
+    CXL_13,
 
     /* Sentinel must remain last */
     RULE_ID_SENTINEL
@@ -893,6 +894,7 @@ typedef enum {
     CXL_02_ENTRY,
     CXL_11_ENTRY,
     CXL_12_ENTRY,
+    CXL_13_ENTRY,
     E036_ENTRY,
     P086_ENTRY,
     E022_ENTRY,
@@ -993,6 +995,7 @@ typedef enum {
     CXL004_ENTRY,
     CXL010_ENTRY,
     CXL011_ENTRY,
+    CXL013_ENTRY,
     TEST_ENTRY_SENTINEL
 } TEST_ENTRY_ID_e;
 

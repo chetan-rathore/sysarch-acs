@@ -84,75 +84,6 @@ compare_aer_status(const aer_status_t *before, const aer_status_t *after)
   return 0;
 }
 
-static uint32_t
-map_address(uint64_t base, uint64_t length, volatile uint64_t **virt_out)
-{
-  memory_region_descriptor_t mem_desc[2];
-  pgt_descriptor_t pgt_desc;
-  uint64_t page_size;
-  uint64_t range_end;
-  uint64_t aligned_base;
-  uint64_t aligned_length;
-  uint64_t *aligned_va;
-  uint64_t ttbr;
-
-  /* Validate inputs and fetch page size. */
-  if ((base == 0) || (length == 0) || (virt_out == NULL))
-    return ACS_STATUS_ERR;
-
-  page_size = val_memory_page_size();
-  if (page_size == 0)
-    return ACS_STATUS_ERR;
-
-  range_end = base + length;
-  if (range_end < base)
-    return ACS_STATUS_ERR;
-
-  /* Align the physical range to page boundaries. */
-  aligned_base = base & ~(page_size - 1);
-
-  uint64_t aligned_end = range_end + page_size - 1;
-  if (aligned_end < range_end)
-    return ACS_STATUS_ERR;
-
-  aligned_length = (aligned_end & ~(page_size - 1u)) - aligned_base;
-
-  val_memory_set(mem_desc, sizeof(mem_desc), 0);
-
-  /* Reserve a virtual address range for mapping. */
-  aligned_va = val_aligned_alloc(MEM_ALIGN_4K, page_size);
-  if (!aligned_va)
-    return ACS_STATUS_ERR;
-
-
-  mem_desc[0].virtual_address  = (uint64_t)aligned_va;
-  mem_desc[0].physical_address = aligned_base;
-  mem_desc[0].length           = aligned_length;
-  mem_desc[0].attributes       = PGT_WB;
-
-  /* Populate translation tables for the mapping. */
-  if (val_pe_reg_read_tcr(0, &pgt_desc.tcr))
-    return ACS_STATUS_ERR;
-
-  if (val_pe_reg_read_ttbr(0, &ttbr))
-    return ACS_STATUS_ERR;
-
-  pgt_desc.pgt_base = (ttbr & AARCH64_TTBR_ADDR_MASK);
-  pgt_desc.mair     = val_pe_reg_read(MAIR_ELx);
-  pgt_desc.stage    = PGT_STAGE1;
-  pgt_desc.ias      = 48;
-  pgt_desc.oas      = 48;
-
-  if (val_pgt_create(mem_desc, &pgt_desc))
-    return ACS_STATUS_ERR;
-
-  /* Return the mapped virtual address. */
-  *virt_out = (volatile uint64_t *)(aligned_va + (base - aligned_base));
-  return ACS_STATUS_PASS;
-
-}
-
-
 static
 uint32_t
 find_cxl_mem_target(cxl_mem_target_t *target)
@@ -283,7 +214,7 @@ payload(void)
     return;
   }
 
-  status = map_address(cfmws_base, SIZE_4KB, &mapped);
+  status = val_cxl_map_hdm_address(cfmws_base, SIZE_4KB, &mapped);
   if (status != ACS_STATUS_PASS) {
     val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 3));
     return;

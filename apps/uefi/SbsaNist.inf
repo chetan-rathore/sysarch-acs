@@ -214,6 +214,7 @@
   ../../test_pool/cxl/cxl004.c
   ../../test_pool/cxl/cxl010.c
   ../../test_pool/cxl/cxl011.c
+  ../../test_pool/cxl/cxl013.c
 
   ../../test_pool/nist_sts/test_n001.c
 
@@ -250,4 +251,4 @@
 
 [BuildOptions]
   GCC:*_*_*_ASM_FLAGS  =  -march=armv8.1-a
-  GCC:*_*_*_CC_FLAGS   = -O0 $(ACS_CORE_INCLUDE_FLAGS) $(ACS_GIC_INCLUDE_FLAGS) $(ACS_PCIE_INCLUDE_FLAGS) -DTARGET_UEFI
+  GCC:*_*_*_CC_FLAGS   = -O0 -march=armv8.1-a+lse $(ACS_CORE_INCLUDE_FLAGS) $(ACS_GIC_INCLUDE_FLAGS) $(ACS_PCIE_INCLUDE_FLAGS) -DTARGET_UEFI

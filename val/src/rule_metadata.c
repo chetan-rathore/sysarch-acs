@@ -2986,6 +2986,14 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_CXL_TEST_NUM_BASE  +  12,
         },
+        [CXL_13] = {
+            .test_entry_id    = CXL013_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL Type-3 mandatory atomic features",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  13,
+        },
     };
 
 /* Following structure maps test entry enums with entry function pointers
@@ -3120,6 +3128,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [CXL_02_ENTRY]     = cxl_02_entry,
     [CXL_11_ENTRY]     = cxl_11_entry,
     [CXL_12_ENTRY]     = cxl_12_entry,
+    [CXL_13_ENTRY]     = cxl013_entry,
     [G013_ENTRY] = g013_entry,
     [G014_ENTRY] = g014_entry,
     [G015_ENTRY] = g015_entry,
@@ -3319,6 +3328,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [CXL004_ENTRY] = cxl004_entry,
     [CXL010_ENTRY] = cxl010_entry,
     [CXL011_ENTRY] = cxl011_entry,
+    [CXL013_ENTRY] = cxl013_entry,
 /* The following test entries are excluded from compilation for the BSA DT UEFI App, as they are
    not required for the BSA DT build. These tests invoke VAL APIs, which in turn call PAL APIs,
    and PAL_DT lacks a few necessary implementations.*/
@@ -4310,6 +4320,7 @@ RULE_ID_e s_l8cxl_rule_list[] = {
     CXL_10,
     CXL_11,
     CXL_12,
+    CXL_13,
 
     RULE_ID_SENTINEL
 };

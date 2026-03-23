@@ -288,6 +288,7 @@ uint32_t val_cxl_device_cache_capable(uint32_t bdf);
 uint32_t val_cxl_device_is_cxl(uint32_t bdf);
 const char *val_cxl_cap_name(uint16_t id);
 uint32_t val_cxl_check_persistent_memory(uint32_t index);
+uint32_t val_cxl_map_hdm_address(uint64_t base, uint64_t length, volatile uint64_t **virt_out);
 
 uint32_t cxl001_entry(uint32_t num_pe);
 uint32_t cxl002_entry(uint32_t num_pe);
@@ -295,5 +296,6 @@ uint32_t cxl003_entry(uint32_t num_pe);
 uint32_t cxl004_entry(uint32_t num_pe);
 uint32_t cxl010_entry(uint32_t num_pe);
 uint32_t cxl011_entry(uint32_t num_pe);
+uint32_t cxl013_entry(uint32_t num_pe);
 
 #endif

@@ -464,6 +464,7 @@ char *rule_id_string[RULE_ID_SENTINEL] = {
     [CXL_10]      = "CXL_10",
     [CXL_11]      = "CXL_11",
     [CXL_12]      = "CXL_12",
+    [CXL_13]      = "CXL_13",
     [S_L3GI_02]   = "S_L3GI_02",
 
     /* GPU rules */
