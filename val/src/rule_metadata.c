@@ -2938,6 +2938,14 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_CXL_TEST_NUM_BASE  +  4,
         },
+        [CXL_09] = {
+            .test_entry_id    = E043_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "CXL.mem write transaction",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  9,
+        },
         [CXL_10] = {
             .test_entry_id    = CXL010_ENTRY,
             .module_id        = CXL,
@@ -3041,6 +3049,7 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [E039_ENTRY] = e039_entry, // used in wrapper.
     [E040_ENTRY] = e040_entry, // used in wrapper.
     [E041_ENTRY] = e041_entry, // used in wrapper.
+    [E043_ENTRY] = e043_entry, // used for CXL_09.
     [ETE001_ENTRY] = ete001_entry,
     [ETE002_ENTRY] = ete002_entry,
     [ETE003_ENTRY] = ete003_entry,
@@ -4277,6 +4286,7 @@ RULE_ID_e s_l8cxl_rule_list[] = {
     CXL_02,
     CXL_03,
     CXL_04,
+    CXL_09,
     CXL_10,
     CXL_11,
     CXL_12,

@@ -285,8 +285,8 @@ uint32_t val_cxl_get_cfmws_window(uint32_t host_index, uint64_t *base, uint64_t 
 uint32_t val_cxl_find_capability(uint32_t bdf, uint32_t cid, uint32_t *cid_offset);
 uint32_t val_cxl_find_comp_capability(uint32_t index, uint32_t cap_id);
 uint32_t val_cxl_device_cache_capable(uint32_t bdf);
-const char *val_cxl_cap_name(uint16_t id);
 uint32_t val_cxl_device_is_cxl(uint32_t bdf);
+const char *val_cxl_cap_name(uint16_t id);
 uint32_t val_cxl_check_persistent_memory(uint32_t index);
 
 uint32_t cxl001_entry(uint32_t num_pe);

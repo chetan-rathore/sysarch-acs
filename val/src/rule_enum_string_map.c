@@ -458,6 +458,7 @@ char *rule_id_string[RULE_ID_SENTINEL] = {
     [CXL_02]      = "CXL_02",
     [CXL_03]      = "CXL_03",
     [CXL_04]      = "CXL_04",
+    [CXL_09]      = "CXL_09",
     [CXL_10]      = "CXL_10",
     [CXL_11]      = "CXL_11",
     [CXL_12]      = "CXL_12",

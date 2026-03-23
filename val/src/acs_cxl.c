@@ -1330,6 +1330,8 @@ val_cxl_get_cfmws_window(uint32_t host_index, uint64_t *base, uint64_t *size)
     if (((candidate_base | candidate_size) & CXL_HDM_ALIGNMENT_MASK) != 0u)
       continue;
 
+    val_print(ACS_PRINT_INFO, "\n      CFMWS Base address is : 0x%llx", candidate_base);
+    val_print(ACS_PRINT_INFO, "\n      CFMWS address size is : 0x%llx", candidate_size);
     *base = candidate_base;
     *size = candidate_size;
     return ACS_STATUS_PASS;
