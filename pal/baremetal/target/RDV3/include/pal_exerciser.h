@@ -151,7 +151,8 @@ typedef enum {
     ENABLE_RAS_CTRL     = 0xF,
     DISABLE_POISON_MODE = 0x10,
     CLEAR_TXN           = 0x11,
-    ENABLE_CACHE_TXN    = 0x12
+    ENABLE_CACHE_TXN    = 0x12,
+    GENERATE_PMREQ_VDM  = 0x13
 } EXERCISER_PARAM_TYPE;
 
 typedef enum {

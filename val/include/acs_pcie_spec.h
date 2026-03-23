@@ -231,6 +231,11 @@
 #define DS_CORR_MASK   0x1
 #define ACSCTRL_SHIFT  0x0F
 
+/* PM Capability struct offsets and shifts */
+#define PMCSR_OFFSET                       0x4
+#define PMCSR_POWER_STATE_MASK             0x3
+#define PM_STATE_D3HOT                     0x3
+
 /* SR-IOV Capability struct offsets and shifts*/
 #define SRIOV_VF_COUNT         0x0C
 #define SRIOV_VF_OFF_STR       0x14

@@ -349,6 +349,9 @@ uint32_t pal_exerciser_set_param(EXERCISER_PARAM_TYPE Type, uint64_t Value1, uin
       case ENABLE_CACHE_TXN:
         return 1;
 
+      case GENERATE_PMREQ_VDM:
+        return 1;
+
       default:
           return 1;
   }
