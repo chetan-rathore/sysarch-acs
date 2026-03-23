@@ -352,6 +352,9 @@ uint32_t pal_exerciser_set_param(EXERCISER_PARAM_TYPE Type, uint64_t Value1, uin
       case GENERATE_PMREQ_VDM:
         return 1;
 
+      case GENERATE_MEFN_VDM:
+        return 1;
+
       default:
           return 1;
   }
@@ -798,4 +801,16 @@ pal_exerciser_set_bar_response(uint32_t bdf)
 {
   (void) bdf;
   return 0;
+}
+
+/**
+  @brief   This API ensures that system implements firmware-first handling of memory
+           error notifications with reads
+  @return  status      - 0 if supported, else
+                       - PAL_STATUS_NOT_IMPLEMENTED
+**/
+uint32_t
+pal_exerciser_check_firmware_handle_support(void)
+{
+   return 0;
 }

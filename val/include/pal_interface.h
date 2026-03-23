@@ -887,7 +887,8 @@ typedef enum {
     DISABLE_POISON_MODE = 0x10,
     CLEAR_TXN = 0x11,
     ENABLE_CACHE_TXN = 0x12,
-    GENERATE_PMREQ_VDM = 0x13
+    GENERATE_PMREQ_VDM = 0x13,
+    GENERATE_MEFN_VDM = 0x14
 } EXERCISER_PARAM_TYPE;
 
 typedef enum {
@@ -989,6 +990,7 @@ uint32_t pal_exerciser_check_poison_data_forwarding_support(void);
 uint32_t pal_exerciser_get_pcie_ras_compliant_err_node(uint32_t bdf, uint32_t rp_bdf);
 uint64_t pal_exerciser_get_ras_status(uint32_t ras_node, uint32_t e_bdf, uint32_t erp_bdf);
 uint32_t pal_exerciser_set_bar_response(uint32_t bdf);
+uint32_t pal_exerciser_check_firmware_handle_support(void);
 
 /* NIST related APIs */
 uint32_t pal_nist_generate_rng(uint32_t *rng_buffer);

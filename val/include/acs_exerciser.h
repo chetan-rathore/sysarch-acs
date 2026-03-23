@@ -127,6 +127,7 @@ uint32_t val_exerciser_get_pcie_ras_compliant_err_node(uint32_t bdf, uint32_t rp
 uint64_t val_exerciser_get_ras_status(uint32_t ras_node, uint32_t e_bdf, uint32_t erp_bdf);
 uint32_t val_exerciser_set_bar_response(uint32_t bdf);
 uint32_t val_exerciser_test_init(void);
+uint32_t val_exerciser_check_firmware_handle_support(void);
 
 uint32_t e001_entry(uint32_t num_pe);
 uint32_t e002_entry(uint32_t num_pe);
@@ -168,5 +169,6 @@ uint32_t e040_entry(uint32_t num_pe);
 uint32_t e041_entry(uint32_t num_pe);
 uint32_t e043_entry(uint32_t num_pe);
 uint32_t e044_entry(uint32_t num_pe);
+uint32_t e045_entry(uint32_t num_pe);
 
 #endif

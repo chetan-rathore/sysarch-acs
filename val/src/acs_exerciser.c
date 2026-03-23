@@ -367,6 +367,12 @@ val_exerciser_set_bar_response(uint32_t bdf)
   return pal_exerciser_set_bar_response(bdf);
 }
 
+uint32_t
+val_exerciser_check_firmware_handle_support(void)
+{
+    return pal_exerciser_check_firmware_handle_support();
+}
+
 /**
   @brief Initialize Exerciser test prerequisites and cache the result
 
