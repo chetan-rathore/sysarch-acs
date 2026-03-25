@@ -672,6 +672,14 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_GIC_TEST_NUM_BASE + 12,
         },
+        [S_L3GI_02] = {
+            .test_entry_id    = P046_ENTRY,
+            .module_id        = GIC,
+            .rule_desc        = "Check all MSI(X) vectors are LPIs",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_LINUX,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_PCIE_TEST_NUM_BASE + 46,
+        },
         [B_PPI_00] = {
             .test_entry_id    = B_PPI_00_ENTRY,
             .module_id        = GIC,
@@ -841,7 +849,7 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
         [B_MEM_06] = {
             .test_entry_id    = M007_ENTRY,
             .module_id        = MEM_MAP,
-            .rule_desc        = "Check non-DMA dev behind SMMU",
+            .rule_desc        = "Check NS non-64b DMA devices are behind SMMU",
             .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_LINUX,
             .flag             = BASE_RULE,
             .test_num         = ACS_MEMORY_MAP_TEST_NUM_BASE + 7,
@@ -871,6 +879,14 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .test_num         = ACS_MEMORY_MAP_TEST_NUM_BASE + 8,
         },
     /* PMU */
+        [PMU_PE_01] = {
+            .test_entry_id    = PE040_ENTRY,
+            .module_id        = PMU,
+            .rule_desc        = "Check Performance Monitors Extension",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_PE_TEST_NUM_BASE  +  40,
+        },
         [PMU_PE_02] = {
             .test_entry_id    = PMU001_ENTRY,
             .module_id        = PMU,
@@ -1522,20 +1538,28 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_PCIE_TEST_NUM_BASE + 21,
         },
+        [XDGKZ] = {
+            .test_entry_id    = NULL_ENTRY,
+            .module_id        = GPU,
+            .rule_desc        = "Check GPU devices",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = ALIAS_RULE,
+        },
         [GPU_03] = {
             .test_entry_id    = P093_ENTRY,
-            .module_id        = PCIE,
+            .module_id        = GPU,
             .rule_desc        = "Switches must support ACS if P2P",
             .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
             .flag             = BASE_RULE,
-            .test_num         = ACS_PCIE_TEST_NUM_BASE + 93,
+            .test_num         = ACS_GPU_TEST_NUM_BASE + 01,
         },
         [GPU_04] = {
             .test_entry_id    = GPU_04_ENTRY,
-            .module_id        = PCIE,
+            .module_id        = GPU,
             .rule_desc        = "Check ATS support for RC and SMMU",
             .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
             .flag             = BASE_RULE,
+            .test_num         = ACS_GPU_TEST_NUM_BASE + 02,
         },
         [IE_ACS_1] = {
             .test_entry_id    = P082_ENTRY,
@@ -1974,14 +1998,6 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
             .flag             = BASE_RULE,
             .test_num         = ACS_PCIE_TEST_NUM_BASE + 35,
-        },
-        [S_L3GI_02] = {
-            .test_entry_id    = P046_ENTRY,
-            .module_id        = PCIE,
-            .rule_desc        = "Check all MSI(X) vectors are LPIs",
-            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_LINUX,
-            .flag             = BASE_RULE,
-            .test_num         = ACS_PCIE_TEST_NUM_BASE + 46,
         },
         [S_L4PCI_2] = {
             .test_entry_id    = P087_ENTRY,
@@ -4100,6 +4116,9 @@ RULE_ID_e s_l3pr_01_rule_list[]   = {B_PER_05, RULE_ID_SENTINEL};
 /* S_L3WD_01 */
 RULE_ID_e s_l3wd_01_rule_list[]   = {B_WD_01, B_WD_02, B_WD_03, B_WD_04, B_WD_05,
                                      RULE_ID_SENTINEL};
+/* SBSA l8 GPU rules*/
+RULE_ID_e xdgkz_rule_list[] = {GPU_03, GPU_01, GPU_02, GPU_04, RULE_ID_SENTINEL};
+
 /* S_L6PCI_1 */
 RULE_ID_e s_l6pci_1_rule_list[] = {
     /* S_L6PCI_1 refers B_REP_1 */
@@ -4197,7 +4216,7 @@ RULE_ID_e sys_ras_rule_list[] = {
 /* S_PCIe_10 */
 RULE_ID_e s_pcie_10_rule_list[]   = {B_PCIe_10, B_PCIe_11, RULE_ID_SENTINEL};
 RULE_ID_e s_l7pmu_rule_list[]   = {
-                                    PMU_PE_02, PMU_PE_03, PMU_SYS_1,
+                                    PMU_PE_01, PMU_PE_02, PMU_PE_03, PMU_SYS_1,
                                     PMU_SYS_2, PMU_SYS_5, PMU_SYS_6, PMU_MEM_1,
                                     PMU_BM_1, PMU_BM_2,  PMU_EV_11, PMU_SPE,
                                     /* Not covered or Not implemented*/
@@ -4316,6 +4335,7 @@ alias_rule_map_t alias_rule_map[] = {
     {SYS_RAS,   sys_ras_rule_list},
     {LVQBC,     lvqbc_rule_list},
     {S_L8CXL_1, s_l8cxl_rule_list},
+    {XDGKZ,     xdgkz_rule_list},
 
     /* PCBSA alias rules */
     {P_L1_01,   bsa_l1_rule_list},

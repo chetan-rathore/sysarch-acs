@@ -119,7 +119,8 @@ uint64_t val_time_delay_ms(uint64_t time_ms);
 typedef enum {
   PE_FEAT_MPAM,
   PE_FEAT_PMU,
-  PE_FEAT_RAS
+  PE_FEAT_RAS,
+  PE_FEAT_RME
 } PE_FEAT_NAME;
 
 void     val_pe_cache_clean_invalidate_range(uint64_t start_addr, uint64_t length);
@@ -526,7 +527,8 @@ typedef enum {
   CACHE_SIZE,
   CACHE_ID,
   CACHE_NEXT_LEVEL_IDX,
-  CACHE_PRIVATE_FLAG
+  CACHE_PRIVATE_FLAG,
+  CACHE_ASSOCIATIVITY
 } CACHE_INFO_e;
 
 void val_cache_create_info_table(uint64_t *cache_info_table);
@@ -534,6 +536,7 @@ void val_cache_free_info_table(void);
 uint64_t val_cache_get_info(CACHE_INFO_e type, uint32_t cache_index);
 uint32_t val_cache_get_llc_index(void);
 uint32_t val_cache_get_pe_l1_cache_res(uint32_t res_index);
+uint32_t val_cache_get_associativity(uint64_t cache_id);
 uint64_t val_get_primary_mpidr(void);
 
 /* MPAM tests APIs */
@@ -760,6 +763,7 @@ uint32_t dl012_entry(uint32_t num_pe);
 
 #define ACS_MPAM_REGISTER_TEST_NUM_BASE     0
 #define ACS_MPAM_CACHE_TEST_NUM_BASE        100
+#define ACS_MPAM_MONITOR_TEST_NUM_BASE      150
 #define ACS_MPAM_ERROR_TEST_NUM_BASE        200
 #define ACS_MPAM_MEMORY_TEST_NUM_BASE       300
 
@@ -793,6 +797,7 @@ uint32_t val_mpam_execute_membw_tests(uint32_t num_pe);
 // VAL API prototypes
 uint32_t val_mpam_msc_reset_errcode(uint32_t msc_index);
 uint32_t val_mpam_msc_get_errcode(uint32_t msc_index);
+bool     val_mpam_msc_get_esr_ovrwr(uint32_t msc_index);
 void     val_mpam_msc_generate_psr_error(uint32_t msc_index);
 void     val_mpam_msc_generate_msr_error(uint32_t msc_index, uint16_t mon_count);
 uint32_t val_mpam_msc_generate_por_error(uint32_t msc_index);
@@ -805,6 +810,9 @@ void     val_mpam_msc_trigger_intr(uint32_t msc_index);
 uint32_t reg001_entry(void);
 uint32_t reg002_entry(void);
 uint32_t reg003_entry(void);
+uint32_t reg004_entry(void);
+uint32_t reg005_entry(void);
+uint32_t reg006_entry(void);
 
 // Memory Bandwidth partitioning tests entry calls
 uint32_t mem001_entry(void);
@@ -823,19 +831,31 @@ uint32_t error008_entry(void);
 uint32_t error009_entry(void);
 uint32_t error010_entry(void);
 uint32_t error011_entry(void);
+uint32_t error012_entry(void);
+uint32_t error013_entry(void);
+uint32_t error014_entry(void);
 uint32_t intr001_entry(void);
 uint32_t intr002_entry(void);
 uint32_t intr003_entry(void);
+uint32_t intr004_entry(void);
 
 /* Cache Tests */
 uint32_t partition001_entry(void);
 uint32_t partition002_entry(void);
 uint32_t partition003_entry(void);
+uint32_t partition004_entry(void);
+uint32_t partition005_entry(void);
+
+uint32_t feat001_entry(void);  // MPAM PARTID EN/DIS feature check test
 
 uint32_t monitor001_entry(void);
 uint32_t monitor002_entry(void);
 uint32_t monitor003_entry(void);
 uint32_t monitor004_entry(void);
+uint32_t monitor005_entry(void);
+uint32_t monitor006_entry(void);
+uint32_t monitor007_entry(void);
+uint32_t monitor008_entry(void);
 
 // Accessing system registers from .S -> can be moved to respective .h
 uint64_t arm64_write_sp(uint64_t write_data);

@@ -39,6 +39,9 @@
   ../../test_pool/mpam/reg001.c
   ../../test_pool/mpam/reg002.c
   ../../test_pool/mpam/reg003.c
+  ../../test_pool/mpam/reg004.c
+  ../../test_pool/mpam/reg005.c
+  ../../test_pool/mpam/reg006.c
   ../../test_pool/mpam/error001.c
   ../../test_pool/mpam/error002.c
   ../../test_pool/mpam/error003.c
@@ -50,19 +53,30 @@
   ../../test_pool/mpam/error009.c
   ../../test_pool/mpam/error010.c
   ../../test_pool/mpam/error011.c
+  ../../test_pool/mpam/error012.c
+  ../../test_pool/mpam/error013.c
+  ../../test_pool/mpam/error014.c
   ../../test_pool/mpam/intr001.c
   ../../test_pool/mpam/intr002.c
   ../../test_pool/mpam/intr003.c
+  ../../test_pool/mpam/intr004.c
   ../../test_pool/mpam/partition001.c
   ../../test_pool/mpam/partition002.c
   ../../test_pool/mpam/partition003.c
+  ../../test_pool/mpam/partition004.c
+  ../../test_pool/mpam/partition005.c
   ../../test_pool/mpam/monitor001.c
   ../../test_pool/mpam/monitor002.c
   ../../test_pool/mpam/monitor003.c
   ../../test_pool/mpam/monitor004.c
+  ../../test_pool/mpam/monitor005.c
+  ../../test_pool/mpam/monitor006.c
+  ../../test_pool/mpam/monitor007.c
+  ../../test_pool/mpam/monitor008.c
   ../../test_pool/mpam/mem001.c
   ../../test_pool/mpam/mem002.c
   ../../test_pool/mpam/mem003.c
+  ../../test_pool/mpam/feat001.c
 
 [Packages]
   EmbeddedPkg/EmbeddedPkg.dec

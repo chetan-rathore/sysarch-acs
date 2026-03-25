@@ -195,10 +195,12 @@ typedef struct {
 **/
 typedef struct {
   uint64_t ttbr0;      ///< Translation Table Base Register 0
+  uint64_t ttbr1;      ///< Translation Table Base Register 1
   uint64_t tcr;        ///< Translation Control Register
   uint64_t mair;       ///< Memory Attribute Indirection Register
   uint64_t sctlr;      ///< System Control Register
   uint32_t current_el; ///< Current Exception Level (1 or 2)
+  uint32_t reserved;   ///< Reserved for alignment
 } PE_MMU_CONFIG;
 
 void pal_pe_create_info_table(PE_INFO_TABLE *pe_info_table);
@@ -1112,6 +1114,7 @@ typedef struct {
   uint32_t size_property_valid;
   uint32_t cache_type_valid;
   uint32_t cache_id_valid;
+  uint8_t  associativity_valid;
 } CACHE_FLAGS;
 
 /* Since most of platform doesn't support cache id field (ACPI 6.4+), ACS uses PPTT offset as key
@@ -1125,6 +1128,7 @@ typedef struct {
   uint32_t cache_id;          /* Unique, non-zero identifier for this cache */
   uint32_t is_private;        /* Field indicate whether cache is private */
   uint8_t  cache_type;        /* Cache type */
+  uint8_t  associativity;     /* N-way cache associativity */
 } CACHE_INFO_ENTRY;
 
 typedef struct {

@@ -45,7 +45,8 @@
 #define ACS_ETE_TEST_NUM_BASE        1400
 #define ACS_EXERCISER_TEST_NUM_BASE  1500
 #define ACS_TPM2_TEST_NUM_BASE       1600
-#define ACS_CXL_TEST_NUM_BASE        1700
+#define ACS_GPU_TEST_NUM_BASE        1700
+#define ACS_CXL_TEST_NUM_BASE        1800
 
 /* Module specific print APIs */
 

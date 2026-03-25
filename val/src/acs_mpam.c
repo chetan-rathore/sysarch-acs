@@ -29,6 +29,66 @@ static HMAT_INFO_TABLE *g_hmat_info_table;
 
 uint8_t **g_shared_memcpy_buffer;
 
+static char8_t *
+mpam_reg_offset_name(uint32_t reg_offset)
+{
+  switch (reg_offset) {
+  case REG_MPAMF_IDR:            return "MPAMF_IDR";
+  case REG_MPAMF_SIDR:           return "MPAMF_SIDR";
+  case REG_MPAMF_IIDR:           return "MPAMF_IIDR";
+  case REG_MPAMF_AIDR:           return "MPAMF_AIDR";
+  case REG_MPAMF_IMPL_IDR:       return "MPAMF_IMPL_IDR";
+  case REG_MPAMF_CPOR_IDR:       return "MPAMF_CPOR_IDR";
+  case REG_MPAMF_CCAP_IDR:       return "MPAMF_CCAP_IDR";
+  case REG_MPAMF_MBW_IDR:        return "MPAMF_MBW_IDR";
+  case REG_MPAMF_PRI_IDR:        return "MPAMF_PRI_IDR";
+  case REG_MPAMF_PARTID_NRW_IDR: return "MPAMF_PARTID_NRW_IDR";
+  case REG_MPAMF_MSMON_IDR:      return "MPAMF_MSMON_IDR";
+  case REG_MPAMF_CSUMON_IDR:     return "MPAMF_CSUMON_IDR";
+  case REG_MPAMF_MBWUMON_IDR:    return "MPAMF_MBWUMON_IDR";
+  case REG_MPAMF_ECR:            return "MPAMF_ECR";
+  case REG_MPAMF_ESR:            return "MPAMF_ESR";
+  case REG_MPAMCFG_PART_SEL:     return "MPAMCFG_PART_SEL";
+  case REG_MPAMCFG_CMAX:         return "MPAMCFG_CMAX";
+  case REG_MPAMCFG_CASSOC:       return "MPAMCFG_CASSOC";
+  case REG_MPAMCFG_MBW_MIN:      return "MPAMCFG_MBW_MIN";
+  case REG_MPAMCFG_MBW_MAX:      return "MPAMCFG_MBW_MAX";
+  case REG_MPAMCFG_EN:           return "MPAMCFG_EN";
+  case REG_MPAMCFG_DIS:          return "MPAMCFG_DIS";
+  case REG_MPAMCFG_INTPARTID:    return "MPAMCFG_INTPARTID";
+  case REG_MPAMCFG_CPBM:         return "MPAMCFG_CPBM";
+  case REG_MPAMCFG_MBW_PBM:      return "MPAMCFG_MBW_PBM";
+  case REG_MSMON_CFG_MON_SEL:    return "MSMON_CFG_MON_SEL";
+  case REG_MSMON_CAPT_EVNT:      return "MSMON_CAPT_EVNT";
+  case REG_MSMON_CFG_CSU_FLT:    return "MSMON_CFG_CSU_FLT";
+  case REG_MSMON_CFG_CSU_CTL:    return "MSMON_CFG_CSU_CTL";
+  case REG_MSMON_CFG_MBWU_FLT:   return "MSMON_CFG_MBWU_FLT";
+  case REG_MSMON_CFG_MBWU_CTL:   return "MSMON_CFG_MBWU_CTL";
+  case REG_MSMON_CSU:            return "MSMON_CSU";
+  case REG_MSMON_CSU_CAPTURE:    return "MSMON_CSU_CAPTURE";
+  case REG_MSMON_CSU_OFSR:       return "MSMON_CSU_OFSR";
+  case REG_MSMON_MBWU:           return "MSMON_MBWU";
+  case REG_MSMON_MBWU_CAPTURE:   return "MSMON_MBWU_CAPTURE";
+  case REG_MSMON_MBWU_L:         return "MSMON_MBWU_L";
+  case REG_MSMON_MBWU_L_CAPTURE: return "MSMON_MBWU_L_CAPTURE";
+  default:
+      return NULL;
+  }
+}
+
+#define MPAM_PRINT_REG(op, reg_offset, value)                                 \
+  do {                                                                        \
+      char8_t *name__ = mpam_reg_offset_name(reg_offset);                     \
+      val_print(ACS_PRINT_DEBUG, "\n       MPAM_" op " ", 0);                 \
+      if (name__ != NULL) {                                                   \
+          val_print(ACS_PRINT_DEBUG, name__, 0);                              \
+      } else {                                                                \
+          val_print(ACS_PRINT_DEBUG, "0x%x", reg_offset);                     \
+      }                                                                       \
+      val_print(ACS_PRINT_DEBUG, " : 0x%llx",                                 \
+                (unsigned long long)(value));                                \
+  } while (0)
+
 /**
   @brief   This API provides a 'C' interface to call MPAM system register reads
            1. Caller       -  Test Suite
@@ -101,7 +161,7 @@ val_mpam_get_info(MPAM_INFO_e type, uint32_t msc_index, uint32_t rsrc_index)
       return MPAM_INVALID_INFO;
   }
 
-  if (msc_index > g_mpam_info_table->msc_count) {
+  if (msc_index >= g_mpam_info_table->msc_count) {
       val_print(ACS_PRINT_ERR, "Invalid MSC index = 0x%lx ", msc_index);
       return 0;
   }
@@ -248,7 +308,7 @@ val_srat_get_prox_domain(uint64_t mem_range_index)
       return SRAT_INVALID_INFO;
   }
 
-  if (mem_range_index > g_srat_info_table->num_of_mem_ranges) {
+  if (mem_range_index >= g_srat_info_table->num_of_mem_ranges) {
       val_print(ACS_PRINT_WARN, "\n   Invalid index", 0);
       return SRAT_INVALID_INFO;
   }
@@ -331,7 +391,7 @@ val_mpam_supports_cpor(uint32_t msc_index)
 }
 
 /**
-  @brief   This API checks whether MSC has cache portion partitioning.
+  @brief   This API checks whether MSC has cache capacity partitioning.
   @param   msc_index - index of the MSC node in the MPAM info table.
   @return  1 if supported 0 otherwise.
 **/
@@ -339,6 +399,36 @@ uint32_t
 val_mpam_supports_ccap(uint32_t msc_index)
 {
     return BITFIELD_READ(IDR_HAS_CCAP_PART, val_mpam_mmr_read64(msc_index, REG_MPAMF_IDR));
+}
+
+/**
+  @brief   This API checks whether MSC supports cache associativity partitioning.
+  @param   msc_index - index of the MSC node in the MPAM info table.
+  @return  1 if supported 0 otherwise.
+**/
+uint32_t
+val_mpam_supports_cassoc(uint32_t msc_index)
+{
+    if (val_mpam_supports_ccap(msc_index))
+        return BITFIELD_READ(CCAP_IDR_HAS_CASSOC,
+                   val_mpam_mmr_read(msc_index, REG_MPAMF_CCAP_IDR));
+
+    return 0;
+}
+
+/**
+  @brief   This API checks whether MSC supports CMAX softlimiting.
+  @param   msc_index - index of the MSC node in the MPAM info table.
+  @return  1 if supported 0 otherwise.
+**/
+bool
+val_mpam_msc_supports_cmax_softlim(uint32_t msc_index)
+{
+    if (val_mpam_supports_ccap(msc_index))
+        return BITFIELD_READ(CCAP_IDR_HAS_CMAX_SOFTLIM,
+                   val_mpam_mmr_read(msc_index, REG_MPAMF_CCAP_IDR));
+
+    return 0;
 }
 
 /**
@@ -502,6 +592,21 @@ val_mpam_msc_supports_partid_nrw(uint32_t msc_index)
 }
 
 /**
+  @brief   This API checks if the MSC supports PARTID Enable/Disable feature
+  @param   msc_index - index of the MSC node in the MPAM info table.
+  @return  1 if supported 0 otherwise.
+**/
+uint32_t
+val_mpam_msc_supports_partid_endis(uint32_t msc_index)
+{
+
+  if (val_mpam_msc_supports_ext_idr(msc_index))
+      return BITFIELD_READ(IDR_HAS_ENDIS, val_mpam_mmr_read64(msc_index, REG_MPAMF_IDR));
+
+  return 0;
+}
+
+/**
   @brief   This API returns number of MBWU monitors in an MSC
            Prerequisite - If MSC supports RIS, Resource instance should be
                           selected using val_mpam_memory_configure_ris_sel
@@ -657,6 +762,8 @@ val_mpam_memory_configure_mbwumon(uint32_t msc_index)
     data = BITFIELD_SET(MBWU_CTL_MATCH_PARTID, 1) | BITFIELD_SET(MBWU_CTL_MATCH_PMG, 1);
     val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MBWU_CTL, data);
 
+    data = 0;
+
     /* Check if MPAMF_MBWUMON_IDR supports RW bandwidth selection */
     if (BITFIELD_READ(MBWUMON_IDR_HAS_RWBW, val_mpam_mmr_read64(msc_index, REG_MPAMF_MBWUMON_IDR)))
     {
@@ -666,7 +773,7 @@ val_mpam_memory_configure_mbwumon(uint32_t msc_index)
     }
 
     /* configure monitor filter reg for default partid and default pmg */
-    data = BITFIELD_SET(MBWU_FLT_PARTID, DEFAULT_PARTID) | BITFIELD_SET(MBWU_FLT_PMG, DEFAULT_PMG);
+    data |= BITFIELD_SET(MBWU_FLT_PARTID, DEFAULT_PARTID) | BITFIELD_SET(MBWU_FLT_PMG, DEFAULT_PMG);
     val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MBWU_FLT, data);
 
     /* reset the MBWU monitor count */
@@ -686,8 +793,12 @@ val_mpam_memory_configure_mbwumon(uint32_t msc_index)
 void
 val_mpam_memory_mbwumon_enable(uint32_t msc_index)
 {
+    uint32_t data;
+
     /* enable the monitor instance to collect information according to the configuration */
-    val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MBWU_CTL, BITFIELD_SET(MBWU_CTL_EN, 1));
+    data = val_mpam_mmr_read(msc_index, REG_MSMON_CFG_MBWU_CTL);
+    data = BITFIELD_WRITE(data, MBWU_CTL_EN, 1);
+    val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MBWU_CTL, data);
 }
 
 /**
@@ -703,8 +814,12 @@ val_mpam_memory_mbwumon_enable(uint32_t msc_index)
 void
 val_mpam_memory_mbwumon_disable(uint32_t msc_index)
 {
+    uint32_t data;
+
     /* disable the monitor */
-    val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MBWU_CTL, BITFIELD_SET(MBWU_CTL_EN, 0));
+    data = val_mpam_mmr_read(msc_index, REG_MSMON_CFG_MBWU_CTL);
+    data = BITFIELD_WRITE(data, MBWU_CTL_EN, 0);
+    val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MBWU_CTL, data);
 }
 
 /**
@@ -990,7 +1105,7 @@ val_mpam_get_max_pmg(uint32_t msc_index)
 /**
   @brief   This API gets Maximum supported value of PARTID
   @param   msc_index - index of the MSC node in the MPAM info table.
-  @return  Partion ID value.
+  @return  Partition ID value.
 **/
 uint32_t
 val_mpam_get_max_partid(uint32_t msc_index)
@@ -1001,7 +1116,7 @@ val_mpam_get_max_partid(uint32_t msc_index)
 /**
   @brief   This API gets Maximum supported value of Internal PARTID
   @param   msc_index - index of the MSC node in the MPAM info table.
-  @return  Partion ID value.
+  @return  Maximum internal Partition ID value.
 **/
 uint16_t
 val_mpam_get_max_intpartid(uint32_t msc_index)
@@ -1015,7 +1130,7 @@ val_mpam_get_max_intpartid(uint32_t msc_index)
                           selected using val_mpam_memory_configure_ris_sel
                           prior calling this API.
   @param   msc_index - index of the MSC node in the MPAM info table.
-  @return  Partion ID value.
+  @return  Number of fractional bits in CCAP control.
 **/
 uint32_t
 val_mpam_get_cmax_wd(uint32_t msc_index)
@@ -1024,12 +1139,26 @@ val_mpam_get_cmax_wd(uint32_t msc_index)
 }
 
 /**
+  @brief   This API gets number of fractional bits implemented in CASSOC control.
+           Prerequisite - If MSC supports RIS, Resource instance should be
+                          selected using val_mpam_memory_configure_ris_sel
+                          prior calling this API.
+  @param   msc_index - index of the MSC node in the MPAM info table.
+  @return  Number of fractional bits in CASSOC control.
+**/
+uint32_t
+val_mpam_get_cassoc_wd(uint32_t msc_index)
+{
+    return BITFIELD_READ(CASSOC_WD, val_mpam_mmr_read(msc_index, REG_MPAMF_CCAP_IDR));
+}
+
+/**
   @brief   This API gets number of fractional bits implemented in CCAP control.
            Prerequisite - If MSC supports RIS, Resource instance should be
                           selected using val_mpam_memory_configure_ris_sel
                           prior calling this API.
   @param   msc_index - index of the MSC node in the MPAM info table.
-  @return  Partion ID value.
+  @return  Number of implemented bits in the bandwidth allocation control.
 **/
 uint32_t
 val_mpam_get_bwa_wd(uint32_t msc_index)
@@ -1065,7 +1194,7 @@ val_mpam_configure_cpor(uint32_t msc_index, uint16_t partid, uint32_t cpbm_perce
 
     /* Select PARTID */
     data = BITFIELD_WRITE(data, PART_SEL_PARTID_SEL, partid);
-    val_mpam_mmr_write(msc_index, REG_MPAMCFG_PART_SEL, partid);
+    val_mpam_mmr_write(msc_index, REG_MPAMCFG_PART_SEL, data);
 
     /*
      * Configure CPBM register to have a 1 in cpbm_percentage
@@ -1102,14 +1231,18 @@ void val_mpam_configure_ccap(uint32_t msc_index, uint16_t partid,
                                                  uint8_t softlim, uint32_t ccap_percentage)
 {
 
-    uint8_t num_fractional_bits;
+    uint8_t  num_fractional_bits;
     uint16_t fixed_point_fraction;
+    uint32_t data;
 
     num_fractional_bits = val_mpam_get_cmax_wd(msc_index);
     fixed_point_fraction = ((1 << num_fractional_bits) * ccap_percentage / 100) - 1;
 
     /* Select the PARTID to configure capacity partition parameters */
-    val_mpam_mmr_write(msc_index, REG_MPAMCFG_PART_SEL, partid);
+    data = val_mpam_mmr_read(msc_index, REG_MPAMCFG_PART_SEL);
+
+    data = BITFIELD_WRITE(data, PART_SEL_PARTID_SEL, partid);
+    val_mpam_mmr_write(msc_index, REG_MPAMCFG_PART_SEL, data);
 
     /*
      * Configure the CMAX register for the max capacity.
@@ -1118,6 +1251,42 @@ void val_mpam_configure_ccap(uint32_t msc_index, uint16_t partid,
     val_mpam_mmr_write(msc_index, REG_MPAMCFG_CMAX,
                       (softlim << MPAMCFG_CMAX_SOFTLIM_SHIFT) |
                       ((fixed_point_fraction << (16 - num_fractional_bits)) & 0xFFFF));
+
+    val_mem_issue_dsb();
+    return;
+}
+
+/**
+  @brief   This API Configures CASSOC settings for given MSC and PARTID
+           Prerequisite - If MSC supports RIS, Resource instance should be
+                          selected using val_mpam_memory_configure_ris_sel
+                          prior calling this API.
+  @param   msc_index - index of the MSC node in the MPAM info table.
+  @param   partid - PATRTID for CASSOC configuration
+  @param   cassoc_percentage - Percentage of cache to be associated
+  @return  void.
+**/
+void val_mpam_configure_cassoc(uint32_t msc_index, uint16_t partid,
+                                                 uint32_t cassoc_percentage)
+{
+
+    uint8_t num_fractional_bits;
+    uint16_t fixed_point_fraction;
+    uint32_t data;
+
+    num_fractional_bits = val_mpam_get_cassoc_wd(msc_index);
+    fixed_point_fraction = ((1 << num_fractional_bits) * cassoc_percentage / 100) - 1;
+
+    /* Select the PARTID to configure CASSOC partition parameters */
+    data = val_mpam_mmr_read(msc_index, REG_MPAMCFG_PART_SEL);
+    val_mpam_mmr_write(msc_index, REG_MPAMCFG_PART_SEL, (data | partid));
+
+    /*
+     * Configure the CASSOC register for the cache associativity control settings.
+     * Use num_fractional_bits fixed-point representation
+     */
+    val_mpam_mmr_write(msc_index, REG_MPAMCFG_CASSOC,
+                      (fixed_point_fraction << (16 - num_fractional_bits)) & 0xFFFF);
 
     val_mem_issue_dsb();
     return;
@@ -1391,13 +1560,11 @@ val_mpam_mmr_read(uint32_t msc_index, uint32_t reg_offset)
 
   if (intrf_type == MPAM_INTERFACE_TYPE_MMIO) {
       value = val_mmio_read(base_addr + reg_offset);
-      val_print(ACS_PRINT_DEBUG, "\n       MPAM Read reg_offset : 0x%x", reg_offset);
-      val_print(ACS_PRINT_DEBUG, " value : 0x%llx", value);
+      MPAM_PRINT_REG("Read", reg_offset, value);
       return value;
   } else if (intrf_type == MPAM_INTERFACE_TYPE_PCC) {
       value = val_mpam_pcc_read(msc_index, reg_offset);
-      val_print(ACS_PRINT_DEBUG, "\n       MPAM Read reg_offset : 0x%x", reg_offset);
-      val_print(ACS_PRINT_DEBUG, " value : 0x%llx", value);
+      MPAM_PRINT_REG("Read", reg_offset, value);
       return value;
   } else {
     val_print(ACS_PRINT_ERR,
@@ -1427,16 +1594,14 @@ val_mpam_mmr_read64(uint32_t msc_index, uint32_t reg_offset)
 
   if (intrf_type == MPAM_INTERFACE_TYPE_MMIO) {
       value = val_mmio_read64(base_addr + reg_offset);
-      val_print(ACS_PRINT_DEBUG, "\n       MPAM Read reg_offset : 0x%x", reg_offset);
-      val_print(ACS_PRINT_DEBUG, " value : 0x%llx", value);
+      MPAM_PRINT_REG("Read", reg_offset, value);
       return value;
   } else if (intrf_type == MPAM_INTERFACE_TYPE_PCC) {
       /* PCC supports only supports 32 bit read at a time, hence reading twice
          and concating */
       value = ((uint64_t)val_mpam_pcc_read(msc_index, reg_offset + 4) << 32)
                                 | val_mpam_pcc_read(msc_index, reg_offset);
-      val_print(ACS_PRINT_DEBUG, "\n       MPAM Read reg_offset : 0x%x", reg_offset);
-      val_print(ACS_PRINT_DEBUG, " value : 0x%llx", value);
+      MPAM_PRINT_REG("Read", reg_offset, value);
       return value;
   } else {
     val_print(ACS_PRINT_ERR,
@@ -1466,12 +1631,10 @@ val_mpam_mmr_write(uint32_t msc_index, uint32_t reg_offset, uint32_t data)
 
   if (intrf_type == MPAM_INTERFACE_TYPE_MMIO) {
       val_mmio_write(base_addr + reg_offset, data);
-      val_print(ACS_PRINT_DEBUG, "\n       MPAM Write reg_offset : 0x%x", reg_offset);
-      val_print(ACS_PRINT_DEBUG, " value : 0x%llx", data);
+      MPAM_PRINT_REG("Write", reg_offset, data);
   } else if (intrf_type == MPAM_INTERFACE_TYPE_PCC) {
       val_mpam_pcc_write(msc_index, reg_offset, data);
-      val_print(ACS_PRINT_DEBUG, "\n       MPAM Write reg_offset : 0x%x", reg_offset);
-      val_print(ACS_PRINT_DEBUG, " value : 0x%llx", data);
+      MPAM_PRINT_REG("Write", reg_offset, data);
   } else {
     val_print(ACS_PRINT_ERR,
               "\n    Invalid interface type reported for MPAM MSC index = %x", msc_index);
@@ -1500,17 +1663,16 @@ val_mpam_mmr_write64(uint32_t msc_index, uint32_t reg_offset, uint64_t data)
 
   if (intrf_type == MPAM_INTERFACE_TYPE_MMIO) {
       val_mmio_write64(base_addr + reg_offset, data);
-      val_print(ACS_PRINT_DEBUG, "\n       MPAM Write reg_offset : 0x%x", reg_offset);
-      val_print(ACS_PRINT_DEBUG, " value : 0x%llx", data);
+      MPAM_PRINT_REG("Write", reg_offset, data);
   } else if (intrf_type == MPAM_INTERFACE_TYPE_PCC) {
       val_mpam_pcc_write(msc_index, reg_offset, (uint32_t)(data & 0xFFFFFFFF));
       val_mpam_pcc_write(msc_index, reg_offset + 4, (uint32_t)(data >> 32));
-      val_print(ACS_PRINT_DEBUG, "\n       MPAM Write reg_offset : 0x%x", reg_offset);
-      val_print(ACS_PRINT_DEBUG, " value : 0x%llx", data);
+      MPAM_PRINT_REG("Write", reg_offset, data);
   } else {
     val_print(ACS_PRINT_ERR,
               "\n    Invalid interface type reported for MPAM MSC index = %x", msc_index);
   }
+  val_mem_issue_dsb();
 }
 
 /**
@@ -1684,4 +1846,144 @@ uint32_t val_alloc_shared_memcpybuf(uint64_t mem_base, uint64_t buffer_size, uin
 uint64_t val_get_shared_memcpybuf(uint32_t pe_index)
 {
     return (uint64_t) (g_shared_memcpy_buffer[pe_index]);
+}
+
+/**
+  * @brief   This API programs MPAM2_EL2 register with given PARTID and PMG
+  *
+  * @param   partid - Partition ID to be programmed.
+  * @param   pmg    - PMG to be programmed.
+  *
+  * @return  0 if successfully programmed, 1 on failure.
+**/
+uint32_t val_mpam_program_el2(uint16_t partid, uint8_t pmg)
+{
+    uint64_t mpam2_el2;
+    uint64_t mpamidr;
+    uint16_t pe_max_partid;
+    uint8_t  pe_max_pmg;
+
+    /* Extract max PARTID supported by MPAMIDR_EL1 */
+    mpamidr = val_mpam_reg_read(MPAMIDR_EL1);
+    pe_max_partid = (mpamidr >> MPAMIDR_PARTID_MAX_SHIFT) & MPAMIDR_PARTID_MAX_MASK;
+
+    if (partid > pe_max_partid) {
+        val_print(ACS_PRINT_ERR, "\n       PARTID value (0x%x)", partid);
+        val_print(ACS_PRINT_ERR, " specified more than PE supported value (0x%x)", pe_max_partid);
+        return 1;
+    }
+
+    /* Extract max PMG supported by MPAMIDR_EL1 */
+    pe_max_pmg = (mpamidr >> MPAMIDR_PMG_MAX_SHIFT) & MPAMIDR_PMG_MAX_MASK;
+    if (pmg > pe_max_pmg) {
+        val_print(ACS_PRINT_ERR, "\n       PMG value (0x%x)", pmg);
+        val_print(ACS_PRINT_ERR, " specified more than PE supported value (0x%x)", pe_max_pmg);
+        return 1;
+    }
+
+    mpam2_el2 = val_mpam_reg_read(MPAM2_EL2);
+
+    /* Clear the PARTID_D & PMG_D bits in mpam2_el2 before writing to them */
+    mpam2_el2 = CLEAR_BITS_M_TO_N(mpam2_el2, MPAMn_ELx_PARTID_D_SHIFT+15, MPAMn_ELx_PARTID_D_SHIFT);
+    mpam2_el2 = CLEAR_BITS_M_TO_N(mpam2_el2, MPAMn_ELx_PMG_D_SHIFT+7, MPAMn_ELx_PMG_D_SHIFT);
+
+    /* Program MPAM2_EL2 with test_partid and Default PMG */
+    mpam2_el2 |= (((uint64_t)pmg << MPAMn_ELx_PMG_D_SHIFT) |
+                  ((uint64_t)partid << MPAMn_ELx_PARTID_D_SHIFT));
+
+    val_print(ACS_PRINT_DEBUG, "\n       Writing MPAM2_EL2: 0x%llx", mpam2_el2);
+    val_mpam_reg_write(MPAM2_EL2, mpam2_el2);
+
+    return 0;
+}
+
+/*
+    @brief   This API enables/disables PARTID in the given MSC
+    @param   msc_index - index of the MSC node in the MPAM info table
+    @param   enable - 1 to enable, 0 to disable PARTID
+    @param   nfu_flag - No future Use if PARTID is to be disabled
+    @param   partid - PARTID to be enabled/disabled
+    @return  1 on success, 0 on failure.
+*/
+uint32_t
+val_mpam_msc_endis_partid(uint32_t msc_index, bool enable, bool nfu_flag, uint16_t partid)
+{
+
+    /* Check if the PARTID is valid */
+    if (partid >= val_mpam_get_max_partid(msc_index)) {
+        val_print(ACS_PRINT_ERR, "\n       PARTID value (0x%x)", partid);
+        val_print(ACS_PRINT_ERR, " specified more than MSC supported value (0x%x)",
+                  val_mpam_get_max_partid(msc_index));
+        return 1;
+    }
+
+    if (enable == 1)
+        val_mpam_mmr_write(msc_index, REG_MPAMCFG_EN, BITFIELD_SET(MPAMCFG_EN_PARTID, partid));
+    else
+        val_mpam_mmr_write(msc_index, REG_MPAMCFG_DIS, BITFIELD_SET(MPAMCFG_DIS_NFU, nfu_flag) |
+                                                       BITFIELD_SET(MPAMCFG_DIS_PARTID, partid));
+
+    val_mem_issue_dsb();
+    return 0;
+}
+
+/*
+    @brief   This API resets the CSU monitor value to zero.
+             Prerequisite - If MSC supports RIS, Resource instance should be
+                            selected using val_mpam_memory_configure_ris_sel
+                            prior calling this API.
+                            - MSC should support CSU monitoring, can be checked
+                            using val_mpam_supports_csumon API.
+
+    @param   msc_index - index of the MSC node in the MPAM info table.
+    @return  0 on success, 1 on failure.
+*/
+uint32_t
+val_mpam_reset_csumon(uint32_t msc_index, uint16_t mon_sel)
+{
+
+    uint32_t data;
+
+    /* retaining other configured fields e.g, RIS index if supported */
+    data = val_mpam_mmr_read(msc_index, REG_MSMON_CFG_MON_SEL);
+    /* Select the monitor instance */
+    data = BITFIELD_WRITE(data, MON_SEL_MON_SEL, mon_sel);
+    val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MON_SEL, data);
+
+    /* if CSUMON_IDR.CSU_RO == 1, accesses to this register are R0 */
+    if (BITFIELD_READ(CSUMON_IDR_CSU_RO,
+                                        val_mpam_mmr_read(msc_index, REG_MPAMF_CSUMON_IDR))) {
+         val_print(ACS_PRINT_WARN,
+                   "\n       Cannot reset CSU monitor value as it is Read-Only", 0);
+        return 1;
+    }
+
+    val_mpam_mmr_write(msc_index, REG_MSMON_CSU, 0);
+    val_mem_issue_dsb();
+    return 0;
+}
+
+/**
+  @brief   This API writes the CSU montior counter value.
+           Prerequisite - val_mpam_configure_csu_mon,
+           This API can be called only after configuring CSU monitor.
+
+  @param   msc_index  - MPAM feature page index for this MSC.
+  @return  0 - Success, 1 - Failure.
+**/
+uint32_t
+val_mpam_write_csumon(uint32_t msc_index, uint32_t value)
+{
+
+    /* if CSUMON_IDR.CSU_RO == 1, accesses to this register are R0 */
+    if (BITFIELD_READ(CSUMON_IDR_CSU_RO,
+                                        val_mpam_mmr_read(msc_index, REG_MPAMF_CSUMON_IDR))) {
+      val_print(ACS_PRINT_WARN,
+                   "\n       Cannot write CSU monitor value as it is Read-Only", 0);
+      return 1;
+    }
+
+    val_mpam_mmr_write(msc_index, REG_MSMON_CSU, value);
+    val_mem_issue_dsb();
+    return 0;
 }
