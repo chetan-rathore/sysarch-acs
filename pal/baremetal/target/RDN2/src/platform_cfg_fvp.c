@@ -56,11 +56,9 @@ uint32_t  g_num_modules = sizeof(g_execute_modules_arr)/sizeof(g_execute_modules
 uint32_t  g_skip_modules_arr[] = {};
 uint32_t  g_num_skip_modules = sizeof(g_skip_modules_arr)/sizeof(g_skip_modules_arr[0]);
 
-/* VE systems run acs at EL1 and in some systems crash is observed during access
-   of EL1 phy and virt timer, Below command line option is added only for debug
-   purpose to complete BSA run on these systems
-*/
-uint32_t  g_el1physkip       = FALSE;
+/* Bitmask of EL1 register accesses to skip. For example:
+   g_el1skiptrap_mask = EL1SKIPTRAP_CNTPCT; */
+uint32_t  g_el1skiptrap_mask = 0;
 
 /* B_PE_06 and S_L5PE_05 rules are conditional implementation based on export restrictions
    In case due to export restrictions, cryptography algorithm support is not present, set
@@ -86,14 +84,14 @@ uint32_t g_sys_last_lvl_cache = PLATFORM_OVERRRIDE_SLC;
 uint32_t g_timeout_pass = PLATFORM_OVERRIDE_TIMEOUT;
 uint32_t g_timeout_fail = PLATFORM_OVERRIDE_FAILSAFE_TIMEOUT;
 
-PE_SMBIOS_PROCESSOR_INFO_TABLE platform_smbios_cfg = {
+const PE_SMBIOS_PROCESSOR_INFO_TABLE platform_smbios_cfg = {
     .slot_count = PLATFORM_OVERRIDE_SMBIOS_SLOT_COUNT,
 
     .type4_info[0].processor_family = PLATFROM_OVERRIDE_SMBIOS_SLOT0_FAMILY,
     .type4_info[0].core_count = PLATFROM_OVERRIDE_SMBIOS_SLOT0_CORE_COUNT,
 };
 
-PE_INFO_TABLE platform_pe_cfg = {
+const PE_INFO_TABLE platform_pe_cfg = {
 
     .header.num_of_pe = PLATFORM_OVERRIDE_PE_CNT,
 
@@ -196,7 +194,7 @@ PE_INFO_TABLE platform_pe_cfg = {
 };
 
 
-PLATFORM_OVERRIDE_GIC_INFO_TABLE platform_gic_cfg = {
+const PLATFORM_OVERRIDE_GIC_INFO_TABLE platform_gic_cfg = {
 
     .gic_version     = PLATFORM_OVERRIDE_GIC_VERSION,
     .num_gicc        = PLATFORM_OVERRIDE_GICC_COUNT,
@@ -245,7 +243,7 @@ PLATFORM_OVERRIDE_GIC_INFO_TABLE platform_gic_cfg = {
 
 };
 
-PLATFORM_OVERRIDE_TIMER_INFO_TABLE platform_timer_cfg = {
+const PLATFORM_OVERRIDE_TIMER_INFO_TABLE platform_timer_cfg = {
 
     .header.s_el1_timer_flags   = PLATFORM_OVERRIDE_S_EL1_TIMER_FLAGS,
     .header.ns_el1_timer_flags  = PLATFORM_OVERRIDE_NS_EL1_TIMER_FLAGS,
@@ -276,7 +274,7 @@ PLATFORM_OVERRIDE_TIMER_INFO_TABLE platform_timer_cfg = {
 
 };
 
-WD_INFO_TABLE platform_wd_cfg = {
+const WD_INFO_TABLE platform_wd_cfg = {
     .header.num_wd              = PLATFORM_OVERRIDE_WD_TIMER_COUNT,
     .wd_info[0].wd_ctrl_base    = PLATFORM_OVERRIDE_WD_CTRL_BASE,
     .wd_info[0].wd_refresh_base = PLATFORM_OVERRIDE_WD_REFRESH_BASE,
@@ -289,7 +287,7 @@ WD_INFO_TABLE platform_wd_cfg = {
 
 };
 
-PCIE_INFO_TABLE platform_pcie_cfg = {
+const PCIE_INFO_TABLE platform_pcie_cfg = {
     .num_entries             = PLATFORM_OVERRIDE_NUM_ECAM,
     .block[0].ecam_base      = PLATFORM_OVERRIDE_PCIE_ECAM_BASE_ADDR_0,
     .block[0].segment_num    = PLATFORM_OVERRIDE_PCIE_SEGMENT_GRP_NUM_0,
@@ -306,7 +304,7 @@ PCIE_INFO_TABLE platform_pcie_cfg = {
 **/
 };
 
-PCIE_ROOT_INFO_TABLE platform_root_pcie_cfg = {
+const PCIE_ROOT_INFO_TABLE platform_root_pcie_cfg = {
     .block[0].hb_entries         = PLATFORM_OVERRIDE_PCIE_ECAM0_HB_COUNT,
     .block[0].segment_num[0]      = PLATFORM_OVERRIDE_PCIE_ECAM0_SEG_NUM,
     .block[0].start_bus_num[0]    = PLATFORM_OVERRIDE_PCIE_ECAM0_START_BUS_NUM,
@@ -318,7 +316,7 @@ PCIE_ROOT_INFO_TABLE platform_root_pcie_cfg = {
     .block[0].rp_bar32_value[0]   = PLATFORM_OVERRIDE_PCIE_ECAM0_RP_BAR32,
 };
 
-CXL_INFO_TABLE platform_cxl_cfg = {
+const CXL_INFO_TABLE platform_cxl_cfg = {
     .num_entries                     = PLATFORM_OVERRIDE_NUM_CXL_HB,
     .device[0].cfmws_count           = PLATFORM_OVERRIDE_CXL0_WINDOW_COUNT,
     .device[0].uid                   = PLATFORM_OVERRIDE_CXL0_UID,
@@ -343,7 +341,7 @@ CXL_INFO_TABLE platform_cxl_cfg = {
 **/
 };
 
-PLATFORM_OVERRIDE_IOVIRT_INFO_TABLE platform_iovirt_cfg = {
+const PLATFORM_OVERRIDE_IOVIRT_INFO_TABLE platform_iovirt_cfg = {
     .Address              = IOVIRT_ADDRESS,
     .node_count           = IORT_NODE_COUNT,
     .type[0]              = IOVIRT_NODE_ITS_GROUP,
@@ -512,7 +510,7 @@ PLATFORM_OVERRIDE_IOVIRT_INFO_TABLE platform_iovirt_cfg = {
 
 };
 
-PLATFORM_OVERRIDE_NODE_DATA platform_node_type = {
+const PLATFORM_OVERRIDE_NODE_DATA platform_node_type = {
     .its_count                        = IOVIRT_ITS_COUNT,
     .smmu[0].base                     = IOVIRT_SMMUV3_0_BASE_ADDRESS,
     .smmu[1].base                     = IOVIRT_SMMUV3_1_BASE_ADDRESS,
@@ -527,7 +525,7 @@ PLATFORM_OVERRIDE_NODE_DATA platform_node_type = {
 
 };
 
-PLATFORM_OVERRIDE_PMCG_NODE_DATA platform_pmcg_node_data = {
+const PLATFORM_OVERRIDE_PMCG_NODE_DATA platform_pmcg_node_data = {
     /* Place holder Fill this as below if PMCG is present
     .pmcg[0].base          = IOVIRT_PMCG_0_BASE_ADDRESS,
     .pmcg[0].overflow_gsiv = IOVIRT_PMCG_0_OVERFLOW_GSIV,
@@ -535,7 +533,7 @@ PLATFORM_OVERRIDE_PMCG_NODE_DATA platform_pmcg_node_data = {
     .pmcg[0].smmu_base     = IOVIRT_PMCG_0_SMMU_BASE,*/
 };
 
-PLATFORM_OVERRIDE_NAMED_NODE_DATA platform_named_node_data = {
+const PLATFORM_OVERRIDE_NAMED_NODE_DATA platform_named_node_data = {
     .named[0].smmu_base         = IOVIRT_NAMED_0_SMMU_BASE,
     .named[0].memory_properties = IOVIRT_NAMED_0_MEM_PROP,
     .named[0].name              = IOVIRT_NAMED_0_DEVICE_NAME,
@@ -544,7 +542,7 @@ PLATFORM_OVERRIDE_NAMED_NODE_DATA platform_named_node_data = {
     .named[1].name              = IOVIRT_NAMED_1_DEVICE_NAME,
 };
 
-PLATFORM_OVERRIDE_UART_INFO_TABLE platform_uart_cfg = {
+const PLATFORM_OVERRIDE_UART_INFO_TABLE platform_uart_cfg = {
     .Address               = UART_ADDRESS,
     .BaseAddress.Address   = BASE_ADDRESS_ADDRESS,
     .InterfaceType         = INTERFACE_TYPE,
@@ -559,11 +557,11 @@ PLATFORM_OVERRIDE_UART_INFO_TABLE platform_uart_cfg = {
     .PciSegment            = UART_PCI_SEGMENT
 };
 
-PLATFORM_OVERRIDE_SATA_INFO_TABLE platform_sata_cfg = {
+const PLATFORM_OVERRIDE_SATA_INFO_TABLE platform_sata_cfg = {
     .GlobalSystemInterrupt = SATA_GLOBAL_SYSTEM_INTERRUPT
 };
 
-DMA_INFO_TABLE platform_dma_cfg = {
+const DMA_INFO_TABLE platform_dma_cfg = {
     .num_dma_ctrls = PLATFORM_OVERRIDE_DMA_CNT
 
     /** Place holder
@@ -575,7 +573,7 @@ DMA_INFO_TABLE platform_dma_cfg = {
 
 };
 
-PLATFORM_OVERRIDE_MEMORY_INFO_TABLE platform_mem_cfg = {
+const PLATFORM_OVERRIDE_MEMORY_INFO_TABLE platform_mem_cfg = {
     .count                   = PLATFORM_OVERRIDE_MEMORY_ENTRY_COUNT,
     .info[0].phy_addr        = PLATFORM_OVERRIDE_MEMORY_ENTRY0_PHY_ADDR,
     .info[0].virt_addr       = PLATFORM_OVERRIDE_MEMORY_ENTRY0_VIRT_ADDR,
@@ -595,7 +593,7 @@ PLATFORM_OVERRIDE_MEMORY_INFO_TABLE platform_mem_cfg = {
     .info[3].type            = PLATFORM_OVERRIDE_MEMORY_ENTRY3_TYPE,
 };
 
-PCIE_READ_TABLE platform_pcie_device_hierarchy = {
+const PCIE_READ_TABLE platform_pcie_device_hierarchy = {
     .num_entries             = PLATFORM_PCIE_NUM_ENTRIES,
 
     .device[0].class_code    = PLATFORM_PCIE_DEV0_CLASSCODE,
@@ -927,12 +925,12 @@ PCIE_READ_TABLE platform_pcie_device_hierarchy = {
 };
 
 /** SBSA Module definitions */
-PLATFORM_OVERRIDE_CS_COMP_NODE_DATA platform_cs_comp_node_data = {
+const PLATFORM_OVERRIDE_CS_COMP_NODE_DATA platform_cs_comp_node_data = {
     .component[0].identifier    = CS_COMPONENT_0_IDENTIFIER,
     .component[0].dev_name      = CS_COMPONENT_0_DEVICE_NAME,
 };
 
-PLATFORM_OVERRIDE_CACHE_INFO_TABLE platform_cache_cfg = {
+const PLATFORM_OVERRIDE_CACHE_INFO_TABLE platform_cache_cfg = {
 
     .num_of_cache                     = PLATFORM_OVERRIDE_CACHE_CNT,
 
@@ -1322,7 +1320,7 @@ PLATFORM_OVERRIDE_CACHE_INFO_TABLE platform_cache_cfg = {
 
 };
 
-PLATFORM_OVERRIDE_PPTT_INFO_TABLE platform_pptt_cfg = {
+const PLATFORM_OVERRIDE_PPTT_INFO_TABLE platform_pptt_cfg = {
 
     .pptt_info[0].cache_id[0]     = PLATFORM_PPTT0_CACHEID0,
     .pptt_info[0].cache_id[1]     = PLATFORM_PPTT0_CACHEID1,
@@ -1374,7 +1372,7 @@ PLATFORM_OVERRIDE_PPTT_INFO_TABLE platform_pptt_cfg = {
 
 };
 
-SRAT_INFO_TABLE platform_srat_cfg = {
+const SRAT_INFO_TABLE platform_srat_cfg = {
 
     .num_of_srat_entries  = PLATFORM_OVERRIDE_NUM_SRAT_ENTRIES,
 
@@ -1397,7 +1395,7 @@ SRAT_INFO_TABLE platform_srat_cfg = {
     .srat_info[16].node_type   = SRAT_NODE_GICC_AFF,
 };
 
-PLATFORM_OVERRIDE_SRAT_NODE_INFO_TABLE platform_srat_node_type = {
+const PLATFORM_OVERRIDE_SRAT_NODE_INFO_TABLE platform_srat_node_type = {
 
     .mem_aff[0].prox_domain     = PLATFORM_SRAT_MEM0_PROX_DOMAIN,
     .mem_aff[0].flags           = PLATFORM_SRAT_MEM0_FLAGS,
@@ -1485,7 +1483,7 @@ PLATFORM_OVERRIDE_SRAT_NODE_INFO_TABLE platform_srat_node_type = {
     .gicc_aff[15].clk_domain    = PLATFORM_SRAT_GICC15_CLK_DOMAIN,
 };
 
-PLATFORM_OVERRIDE_HMAT_INFO_TABLE platform_hmat_cfg = {
+const PLATFORM_OVERRIDE_HMAT_INFO_TABLE platform_hmat_cfg = {
 
     .num_of_prox_domain = PLATFORM_OVERRIDE_NUM_OF_HMAT_PROX_DOMAIN,
 
@@ -1497,7 +1495,7 @@ PLATFORM_OVERRIDE_HMAT_INFO_TABLE platform_hmat_cfg = {
 };
 
 
-PLATFORM_OVERRIDE_HMAT_MEM_TABLE platform_hmat_mem_cfg = {
+const PLATFORM_OVERRIDE_HMAT_MEM_TABLE platform_hmat_mem_cfg = {
 
     /* Example : HMAT MEM details to be filled */
     .bw_mem_info[0].mem_prox_domain  = PLATFORM_HMAT_MEM0_PROX_DOMAIN,
@@ -1518,7 +1516,7 @@ PLATFORM_OVERRIDE_HMAT_MEM_TABLE platform_hmat_mem_cfg = {
 
 };
 
-PLATFORM_OVERRIDE_PMU_INFO_TABLE platform_pmu_cfg = {
+const PLATFORM_OVERRIDE_PMU_INFO_TABLE platform_pmu_cfg = {
 
     .pmu_count = PLATFORM_OVERRIDE_PMU_NODE_CNT,
 
@@ -1533,7 +1531,7 @@ PLATFORM_OVERRIDE_PMU_INFO_TABLE platform_pmu_cfg = {
 
 };
 
-RAS_INFO_TABLE platform_ras_cfg = {
+const RAS_INFO_TABLE platform_ras_cfg = {
 
     .num_nodes      = PLATFORM_OVERRIDE_NUM_RAS_NODES,
     .num_pe_node    = PLATFORM_OVERRIDE_NUM_PE_RAS_NODES,
@@ -1547,7 +1545,7 @@ RAS_INFO_TABLE platform_ras_cfg = {
 
 };
 
-PLATFORM_OVERRIDE_RAS_NODE_DATA_INFO platform_ras_node_data = {
+const PLATFORM_OVERRIDE_RAS_NODE_DATA_INFO platform_ras_node_data = {
 
     /* Example : PE RAS Node data to be filled */
 
@@ -1561,7 +1559,7 @@ PLATFORM_OVERRIDE_RAS_NODE_DATA_INFO platform_ras_node_data = {
     //.node_data[1].mc.proximity_domain = PLATFORM_RAS_NODE0_MC_PROX_DOMAIN,
 };
 
-PLATFORM_OVERRIDE_RAS_NODE_INTERFACE_INFO platform_ras_node_interface = {
+const PLATFORM_OVERRIDE_RAS_NODE_INTERFACE_INFO platform_ras_node_interface = {
 
     /* Example : RAS Node interface info to be filled */
 
@@ -1576,7 +1574,7 @@ PLATFORM_OVERRIDE_RAS_NODE_INTERFACE_INFO platform_ras_node_interface = {
 
 };
 
-PLATFORM_OVERRIDE_RAS_NODE_INTERRUPT_INFO platform_ras_node_interrupt = {
+const PLATFORM_OVERRIDE_RAS_NODE_INTERRUPT_INFO platform_ras_node_interrupt = {
 
     /* Example : RAS Node 0 Interrupt 0 details needs to be filled */
 
@@ -1587,7 +1585,7 @@ PLATFORM_OVERRIDE_RAS_NODE_INTERRUPT_INFO platform_ras_node_interrupt = {
 
 };
 
-PLATFORM_OVERRIDE_RAS2_INFO_TABLE platform_ras2_cfg = {
+const PLATFORM_OVERRIDE_RAS2_INFO_TABLE platform_ras2_cfg = {
 
     .num_all_block      = PLATFORM_OVERRIDE_NUM_RAS2_BLOCK,
     .num_of_mem_block   = PLATFORM_OVERRIDE_NUM_RAS2_MEM_BLOCK,
@@ -1608,7 +1606,7 @@ PLATFORM_OVERRIDE_RAS2_INFO_TABLE platform_ras2_cfg = {
 
 };
 
-PLATFORM_OVERRIDE_MPAM_INFO_TABLE platform_mpam_cfg = {
+const PLATFORM_OVERRIDE_MPAM_INFO_TABLE platform_mpam_cfg = {
     .msc_count = PLATFORM_MPAM_MSC_COUNT,
 
     /* Example : MPAM MSC Blocks to be filled */
@@ -1618,6 +1616,7 @@ PLATFORM_OVERRIDE_MPAM_INFO_TABLE platform_mpam_cfg = {
     .msc_node[0].msc_addr_len  = PLATFORM_MPAM_MSC0_ADDR_LEN,
     .msc_node[0].max_nrdy      = PLATFORM_MPAM_MSC0_MAX_NRDY,
     .msc_node[0].rsrc_count    = PLATFORM_MPAM_MSC0_RSRC_COUNT,
+    .msc_node[0].device_obj_name = PLATFORM_MPAM_MSC0_NAME,
 
     .msc_node[0].rsrc_node[0].ris_index     = PLATFORM_MPAM_MSC0_RSRC0_RIS_INDEX,
     .msc_node[0].rsrc_node[0].locator_type  = PLATFORM_MPAM_MSC0_RSRC0_LOCATOR_TYPE,
@@ -1625,7 +1624,7 @@ PLATFORM_OVERRIDE_MPAM_INFO_TABLE platform_mpam_cfg = {
     .msc_node[0].rsrc_node[0].descriptor2   = PLATFORM_MPAM_MSC0_RSRC0_DESCRIPTOR2,
 };
 
-PLATFORM_OVERRIDE_PCC_INFO_TABLE platform_pcc_cfg = {
+const PLATFORM_OVERRIDE_PCC_INFO_TABLE platform_pcc_cfg = {
     .subspace_cnt = PLATFORM_PCC_SUBSPACE_COUNT,
 
     /* Example : PCC information to be filled */
@@ -1654,7 +1653,7 @@ PLATFORM_OVERRIDE_PCC_INFO_TABLE platform_pcc_cfg = {
                                                 = PLATFORM_PCC_SUBSPACE0_CMD_COMPLETE_UPDATE_SET
 };
 
-PLATFORM_OVERRIDE_TPM2_INFO_TABLE platform_tpm2_cfg = {
+const PLATFORM_OVERRIDE_TPM2_INFO_TABLE platform_tpm2_cfg = {
     .tpm_present        = PLATFORM_TPM_PRESENT,
     .tpm_version        = PLATFORM_TPM_VERSION,
     .tpm_base           = PLATFORM_TPM_BASE_ADDR,
@@ -1662,7 +1661,7 @@ PLATFORM_OVERRIDE_TPM2_INFO_TABLE platform_tpm2_cfg = {
 };
 
 /* Array containing the details of implementation defined system PMU events */
-PLATFORM_OVERRIDE_EVENT_DETAILS event_list[] = {
+const PLATFORM_OVERRIDE_EVENT_DETAILS event_list[] = {
   {0, PMU_NODE_MEM_CNTR, PMU_EVENT_IB_TOTAL_BW,  PMU_EVENT_INVALID},
   {0, PMU_NODE_MEM_CNTR, PMU_EVENT_OB_TOTAL_BW,  PMU_EVENT_INVALID},
   {0, PMU_NODE_MEM_CNTR, PMU_EVENT_IB_READ_BW,   PMU_EVENT_INVALID},

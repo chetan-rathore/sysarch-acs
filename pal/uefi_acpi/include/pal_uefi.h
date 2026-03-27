@@ -139,10 +139,12 @@ typedef struct {
 **/
 typedef struct {
   UINT64 ttbr0;      ///< Translation Table Base Register 0
+  UINT64 ttbr1;      ///< Translation Table Base Register 1
   UINT64 tcr;        ///< Translation Control Register
   UINT64 mair;       ///< Memory Attribute Indirection Register
   UINT64 sctlr;      ///< System Control Register
   UINT32 current_el; ///< Current Exception Level (1 or 2)
+  UINT32 reserved;   ///< Reserved for alignment
 } PE_MMU_CONFIG;
 
 /**
@@ -324,8 +326,11 @@ typedef struct {
   CXL_INFO_BLOCK device[];
 } CXL_INFO_TABLE;
 
-#define ACPI_MAX_ROOT_BRIDGES 32
-#define AML_MAX_DEVICE_DEPTH  8
+/*
+ * DSDT/SSDT AML parser with generic AML helpers.
+ */
+#define ACPI_MAX_ROOT_BRIDGES     32
+#define PAL_AML_MAX_DEVICE_DEPTH  8
 
 #define AML_OP_DEVICE_PREFIX 0x5B
 #define AML_OP_DEVICE        0x82
@@ -335,7 +340,8 @@ typedef struct {
 #define AML_OP_WORD          0x0B
 #define AML_OP_DWORD         0x0C
 #define AML_OP_QWORD         0x0E
-
+#define AML_OP_PACKAGE       0x12u
+#define AML_OP_SCOPE         0x10u
 #define AML_OP_ZERO          0x00
 #define AML_OP_ONE           0x01
 
@@ -349,7 +355,7 @@ typedef enum {
   AML_DATA_NONE,
   AML_DATA_INTEGER,
   AML_DATA_STRING
-} AML_DATA_TYPE;
+} PAL_AML_DATA_TYPE;
 
 typedef struct {
   UINT32 uid;
@@ -640,6 +646,7 @@ typedef struct {
     UINT32           err_intr_flags;/* Error interrupt flags */
     UINT32           max_nrdy;      /* max time in microseconds that MSC not ready
                                          after config change */
+    CHAR8            device_obj_name[MAX_NAMED_COMP_LENGTH]; /* Device object name */
     UINT32           rsrc_count;    /* number of resource nodes */
     MPAM_RESOURCE_NODE rsrc_node[]; /* Details of resource node */
 } MPAM_MSC_NODE;
@@ -658,6 +665,7 @@ typedef struct {
     UINT32          msc_count;  /* Number of MSC node */
     MPAM_MSC_NODE   msc_node[]; /* Details of MSC node */
 } MPAM_INFO_TABLE;
+UINT32 pal_mpam_parse_dsdt_info(MPAM_INFO_TABLE *MpamTable);
 
 
 /* Platform Communication Channel (PCC) info table */

@@ -645,7 +645,7 @@ pal_acpi_decode_eisa_id(UINT32 encoded, CHAR8 * out, UINT32 out_len)
 }
 
 STATIC UINT32
-pal_acpi_is_pci_hid(AML_DATA_TYPE data_type, UINT64 value, CONST CHAR8 * text)
+pal_acpi_is_pci_hid(PAL_AML_DATA_TYPE data_type, UINT64 value, CONST CHAR8 * text)
 {
   /* Accept PCI root bridge HIDs expressed as strings or numeric EISA IDs. */
   if (data_type == AML_DATA_STRING) {
@@ -769,7 +769,7 @@ pal_acpi_parse_name_string(CONST UINT8 *data, UINT32 length, CHAR8 name[5])
 STATIC UINT32
 pal_acpi_parse_data_object(CONST UINT8 *data,
                            UINT32 length,
-                           AML_DATA_TYPE * type,
+                           PAL_AML_DATA_TYPE *type,
                            UINT64 *value,
                            CHAR8 * text,
                            UINT32 text_len,
@@ -868,7 +868,7 @@ STATIC VOID
 pal_acpi_parse_aml(CONST UINT8 *aml, UINT32 length)
 {
   /* Walk AML to collect PCI root bridge _HID/_UID/_SEG/_BBN data. */
-  AML_DEVICE_SCOPE stack[AML_MAX_DEVICE_DEPTH];
+  AML_DEVICE_SCOPE stack[PAL_AML_MAX_DEVICE_DEPTH];
   INT32 depth = -1;
   UINT32 offset = 0u;
 
@@ -902,7 +902,7 @@ pal_acpi_parse_aml(CONST UINT8 *aml, UINT32 length)
       if (end_offset > length)
         break;
 
-      if (depth + 1 >= (INT32)AML_MAX_DEVICE_DEPTH) {
+      if (depth + 1 >= (INT32)PAL_AML_MAX_DEVICE_DEPTH) {
         offset = end_offset;
         continue;
       }
@@ -931,7 +931,7 @@ pal_acpi_parse_aml(CONST UINT8 *aml, UINT32 length)
       CHAR8 name[5];
       UINT32 name_consumed;
       UINT32 data_consumed;
-      AML_DATA_TYPE data_type;
+      PAL_AML_DATA_TYPE data_type;
       UINT64 data_value = 0u;
       CHAR8 data_text[16];
 

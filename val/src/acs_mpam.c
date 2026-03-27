@@ -20,12 +20,15 @@
 #include "acs_mmu.h"
 #include "acs_common.h"
 #include "acs_mpam.h"
+#include "acs_iovirt.h"
 #include "acs_memory.h"
 #include "acs_mpam_reg.h"
+#include "acs_gic_its.h"
 
 static MPAM_INFO_TABLE *g_mpam_info_table;
 static SRAT_INFO_TABLE *g_srat_info_table;
 static HMAT_INFO_TABLE *g_hmat_info_table;
+extern GIC_ITS_INFO    *g_gic_its_info;
 
 uint8_t **g_shared_memcpy_buffer;
 
@@ -33,44 +36,56 @@ static char8_t *
 mpam_reg_offset_name(uint32_t reg_offset)
 {
   switch (reg_offset) {
-  case REG_MPAMF_IDR:            return "MPAMF_IDR";
-  case REG_MPAMF_SIDR:           return "MPAMF_SIDR";
-  case REG_MPAMF_IIDR:           return "MPAMF_IIDR";
-  case REG_MPAMF_AIDR:           return "MPAMF_AIDR";
-  case REG_MPAMF_IMPL_IDR:       return "MPAMF_IMPL_IDR";
-  case REG_MPAMF_CPOR_IDR:       return "MPAMF_CPOR_IDR";
-  case REG_MPAMF_CCAP_IDR:       return "MPAMF_CCAP_IDR";
-  case REG_MPAMF_MBW_IDR:        return "MPAMF_MBW_IDR";
-  case REG_MPAMF_PRI_IDR:        return "MPAMF_PRI_IDR";
-  case REG_MPAMF_PARTID_NRW_IDR: return "MPAMF_PARTID_NRW_IDR";
-  case REG_MPAMF_MSMON_IDR:      return "MPAMF_MSMON_IDR";
-  case REG_MPAMF_CSUMON_IDR:     return "MPAMF_CSUMON_IDR";
-  case REG_MPAMF_MBWUMON_IDR:    return "MPAMF_MBWUMON_IDR";
-  case REG_MPAMF_ECR:            return "MPAMF_ECR";
-  case REG_MPAMF_ESR:            return "MPAMF_ESR";
-  case REG_MPAMCFG_PART_SEL:     return "MPAMCFG_PART_SEL";
-  case REG_MPAMCFG_CMAX:         return "MPAMCFG_CMAX";
-  case REG_MPAMCFG_CASSOC:       return "MPAMCFG_CASSOC";
-  case REG_MPAMCFG_MBW_MIN:      return "MPAMCFG_MBW_MIN";
-  case REG_MPAMCFG_MBW_MAX:      return "MPAMCFG_MBW_MAX";
-  case REG_MPAMCFG_EN:           return "MPAMCFG_EN";
-  case REG_MPAMCFG_DIS:          return "MPAMCFG_DIS";
-  case REG_MPAMCFG_INTPARTID:    return "MPAMCFG_INTPARTID";
-  case REG_MPAMCFG_CPBM:         return "MPAMCFG_CPBM";
-  case REG_MPAMCFG_MBW_PBM:      return "MPAMCFG_MBW_PBM";
-  case REG_MSMON_CFG_MON_SEL:    return "MSMON_CFG_MON_SEL";
-  case REG_MSMON_CAPT_EVNT:      return "MSMON_CAPT_EVNT";
-  case REG_MSMON_CFG_CSU_FLT:    return "MSMON_CFG_CSU_FLT";
-  case REG_MSMON_CFG_CSU_CTL:    return "MSMON_CFG_CSU_CTL";
-  case REG_MSMON_CFG_MBWU_FLT:   return "MSMON_CFG_MBWU_FLT";
-  case REG_MSMON_CFG_MBWU_CTL:   return "MSMON_CFG_MBWU_CTL";
-  case REG_MSMON_CSU:            return "MSMON_CSU";
-  case REG_MSMON_CSU_CAPTURE:    return "MSMON_CSU_CAPTURE";
-  case REG_MSMON_CSU_OFSR:       return "MSMON_CSU_OFSR";
-  case REG_MSMON_MBWU:           return "MSMON_MBWU";
-  case REG_MSMON_MBWU_CAPTURE:   return "MSMON_MBWU_CAPTURE";
-  case REG_MSMON_MBWU_L:         return "MSMON_MBWU_L";
-  case REG_MSMON_MBWU_L_CAPTURE: return "MSMON_MBWU_L_CAPTURE";
+  case REG_MPAMF_IDR:              return "MPAMF_IDR";
+  case REG_MPAMF_SIDR:             return "MPAMF_SIDR";
+  case REG_MPAMF_IIDR:             return "MPAMF_IIDR";
+  case REG_MPAMF_AIDR:             return "MPAMF_AIDR";
+  case REG_MPAMF_IMPL_IDR:         return "MPAMF_IMPL_IDR";
+  case REG_MPAMF_CPOR_IDR:         return "MPAMF_CPOR_IDR";
+  case REG_MPAMF_CCAP_IDR:         return "MPAMF_CCAP_IDR";
+  case REG_MPAMF_MBW_IDR:          return "MPAMF_MBW_IDR";
+  case REG_MPAMF_PRI_IDR:          return "MPAMF_PRI_IDR";
+  case REG_MPAMF_PARTID_NRW_IDR:   return "MPAMF_PARTID_NRW_IDR";
+  case REG_MPAMF_MSMON_IDR:        return "MPAMF_MSMON_IDR";
+  case REG_MPAMF_CSUMON_IDR:       return "MPAMF_CSUMON_IDR";
+  case REG_MPAMF_MBWUMON_IDR:      return "MPAMF_MBWUMON_IDR";
+  case REG_MPAMF_ECR:              return "MPAMF_ECR";
+  case REG_MPAMF_ESR:              return "MPAMF_ESR";
+  case REG_MPAMCFG_PART_SEL:       return "MPAMCFG_PART_SEL";
+  case REG_MPAMCFG_CMAX:           return "MPAMCFG_CMAX";
+  case REG_MPAMCFG_CASSOC:         return "MPAMCFG_CASSOC";
+  case REG_MPAMCFG_MBW_MIN:        return "MPAMCFG_MBW_MIN";
+  case REG_MPAMCFG_MBW_MAX:        return "MPAMCFG_MBW_MAX";
+  case REG_MPAMCFG_EN:             return "MPAMCFG_EN";
+  case REG_MPAMCFG_DIS:            return "MPAMCFG_DIS";
+  case REG_MPAMCFG_INTPARTID:      return "MPAMCFG_INTPARTID";
+  case REG_MPAMCFG_CPBM:           return "MPAMCFG_CPBM";
+  case REG_MPAMCFG_MBW_PBM:        return "MPAMCFG_MBW_PBM";
+  case REG_MSMON_CFG_MON_SEL:      return "MSMON_CFG_MON_SEL";
+  case REG_MSMON_CAPT_EVNT:        return "MSMON_CAPT_EVNT";
+  case REG_MSMON_CFG_CSU_FLT:      return "MSMON_CFG_CSU_FLT";
+  case REG_MSMON_CFG_CSU_CTL:      return "MSMON_CFG_CSU_CTL";
+  case REG_MSMON_CFG_MBWU_FLT:     return "MSMON_CFG_MBWU_FLT";
+  case REG_MSMON_CFG_MBWU_CTL:     return "MSMON_CFG_MBWU_CTL";
+  case REG_MSMON_CSU:              return "MSMON_CSU";
+  case REG_MSMON_CSU_CAPTURE:      return "MSMON_CSU_CAPTURE";
+  case REG_MSMON_CSU_OFSR:         return "MSMON_CSU_OFSR";
+  case REG_MSMON_MBWU:             return "MSMON_MBWU";
+  case REG_MSMON_MBWU_CAPTURE:     return "MSMON_MBWU_CAPTURE";
+  case REG_MSMON_MBWU_L:           return "MSMON_MBWU_L";
+  case REG_MSMON_MBWU_L_CAPTURE:   return "MSMON_MBWU_L_CAPTURE";
+  case REG_MSMON_MBWU_OFSR:        return "MSMON_MBWU_OFSR";
+  case REG_MSMON_OFLOW_MSI_MPAM:   return "MSMON_OFLOW_MSI_MPAM";
+  case REG_MSMON_OFLOW_MSI_ADDR_L: return "MSMON_OFLOW_MSI_ADDR_L";
+  case REG_MSMON_OFLOW_MSI_ADDR_H: return "MSMON_OFLOW_MSI_ADDR_H";
+  case REG_MSMON_OFLOW_MSI_DATA:   return "MSMON_OFLOW_MSI_DATA";
+  case REG_MSMON_OFLOW_MSI_ATTR:   return "MSMON_OFLOW_MSI_ATTR";
+  case REG_MSMON_OFLOW_SR:         return "MSMON_OFLOW_SR";
+  case REG_MPAMF_ERR_MSI_MPAM:     return "MPAMF_ERR_MSI_MPAM";
+  case REG_MPAMF_ERR_MSI_ADDR_L:   return "MPAMF_ERR_MSI_ADDR_L";
+  case REG_MPAMF_ERR_MSI_ADDR_H:   return "MPAMF_ERR_MSI_ADDR_H";
+  case REG_MPAMF_ERR_MSI_DATA:     return "MPAMF_ERR_MSI_DATA";
+  case REG_MPAMF_ERR_MSI_ATTR:     return "MPAMF_ERR_MSI_ATTR";
   default:
       return NULL;
   }
@@ -426,6 +441,21 @@ val_mpam_msc_supports_cmax_softlim(uint32_t msc_index)
 {
     if (val_mpam_supports_ccap(msc_index))
         return BITFIELD_READ(CCAP_IDR_HAS_CMAX_SOFTLIM,
+                   val_mpam_mmr_read(msc_index, REG_MPAMF_CCAP_IDR));
+
+    return 0;
+}
+
+/**
+  @brief   This API checks whether MSC supports CMIN partition controls.
+  @param   msc_index - index of the MSC node in the MPAM info table.
+  @return  1 if supported 0 otherwise.
+**/
+bool
+val_mpam_msc_supports_cmin(uint32_t msc_index)
+{
+    if (val_mpam_supports_ccap(msc_index))
+        return BITFIELD_READ(CCAP_IDR_HAS_CMIN,
                    val_mpam_mmr_read(msc_index, REG_MPAMF_CCAP_IDR));
 
     return 0;
@@ -997,6 +1027,25 @@ val_mpam_create_info_table(uint64_t *mpam_info_table)
 }
 
 /**
+  @brief   This API will call PAL layer to update MPAM table MSC entries
+           with device object names parsed from DSDT.
+           1. Caller       -  Application layer.
+           2. Prerequisite -  MPAM info table created.
+  @return  None
+**/
+void
+val_mpam_update_msc_device_names(void)
+{
+#ifndef TARGET_LINUX
+  if (g_mpam_info_table == NULL) {
+    val_print(ACS_PRINT_ERR, "MPAM info table is not created\n", 0);
+    return;
+  }
+  pal_mpam_parse_dsdt_info(g_mpam_info_table);
+#endif
+}
+
+/**
   @brief   This API frees the memory allocated for MPAM info table.
   @param   None
   @return  None
@@ -1013,6 +1062,59 @@ val_mpam_free_info_table(void)
                   "\n WARNING: g_mpam_info_table pointer is already NULL",
         0);
     }
+}
+
+
+/**
+  @brief  This API returns Device ID and ITS ID for a given MSC identifier.
+  @param  identifier  MSC identifier
+  @param  device_id   Pointer to device id
+  @param  its_id      Pointer to ITS id
+  @return status
+**/
+uint32_t
+val_mpam_get_msc_device_info(uint32_t msc_index, uint32_t *device_id, uint32_t *its_id)
+{
+  uint32_t identifier;
+  char *device_name;
+  MPAM_MSC_NODE *msc_node;
+
+  if (g_mpam_info_table == NULL) {
+    val_print(ACS_PRINT_ERR, "MPAM info table is not created\n", 0);
+    return ACS_STATUS_ERR;
+  }
+  if (device_id == NULL) {
+    val_print(ACS_PRINT_ERR, "MPAM info invalid params\n", 0);
+    return ACS_STATUS_ERR;
+  }
+  if (msc_index >= g_mpam_info_table->msc_count) {
+    val_print(ACS_PRINT_ERR, "MPAM info invalid MSC index %d\n", msc_index);
+    return ACS_STATUS_ERR;
+  }
+
+  msc_node = &g_mpam_info_table->msc_node[0];
+  for (uint32_t i = 0; i < msc_index; i++)
+    msc_node = MPAM_NEXT_MSC(msc_node);
+
+  identifier = msc_node->identifier;
+  device_name = msc_node->device_obj_name;
+  if (device_name[0] == '\0') {
+    val_print(ACS_PRINT_ERR, "MPAM info missing device name for MSC %d\n", msc_index);
+    return ACS_STATUS_ERR;
+  }
+
+  uint32_t status = val_iovirt_get_named_comp_device_info(device_name,
+                                                          identifier, device_id, its_id);
+  if (status == 0) {
+    val_print(ACS_PRINT_INFO, " MPAM MSC Device info: idx=%d", msc_index);
+    val_print(ACS_PRINT_INFO, " id=0x%x", identifier);
+    val_print(ACS_PRINT_INFO, " dev=0x%x", *device_id);
+    val_print(ACS_PRINT_INFO, " its=0x%x\n", its_id ? *its_id : 0);
+  } else {
+    val_print(ACS_PRINT_ERR, " MPAM MSC devinfo failed: idx=%d", msc_index);
+    val_print(ACS_PRINT_ERR, " id=0x%x\n", identifier);
+  }
+  return status;
 }
 
 /**
@@ -1287,6 +1389,47 @@ void val_mpam_configure_cassoc(uint32_t msc_index, uint16_t partid,
      */
     val_mpam_mmr_write(msc_index, REG_MPAMCFG_CASSOC,
                       (fixed_point_fraction << (16 - num_fractional_bits)) & 0xFFFF);
+
+    val_mem_issue_dsb();
+    return;
+}
+
+/**
+  @brief   This API Configures CMIN settings for given MSC
+           Prerequisite - If MSC supports RIS, Resource instance should be
+                          selected using val_mpam_memory_configure_ris_sel
+                          prior calling this API.
+  @param   msc_index - index of the MSC node in the MPAM info table.
+  @param   partid - PATRTID for CCAP configuration
+  @param   cmin_percentage - Minimum percentage of cache to be allocated for the given PARTID
+  @return  void.
+**/
+void val_mpam_configure_cmin(uint32_t msc_index, uint16_t partid, uint32_t cmin_percentage)
+{
+
+    uint8_t num_fractional_bits;
+    uint16_t fixed_point_fraction;
+
+    num_fractional_bits = val_mpam_get_cmax_wd(msc_index);
+    if (num_fractional_bits > 16) {
+        val_print(ACS_PRINT_ERR, "\n       Number of fractional bits = %d not permitted",
+                                                                            num_fractional_bits);
+        num_fractional_bits = 16;
+    }
+
+    fixed_point_fraction = ((1 << num_fractional_bits) * cmin_percentage / 100);
+    if (fixed_point_fraction != 0)
+        fixed_point_fraction -= 1;
+
+    /* Select the PARTID to configure capacity partition parameters */
+    val_mpam_mmr_write(msc_index, REG_MPAMCFG_PART_SEL, partid);
+
+    /*
+     * Configure the CMIN register -  min cache capacity to be allocated for the PARTID.
+     * Use num_fractional_bits fixed-point representation
+     */
+    val_mpam_mmr_write(msc_index, REG_MPAMCFG_CMIN,
+                      ((fixed_point_fraction << (16 - num_fractional_bits)) & 0xFFFF));
 
     val_mem_issue_dsb();
     return;
@@ -1986,4 +2129,168 @@ val_mpam_write_csumon(uint32_t msc_index, uint32_t value)
     val_mpam_mmr_write(msc_index, REG_MSMON_CSU, value);
     val_mem_issue_dsb();
     return 0;
+}
+
+uint32_t
+val_mpam_mbwu_write_counter(uint32_t msc_index, uint64_t value, uint32_t is_long_check)
+{
+    uint64_t data64;
+    uint32_t data32;
+
+    if (is_long_check && val_mpam_mbwu_supports_long(msc_index)) {
+        data64 = ((uint64_t)0 << MBWU_NRDY_SHIFT) | value;
+        val_mpam_mmr_write64(msc_index, REG_MSMON_MBWU_L, data64);
+    } else {
+        data32 = (0 << MBWU_NRDY_SHIFT) | (uint32_t)value;
+        val_mpam_mmr_write(msc_index, REG_MSMON_MBWU, data32);
+    }
+
+    return 0;
+}
+
+uint64_t
+val_mpam_mbwu_get_prefill_value(uint32_t msc_index, uint32_t is_long_check)
+{
+    uint64_t max_count;
+
+    if (is_long_check && val_mpam_mbwu_supports_long(msc_index)) {
+        if (val_mpam_mbwu_supports_lwd(msc_index))
+            max_count = MSMON_COUNT_63BIT;
+        else
+            max_count = MSMON_COUNT_44BIT;
+    } else {
+        max_count = MSMON_COUNT_31BIT;
+    }
+
+    return max_count - MBWU_PREFILL_DELTA;
+}
+
+uint32_t
+val_mpam_mbwu_is_overflow_set(uint32_t msc_index)
+{
+    uint32_t ctl;
+
+    ctl = val_mpam_mmr_read(msc_index, REG_MSMON_CFG_MBWU_CTL);
+    return ((ctl & ((uint32_t)1 << MBWU_CTL_OFLOW_STATUS_BIT_SHIFT)) |
+            (ctl & ((uint32_t)1 << MBWU_CTL_OFLOW_STATUS_L_SHIFT)));
+}
+
+uint32_t
+val_mpam_mbwu_clear_overflow_status(uint32_t msc_index)
+{
+    uint32_t ctl;
+
+    ctl = val_mpam_mmr_read(msc_index, REG_MSMON_CFG_MBWU_CTL);
+    ctl &= ~(((uint32_t)1 << MBWU_CTL_OFLOW_STATUS_BIT_SHIFT) |
+             ((uint32_t)1 << MBWU_CTL_OFLOW_STATUS_L_SHIFT));
+    val_mpam_mmr_write(msc_index, REG_MSMON_CFG_MBWU_CTL, ctl);
+
+    ctl = val_mpam_mmr_read(msc_index, REG_MSMON_CFG_MBWU_CTL);
+    return ((ctl & ((uint32_t)1 << MBWU_CTL_OFLOW_STATUS_BIT_SHIFT)) |
+            (ctl & ((uint32_t)1 << MBWU_CTL_OFLOW_STATUS_L_SHIFT)));
+}
+
+void
+val_mpam_mbwu_wait_for_update(uint32_t msc_index)
+{
+    uint64_t nrdy_timeout = val_mpam_get_info(MPAM_MSC_NRDY, msc_index, 0);
+
+    while (nrdy_timeout)
+        --nrdy_timeout;
+}
+
+static
+uint32_t mpam_get_its_index(uint32_t its_id)
+{
+    uint32_t index;
+
+    for (index = 0; index < g_gic_its_info->GicNumIts; index++) {
+        if (its_id == g_gic_its_info->GicIts[index].its_index)
+            return index;
+    }
+
+    return ACS_INVALID_INDEX;
+}
+
+/**
+  @brief   This function creates the MSI mappings for an MPAM MSC device.
+
+  @param   msc_index    MPAM MSC index
+  @param   device_id    Device ID
+  @param   its_id       ITS ID
+  @param   int_id       Interrupt ID
+  @param   is_oflow_msi 1 for overflow MSI, 0 for error MSI
+
+  @return  status
+**/
+uint32_t
+val_mpam_msc_request_msi(uint32_t msc_index, uint32_t device_id, uint32_t its_id,
+                         uint32_t int_id, uint32_t is_oflow_msi)
+{
+    uint32_t its_index;
+    uint64_t msi_addr;
+    uint32_t msi_data;
+    uint32_t addr_l;
+    uint32_t addr_h;
+    uint32_t mpam;
+
+    (void)msc_index;
+
+    if ((g_gic_its_info == NULL) || (g_gic_its_info->GicNumIts == 0))
+        return ACS_STATUS_ERR;
+
+    its_index = mpam_get_its_index(its_id);
+    if (its_index >= g_gic_its_info->GicNumIts) {
+        val_print(ACS_PRINT_ERR, "\n       Could not find ITS ID [%x]", its_id);
+        return ACS_STATUS_ERR;
+    }
+
+    if ((g_gic_its_info->GicRdBase == 0) || (g_gic_its_info->GicDBase == 0)) {
+        val_print(ACS_PRINT_DEBUG, "\n       GICD/GICRD Base Invalid value", 0);
+        return ACS_STATUS_ERR;
+    }
+
+    val_its_create_lpi_map(its_index, device_id, int_id, LPI_PRIORITY1);
+
+    msi_addr = val_its_get_translater_addr(its_index);
+    msi_data = int_id - ARM_LPI_MINID;
+    addr_l = (uint32_t)(msi_addr & ~0x3ULL);
+
+    if (is_oflow_msi) {
+        addr_h = BITFIELD_SET(OFLOW_MSI_ADDR_H, (uint32_t)(msi_addr >> 32));
+        mpam = BITFIELD_SET(OFLOW_MSI_MPAM_PMG, DEFAULT_PMG) |
+               BITFIELD_SET(OFLOW_MSI_MPAM_PARTID, DEFAULT_PARTID);
+
+        val_mpam_mmr_write(msc_index, REG_MSMON_OFLOW_MSI_ADDR_L, addr_l);
+        val_mpam_mmr_write(msc_index, REG_MSMON_OFLOW_MSI_ADDR_H, addr_h);
+        val_mpam_mmr_write(msc_index, REG_MSMON_OFLOW_MSI_DATA, msi_data);
+        val_mpam_mmr_write(msc_index, REG_MSMON_OFLOW_MSI_MPAM, mpam);
+    } else {
+        addr_h = BITFIELD_SET(ERR_MSI_ADDR_H, (uint32_t)(msi_addr >> 32));
+        mpam = BITFIELD_SET(ERR_MSI_MPAM_PMG, DEFAULT_PMG) |
+               BITFIELD_SET(ERR_MSI_MPAM_PARTID, DEFAULT_PARTID);
+
+        val_mpam_mmr_write(msc_index, REG_MPAMF_ERR_MSI_ADDR_L, addr_l);
+        val_mpam_mmr_write(msc_index, REG_MPAMF_ERR_MSI_ADDR_H, addr_h);
+        val_mpam_mmr_write(msc_index, REG_MPAMF_ERR_MSI_DATA, msi_data);
+        val_mpam_mmr_write(msc_index, REG_MPAMF_ERR_MSI_MPAM, mpam);
+    }
+
+    return ACS_STATUS_PASS;
+}
+
+uint32_t
+val_mpam_msc_enable_msi(uint32_t msc_index, uint32_t is_oflow_msi)
+{
+    uint32_t attr;
+
+    if (is_oflow_msi) {
+        attr = BITFIELD_SET(OFLOW_MSI_ATTR_MSIEN, 1);
+        val_mpam_mmr_write(msc_index, REG_MSMON_OFLOW_MSI_ATTR, attr);
+    } else {
+        attr = BITFIELD_SET(ERR_MSI_ATTR_MSIEN, 1);
+        val_mpam_mmr_write(msc_index, REG_MPAMF_ERR_MSI_ATTR, attr);
+    }
+
+    return ACS_STATUS_PASS;
 }

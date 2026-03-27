@@ -22,7 +22,6 @@
 #include "acs_pcie.h"
 #include "acs_memory.h"
 #include "pcie.h"
-#include "acs_cxl.h"
 
 #define WARN_STR_LEN 7
 
@@ -510,50 +509,6 @@ uint32_t val_pcie_populate_device_rootport(void)
 }
 
 /**
-  @brief   Quickly determine whether a PCIe function advertises any CXL DVSECs.
-
-  @param  bdf  PCIe identifier of the device to probe.
-
-  @return ACS_STATUS_PASS when a CXL DVSEC is present.
-          PCIE_UNKNOWN_RESPONSE when none are found.
-          ACS_STATUS_ERR on config space access failures.
-**/
-uint32_t
-val_pcie_device_is_cxl(uint32_t bdf)
-{
-  uint32_t next_cap_offset = PCIE_ECAP_START;
-  uint32_t prev_off = PCIE_UNKNOWN_RESPONSE;
-  uint32_t hdr0;
-  uint32_t hdr1;
-
-  while (next_cap_offset) {
-    if (next_cap_offset == prev_off)
-      break;
-
-    prev_off = next_cap_offset;
-
-    if (val_pcie_read_cfg(bdf, next_cap_offset, &hdr0))
-      return ACS_STATUS_ERR;
-
-    if ((hdr0 == 0u) || (hdr0 == PCIE_UNKNOWN_RESPONSE))
-      break;
-
-    if ((hdr0 & PCIE_ECAP_CIDR_MASK) == ECID_DVSEC) {
-
-      if (val_pcie_read_cfg(bdf, next_cap_offset + CXL_DVSEC_HDR1_OFFSET, &hdr1))
-        return ACS_STATUS_ERR;
-
-      if ((hdr1 & CXL_DVSEC_HDR1_VENDOR_ID_MASK) == CXL_DVSEC_VENDOR_ID)
-        return ACS_STATUS_PASS;
-    }
-
-    next_cap_offset = (hdr0 >> PCIE_ECAP_NCPR_SHIFT) & PCIE_ECAP_NCPR_MASK;
-  }
-
-  return ACS_STATUS_SKIP;
-}
-
-/**
   @brief   This API creates the device bdf table from enumeration
 
   @param   None
@@ -1007,7 +962,7 @@ val_pcie_find_capability(uint32_t bdf, uint32_t cid_type, uint32_t cid, uint32_t
 
   if (cid_type == PCIE_CAP) {
 
-      /* Serach in PCIe configuration space */
+      /* Search in PCIe configuration space */
       ret = val_pcie_read_cfg(bdf, TYPE01_CPR, &reg_value);
       if (ret == PCIE_NO_MAPPING || reg_value == PCIE_UNKNOWN_RESPONSE)
           return ret;
@@ -1031,6 +986,11 @@ val_pcie_find_capability(uint32_t bdf, uint32_t cid_type, uint32_t cid, uint32_t
       while (next_cap_offset)
       {
           val_pcie_read_cfg(bdf, next_cap_offset, &reg_value);
+
+          /* if data at next ECAP offset reads 0xFFFF-FFFF, exit with failure code */
+          if (reg_value == PCIE_UNKNOWN_RESPONSE)
+            return PCIE_UNKNOWN_RESPONSE;
+
           if ((reg_value & PCIE_ECAP_CIDR_MASK) == cid)
           {
               *cid_offset = next_cap_offset;

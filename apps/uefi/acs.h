@@ -117,8 +117,9 @@
                                        /*[36 B Each + 4 B Header]*/
 #define SRAT_INFO_TBL_SZ        16384  /*Support maximum of 500 mem proximity domain entries*/
                                        /*[32 B Each + 8 B Header]*/
-#define MPAM_INFO_TBL_SZ        262144 /*Supports maximum of 1800 MSC entries*/
-                                       /*[24+(24*5) B Each + 4 B Header]*/
+#define MPAM_INFO_TBL_SZ        409600 /*Supports maximum of 1800 MSC entries*/
+                                       /*[(200+24) B Each + 4 B Header]*/
+                                       /*[includes device object name]*/
 #define HMAT_INFO_TBL_SZ        12288  /*Supports maximum of 400 Proximity domains*/
                                        /*[24 B Each + 8 B Header]*/
 #define PCC_INFO_TBL_SZ         262144 /*Supports maximum of 234 PCC info entries*/
@@ -167,7 +168,7 @@ extern UINT32  g_num_modules;
 extern UINT32 *g_skip_modules;
 extern UINT32  g_num_skip_modules;
 extern UINT32  g_sys_last_lvl_cache;
-extern UINT32  g_el1physkip;
+extern UINT32  g_el1skiptrap_mask;
 extern SHELL_FILE_HANDLE g_acs_log_file_handle;
 extern SHELL_FILE_HANDLE g_dtb_log_file_handle;
 extern RULE_ID_e *g_rule_list;

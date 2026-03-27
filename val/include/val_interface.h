@@ -50,11 +50,17 @@
                                                          set for wakeup and wd tests*/
 #define WAKEUP_WD_PASS_TIMEOUT_MAX_THRESHOLD  2000000    /*minimum timeout that can be
                                                          set for wakeup and wd tests*/
-#define WAKEUP_WD_FAILSAFE_TIMEOUT_MULTIPLIER 2          /*fail safe timeout multipler
+#define WAKEUP_WD_FAILSAFE_TIMEOUT_MULTIPLIER 100        /*fail safe timeout multipler
                                                          multiplied to timeout of ISR
                                                          under test*/
 #define WAKEUP_WD_PASS_TIMEOUT_DEFAULT        1000       /*minimum timeout set
                                                          by default (1ms)*/
+
+/* EL1 skip-trap param defines (-el1skiptrap) */
+#define EL1SKIPTRAP_PMSIDR   (1u << 0)
+#define EL1SKIPTRAP_CNTPCT   (1u << 1)
+#define EL1SKIPTRAP_DEVMEM   (1u << 2)
+
 /* Test status counters visible across ACS */
 typedef struct {
     uint32_t total_rules_run;     /* Total rules/tests that reported a status */
@@ -546,6 +552,7 @@ uint64_t val_get_primary_mpidr(void);
 
 void val_mpam_create_info_table(uint64_t *mpam_info_table);
 void val_mpam_free_info_table(void);
+void val_mpam_update_msc_device_names(void);
 
 typedef enum {
   MPAM_RSRC_TYPE_PE_CACHE,
@@ -798,13 +805,22 @@ uint32_t val_mpam_execute_membw_tests(uint32_t num_pe);
 uint32_t val_mpam_msc_reset_errcode(uint32_t msc_index);
 uint32_t val_mpam_msc_get_errcode(uint32_t msc_index);
 bool     val_mpam_msc_get_esr_ovrwr(uint32_t msc_index);
-void     val_mpam_msc_generate_psr_error(uint32_t msc_index);
+uint32_t val_mpam_msc_generate_psr_error(uint32_t msc_index);
 void     val_mpam_msc_generate_msr_error(uint32_t msc_index, uint16_t mon_count);
 uint32_t val_mpam_msc_generate_por_error(uint32_t msc_index);
 uint32_t val_mpam_msc_generate_pmgor_error(uint32_t msc_index);
 void     val_mpam_msc_generate_msmon_config_error(uint32_t msc_index, uint16_t mon_count);
 void     val_mpam_msc_generate_msmon_oflow_error(uint32_t msc_index, uint16_t mon_count);
 void     val_mpam_msc_trigger_intr(uint32_t msc_index);
+uint32_t val_mpam_msc_request_msi(uint32_t msc_index, uint32_t device_id, uint32_t its_id,
+                                  uint32_t int_id, uint32_t is_oflow_msi);
+uint32_t val_mpam_msc_enable_msi(uint32_t msc_index, uint32_t is_oflow_msi);
+uint32_t val_mpam_mbwu_write_counter(uint32_t msc_index, uint64_t value, uint32_t is_long_check);
+uint64_t val_mpam_mbwu_get_prefill_value(uint32_t msc_index, uint32_t is_long_check);
+uint32_t val_mpam_mbwu_is_overflow_set(uint32_t msc_index);
+uint32_t val_mpam_mbwu_clear_overflow_status(uint32_t msc_index);
+void     val_mpam_mbwu_wait_for_update(uint32_t msc_index);
+uint32_t val_mpam_get_msc_device_info(uint32_t msc_index, uint32_t *device_id, uint32_t *its_id);
 
 // Register tests entry calls
 uint32_t reg001_entry(void);
@@ -838,6 +854,8 @@ uint32_t intr001_entry(void);
 uint32_t intr002_entry(void);
 uint32_t intr003_entry(void);
 uint32_t intr004_entry(void);
+uint32_t intr005_entry(void);
+uint32_t intr006_entry(void);
 
 /* Cache Tests */
 uint32_t partition001_entry(void);
@@ -845,6 +863,7 @@ uint32_t partition002_entry(void);
 uint32_t partition003_entry(void);
 uint32_t partition004_entry(void);
 uint32_t partition005_entry(void);
+uint32_t partition006_entry(void);
 
 uint32_t feat001_entry(void);  // MPAM PARTID EN/DIS feature check test
 

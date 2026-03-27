@@ -45,6 +45,10 @@ extern uint32_t g_enable_module;
 #define MEM_ALIGN_32K      0x8000
 #define MEM_ALIGN_64K      0x10000
 
+#define EL1SKIPTRAP_PMSIDR   (1u << 0)
+#define EL1SKIPTRAP_CNTPCT   (1u << 1)
+#define EL1SKIPTRAP_DEVMEM   (1u << 2)
+
 #define TRUE 1
 #define FALSE 0
 
@@ -90,7 +94,7 @@ void pal_warn_not_implemented(const char *api_name);
 
 /* TYPE 0/1 Cmn Cfg reg offsets and mask*/
 #define TYPE01_CPR           0x34
-#define TYPE01_CPR_MASK      0xff
+#define TYPE01_CPR_MASK      0xfc
 #define COMMAND_REG_OFFSET   0x04
 #define REG_ACC_DATA         0x7
 
@@ -133,7 +137,7 @@ void pal_warn_not_implemented(const char *api_name);
 #define PCIE_CIDR_MASK       0xff
 #define PCIE_NCPR_MASK       0xff
 #define PCIE_ECAP_CIDR_MASK  0xffff
-#define PCIE_ECAP_NCPR_MASK  0xfff
+#define PCIE_ECAP_NCPR_MASK  0xffc
 
 #define PCIE_ECAP_START      0x100
 
@@ -833,6 +837,7 @@ typedef struct {
     uint32_t    err_intr_flags;/* Error interrupt flags */
     uint32_t    max_nrdy;      /* max time in microseconds that MSC not ready
                                   after config change */
+    char        device_obj_name[MAX_NAMED_COMP_LENGTH]; /* Device object name */
     uint32_t    rsrc_count;    /* number of resource nodes */
     MPAM_RESOURCE_NODE rsrc_node[];   /* Details of resource node */
 } MPAM_MSC_NODE;
@@ -849,6 +854,10 @@ typedef struct {
     uint32_t          msc_count;  /* Number of MSC node */
     MPAM_MSC_NODE   msc_node[]; /* Details of MSC node */
 } MPAM_INFO_TABLE;
+
+
+void pal_mpam_create_info_table(MPAM_INFO_TABLE *MpamTable);
+uint32_t pal_mpam_parse_dsdt_info(MPAM_INFO_TABLE *MpamTable);
 
 /**
   @brief  SRAT node type
