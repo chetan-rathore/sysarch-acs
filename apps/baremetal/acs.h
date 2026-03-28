@@ -147,6 +147,7 @@ void     createSratInfoTable(void);
 void     createPccInfoTable(void);
 void     createRas2InfoTable(void);
 void     createTpm2InfoTable(void);
+void     createCxlInfoTable(void);
 
 #endif /* __ASSEMBLER__ */
 /*

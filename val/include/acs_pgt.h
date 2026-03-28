@@ -20,6 +20,7 @@
 
 #define PGT_STAGE1 1
 #define PGT_STAGE2 2
+#define PGT_WB 0x448
 
 #define PGT_ENTRY_TABLE_MASK (0x1 << 1)
 #define PGT_ENTRY_VALID_MASK  0x1ULL

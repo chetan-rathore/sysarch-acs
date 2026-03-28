@@ -37,6 +37,8 @@
 #define SMMU_V3_IDR1_PASID_SHIFT   0x6
 #define SMMU_V3_IDR1_PASID_MASK    0x1f
 
+#define SMMUV3_ATS_BIT 10
+
 /* PMCG CNTBaseN register offset*/
 #define SMMU_PMCG_CFGR 0xE00
 

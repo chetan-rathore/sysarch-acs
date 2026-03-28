@@ -156,6 +156,7 @@ VOID     pal_pe_data_cache_ops_by_va(UINT64 addr, UINT32 type);
 #define CLEAN_AND_INVALIDATE  0x1
 #define CLEAN                 0x2
 #define INVALIDATE            0x3
+#define CLEAN_POC             0x4
 
 typedef struct {
   UINT32   gic_version;

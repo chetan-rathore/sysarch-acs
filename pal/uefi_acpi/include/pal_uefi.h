@@ -168,6 +168,7 @@ VOID     pal_pe_data_cache_ops_by_va(UINT64 addr, UINT32 type);
 #define CLEAN_AND_INVALIDATE  0x1
 #define CLEAN                 0x2
 #define INVALIDATE            0x3
+#define CLEAN_POC             0x4
 
 typedef struct {
   UINT32   gic_version;
@@ -300,6 +301,74 @@ typedef enum {
   NON_PREFETCH_MEMORY = 0x0,
   PREFETCH_MEMORY = 0x1
 }PCIE_MEM_TYPE_INFO_e;
+
+#define CXL_MAX_CFMWS_WINDOWS  2
+/*
+ * CXL info table describing per-host bridge component register windows and
+ * discovered capability flags from firmware (CEDT) or overrides.
+ */
+typedef struct {
+  UINT32 cxl_struct_type;      ///< Type of CXL Structure [CHBS/CFMWS and so on]
+  UINT32 uid;                  ///< CXL HB Unique ID
+  UINT32 component_reg_type;   ///< Type of CEDT Structure
+  UINT64 component_reg_base;   ///< Base address of the CHBCR/RCH DP RCRB
+  UINT64 component_reg_length; ///< Length of the range
+  UINT32 cxl_version;          ///< CXL Version
+  UINT32 hdm_decoder_count;    ///< No. of HDM decoders
+  UINT32 cfmws_count;
+  UINT64 cfmws_base[CXL_MAX_CFMWS_WINDOWS];
+  UINT64 cfmws_length[CXL_MAX_CFMWS_WINDOWS];
+  UINT32 cfmws_window[CXL_MAX_CFMWS_WINDOWS];
+} CXL_INFO_BLOCK;
+
+typedef struct {
+  UINT32         num_entries;
+  CXL_INFO_BLOCK device[];
+} CXL_INFO_TABLE;
+
+/*
+ * DSDT/SSDT AML parser with generic AML helpers.
+ */
+#define ACPI_MAX_ROOT_BRIDGES     32
+#define PAL_AML_MAX_DEVICE_DEPTH  8
+
+#define AML_OP_DEVICE_PREFIX 0x5B
+#define AML_OP_DEVICE        0x82
+#define AML_OP_NAME          0x08
+#define AML_OP_STRING        0x0D
+#define AML_OP_BYTE          0x0A
+#define AML_OP_WORD          0x0B
+#define AML_OP_DWORD         0x0C
+#define AML_OP_QWORD         0x0E
+#define AML_OP_PACKAGE       0x12u
+#define AML_OP_SCOPE         0x10u
+#define AML_OP_ZERO          0x00
+#define AML_OP_ONE           0x01
+
+#define AML_NAME_ROOT        0x5C
+#define AML_NAME_PARENT      0x5E
+#define AML_NAME_DUAL        0x2E
+#define AML_NAME_MULTI       0x2F
+#define AML_NAME_NULL        0x00
+
+typedef enum {
+  AML_DATA_NONE,
+  AML_DATA_INTEGER,
+  AML_DATA_STRING
+} PAL_AML_DATA_TYPE;
+
+typedef struct {
+  UINT32 uid;
+  UINT16 segment;
+  UINT8  bbn;
+  UINT8  hid_is_pci;
+  UINT8  uid_valid;
+} ACPI_ROOT_BRIDGE_INFO;
+
+typedef struct {
+  UINT32 end_offset;
+  ACPI_ROOT_BRIDGE_INFO info;
+} AML_DEVICE_SCOPE;
 
 VOID *pal_pci_bdf_to_dev(UINT32 bdf);
 VOID pal_pci_read_config_byte(UINT32 bdf, UINT8 offset, UINT8 *data);
@@ -480,6 +549,12 @@ typedef struct {
 
 UINT32 pal_pcie_get_root_port_bdf(UINT32 *seg, UINT32 *bus, UINT32 *dev, UINT32 *func);
 UINT32 pal_pcie_max_pasid_bits(UINT32 bdf);
+
+/* CXL component register type identifiers (CEDT CHBS) */
+#define CXL_COMPONENT_RCRB     0x1
+#define CXL_COMPONENT_CHBCR    0x2
+
+UINT32 pal_acpi_get_root_bridge_uid(UINT16 segment, UINT8 bbn, UINT32 *uid);
 
 /* Memory INFO table */
 #define MEM_MAP_SUCCESS  0x0

@@ -89,7 +89,7 @@ HelpMsg (VOID)
         "            SBSA level 7 compliance.\n"
         "-m      Run only the specified modules (comma-separated names).\n"
         "        Accepted: PE, GIC, PERIPHERAL, MEM_MAP, PMU, RAS, SMMU,\n"
-        "                  TIMER, WATCHDOG, NIST, PCIE, MPAM, ETE, TPM, POWER_WAKEUP\n"
+        "                  TIMER, WATCHDOG, NIST, PCIE, MPAM, ETE, TPM, POWER_WAKEUP, CXL\n"
         "        Example: -m PE,GIC,PCIE\n"
         "-mmio   Pass this flag to enable pal_mmio_read/write prints, use with -v 1\n"
         "-no_crypto_ext \n"
@@ -135,6 +135,7 @@ freeAcsMem(void)
     val_timer_free_info_table();
     val_wd_free_info_table();
     val_pcie_free_info_table();
+    val_cxl_free_info_table();
     val_iovirt_free_info_table();
     val_peripheral_free_info_table();
     val_smbios_free_info_table();
@@ -223,6 +224,7 @@ execute_tests()
     createTimerInfoTable();
     createWatchdogInfoTable();
     createPcieVirtInfoTable();
+    createCxlInfoTable();
     createPeripheralInfoTable();
     createSmbiosInfoTable();
     createCacheInfoTable();

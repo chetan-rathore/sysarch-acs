@@ -55,6 +55,7 @@
 #define RES_CC       0x13
 
 /* Command register shifts */
+#define CR_IO_SE_SHIFT 0
 #define CR_MSE_SHIFT   1
 #define CR_BME_SHIFT   2
 #define CR_SCE_SHIFT   3
@@ -229,6 +230,11 @@
 #define DS_UNCORR_MASK 0x6
 #define DS_CORR_MASK   0x1
 #define ACSCTRL_SHIFT  0x0F
+
+/* PM Capability struct offsets and shifts */
+#define PMCSR_OFFSET                       0x4
+#define PMCSR_POWER_STATE_MASK             0x3
+#define PM_STATE_D3HOT                     0x3
 
 /* SR-IOV Capability struct offsets and shifts*/
 #define SRIOV_VF_COUNT         0x0C

@@ -272,6 +272,11 @@
   ../../test_pool/exerciser/e029.c
   ../../test_pool/exerciser/e030.c
   ../../test_pool/exerciser/e036.c
+  ../../test_pool/exerciser/e040.c
+  ../../test_pool/exerciser/e041.c
+  ../../test_pool/exerciser/e043.c
+  ../../test_pool/exerciser/e044.c
+  ../../test_pool/exerciser/e045.c
   ../../test_pool/pmu/pmu001.c
   ../../test_pool/pmu/pmu002.c
   ../../test_pool/pmu/pmu003.c
@@ -314,6 +319,13 @@
   ../../test_pool/drtm/interface011.c
   ../../test_pool/tpm/tpm001.c
   ../../test_pool/tpm/tpm002.c
+  ../../test_pool/cxl/cxl001.c
+  ../../test_pool/cxl/cxl002.c
+  ../../test_pool/cxl/cxl003.c
+  ../../test_pool/cxl/cxl004.c
+  ../../test_pool/cxl/cxl010.c
+  ../../test_pool/cxl/cxl011.c
+  ../../test_pool/cxl/cxl013.c
 
 [Packages]
   StdLib/StdLib.dec
@@ -346,5 +358,5 @@
   gEfiAcpiTableGuid
 
 [BuildOptions]
-  GCC:*_*_*_ASM_FLAGS  =  -march=armv8.1-a
-  GCC:*_*_*_CC_FLAGS   = -O0 -DPC_BSA $(ACS_CORE_INCLUDE_FLAGS) $(ACS_GIC_INCLUDE_FLAGS) $(ACS_PCIE_INCLUDE_FLAGS) -DTARGET_UEFI
+  GCC:*_*_*_ASM_FLAGS+  = -march=armv8.5-a+lse+ls2
+  GCC:*_*_*_CC_FLAGS   = -O0 -march=armv8.5-a+lse -DPC_BSA $(ACS_CORE_INCLUDE_FLAGS) $(ACS_GIC_INCLUDE_FLAGS) $(ACS_PCIE_INCLUDE_FLAGS) -DTARGET_UEFI

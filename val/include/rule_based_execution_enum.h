@@ -573,6 +573,18 @@ typedef enum {
     R0180,
     R0193,
     R0194,
+    /* CXL rules */
+    CXL_01,
+    CXL_02,
+    CXL_03,
+    CXL_04,
+    CXL_05,
+    CXL_06,
+    CXL_09,
+    CXL_10,
+    CXL_11,
+    CXL_12,
+    CXL_13,
 
     /* Sentinel must remain last */
     RULE_ID_SENTINEL
@@ -879,6 +891,10 @@ typedef enum {
     P052_ENTRY,
     P063_ENTRY,
     RI_SMU_1_ENTRY,
+    CXL_02_ENTRY,
+    CXL_11_ENTRY,
+    CXL_12_ENTRY,
+    CXL_13_ENTRY,
     E036_ENTRY,
     P086_ENTRY,
     E022_ENTRY,
@@ -931,6 +947,11 @@ typedef enum {
     E020_ENTRY,
     E033_ENTRY,
     E039_ENTRY,
+    E040_ENTRY,
+    E041_ENTRY,
+    E043_ENTRY,
+    E044_ENTRY,
+    E045_ENTRY,
     P094_ENTRY,
     P096_ENTRY,
     P097_ENTRY,
@@ -968,6 +989,13 @@ typedef enum {
     PFDI029_ENTRY,
     PFDI030_ENTRY,
     PFDI031_ENTRY,
+    CXL001_ENTRY,
+    CXL002_ENTRY,
+    CXL003_ENTRY,
+    CXL004_ENTRY,
+    CXL010_ENTRY,
+    CXL011_ENTRY,
+    CXL013_ENTRY,
     TEST_ENTRY_SENTINEL
 } TEST_ENTRY_ID_e;
 
@@ -991,6 +1019,7 @@ typedef enum {
     TPM,
     POWER_WAKEUP,
     PFDI,
+    CXL,
     RME,
     GPU,
     MODULE_ID_SENTINEL /* need to be in last */

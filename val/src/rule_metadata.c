@@ -2898,6 +2898,102 @@ rule_test_map_t rule_test_map[RULE_ID_SENTINEL] = {
             .flag             = BASE_RULE,
             .test_num         = ACS_PFDI_TEST_NUM_BASE + 31,
         },
+        /* CXL */
+        [S_L8CXL_1] = {
+            .test_entry_id    = NULL_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "CXL Rules",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = ALIAS_RULE,
+        },
+        [CXL_01] = {
+            .test_entry_id    = CXL001_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL Version",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  1,
+        },
+        [CXL_02] = {
+            .test_entry_id    = CXL_02_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL Type1/2 SMMU ATS",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  2,
+        },
+        [CXL_03] = {
+            .test_entry_id    = CXL003_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CHBCR address map",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  3,
+        },
+        [CXL_04] = {
+            .test_entry_id    = CXL004_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Validate CHBCR capability registers",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  4,
+        },
+        [CXL_05] = {
+            .test_entry_id    = E044_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "CXL root port PMReq/PMRes VDM handling",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  5,
+        },
+        [CXL_06] = {
+            .test_entry_id    = E045_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "CXL host sink for incoming MEFN VDM",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  6,
+        },
+        [CXL_09] = {
+            .test_entry_id    = E043_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "CXL.mem write transaction",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  9,
+        },
+        [CXL_10] = {
+            .test_entry_id    = CXL010_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check PCMO for CXL persistent memory",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  10,
+        },
+        [CXL_11] = {
+            .test_entry_id    = CXL_11_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL.mem writeback and AER status",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  11,
+        },
+        [CXL_12] = {
+            .test_entry_id    = CXL_12_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL.cache coherency with exerciser",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  12,
+        },
+        [CXL_13] = {
+            .test_entry_id    = CXL013_ENTRY,
+            .module_id        = CXL,
+            .rule_desc        = "Check CXL Type-3 mandatory atomic features",
+            .platform_bitmask = PLATFORM_BAREMETAL | PLATFORM_UEFI,
+            .flag             = BASE_RULE,
+            .test_num         = ACS_CXL_TEST_NUM_BASE  +  13,
+        },
     };
 
 /* Following structure maps test entry enums with entry function pointers
@@ -2975,6 +3071,11 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [E036_ENTRY] = e036_entry,
     [E038_ENTRY] = e038_entry,
     [E039_ENTRY] = e039_entry, // used in wrapper.
+    [E040_ENTRY] = e040_entry, // used in wrapper.
+    [E041_ENTRY] = e041_entry, // used in wrapper.
+    [E043_ENTRY] = e043_entry, // used for CXL_09.
+    [E044_ENTRY] = e044_entry, // used for CXL_05.
+    [E045_ENTRY] = e045_entry, // used for CXL_06.
     [ETE001_ENTRY] = ete001_entry,
     [ETE002_ENTRY] = ete002_entry,
     [ETE003_ENTRY] = ete003_entry,
@@ -3024,6 +3125,10 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [RE_REG_1_ENTRY]   = re_reg_1_entry,
     [V_L1PE_02_ENTRY]  = v_l1pe_02_entry,
     [RI_SMU_1_ENTRY]   = ri_smu_1_entry,
+    [CXL_02_ENTRY]     = cxl_02_entry,
+    [CXL_11_ENTRY]     = cxl_11_entry,
+    [CXL_12_ENTRY]     = cxl_12_entry,
+    [CXL_13_ENTRY]     = cxl013_entry,
     [G013_ENTRY] = g013_entry,
     [G014_ENTRY] = g014_entry,
     [G015_ENTRY] = g015_entry,
@@ -3218,6 +3323,13 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PE066_ENTRY] = pe066_entry,
     [PE067_ENTRY] = pe067_entry,
     [PE068_ENTRY] = pe068_entry,
+    [CXL001_ENTRY] = cxl001_entry,
+    [CXL002_ENTRY] = cxl002_entry,
+    [CXL003_ENTRY] = cxl003_entry,
+    [CXL004_ENTRY] = cxl004_entry,
+    [CXL010_ENTRY] = cxl010_entry,
+    [CXL011_ENTRY] = cxl011_entry,
+    [CXL013_ENTRY] = cxl013_entry,
 /* The following test entries are excluded from compilation for the BSA DT UEFI App, as they are
    not required for the BSA DT build. These tests invoke VAL APIs, which in turn call PAL APIs,
    and PAL_DT lacks a few necessary implementations.*/
@@ -3548,6 +3660,8 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [E028_ENTRY] = e028_entry,
     [E022_ENTRY] = e022_entry,
     [E023_ENTRY] = e023_entry,
+    [E040_ENTRY] = e040_entry, // used in wrapper.
+    [E041_ENTRY] = e041_entry, // used in wrapper.
     [MPAM006_ENTRY] = mpam006_entry, // used in wrapper.
     [MPAM005_ENTRY] = mpam005_entry,
     [MPAM001_ENTRY] = mpam001_entry,
@@ -3591,6 +3705,10 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [PMU010_ENTRY] = pmu010_entry,
     [PMU011_ENTRY] = pmu011_entry,
     [PMU001_ENTRY] = pmu001_entry,
+    [CXL001_ENTRY] = cxl001_entry,
+    [CXL002_ENTRY] = cxl002_entry,
+    [CXL003_ENTRY] = cxl003_entry,
+    [CXL004_ENTRY] = cxl004_entry,
 #endif /* BAREMETAL_BSA_BUILD */
     [PE037_ENTRY] = pe037_entry,
     [PE043_ENTRY] = pe043_entry,
@@ -3686,6 +3804,9 @@ test_entry_fn_t test_entry_func_table[TEST_ENTRY_SENTINEL] = {
     [RE_REC_1_ENTRY]   = re_rec_1_entry,
     [RE_REG_1_ENTRY]   = re_reg_1_entry,
     [RI_SMU_1_ENTRY]   = ri_smu_1_entry,
+    [CXL_02_ENTRY]     = cxl_02_entry,
+    [CXL_11_ENTRY]     = cxl_11_entry,
+    [CXL_12_ENTRY]     = cxl_12_entry,
     [G002_ENTRY] = g002_entry,
     [ITS002_ENTRY] = its002_entry,
     [ITS005_ENTRY] = its005_entry,
@@ -4187,6 +4308,24 @@ RULE_ID_e s_l8shd_1_rule_list[]   = {
                                     RULE_ID_SENTINEL
 };
 
+/* S_L8CXL_1 */
+RULE_ID_e s_l8cxl_rule_list[] = {
+    /* SBSA CXL Rules */
+    CXL_01,
+    CXL_02,
+    CXL_03,
+    CXL_04,
+    CXL_05,
+    CXL_06,
+    CXL_09,
+    CXL_10,
+    CXL_11,
+    CXL_12,
+    CXL_13,
+
+    RULE_ID_SENTINEL
+};
+
 /* PCBSA alias lists */
 /* P_L2WD_01 */
 RULE_ID_e p_l2wd_01_rule_list[]   = {B_WD_01, B_WD_02, B_WD_03, B_WD_04, B_WD_05,
@@ -4277,6 +4416,7 @@ const alias_rule_map_t alias_rule_map[] = {
     {S_L8SHD_1, s_l8shd_1_rule_list},
     {SYS_RAS,   sys_ras_rule_list},
     {LVQBC,     lvqbc_rule_list},
+    {S_L8CXL_1, s_l8cxl_rule_list},
     {XDGKZ,     xdgkz_rule_list},
 
     /* PCBSA alias rules */
