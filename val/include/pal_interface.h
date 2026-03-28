@@ -459,6 +459,33 @@ uint32_t pal_pcie_get_rp_transaction_frwd_support(uint32_t seg, uint32_t bus,
 uint32_t pal_pcie_dsm_ste_tags(void);
 uint32_t pal_pcie_check_bus_valid(uint32_t bus_index);
 
+#define CXL_MAX_CFMWS_WINDOWS  2
+/*
+ * CXL info table definitions capture host bridge component register windows
+ * and capability metadata discovered via CEDT or overrides.
+ */
+typedef struct {
+  uint32_t cxl_struct_type;      ///< Type of CXL Structure [CHBS/CFMWS and so on]
+  uint32_t uid;                  ///< CXL HB Unique ID
+  uint32_t component_reg_type;   ///< Type of CEDT Structure
+  uint64_t component_reg_base;   ///< Base address of the CHBCR/RCH DP RCRB
+  uint64_t component_reg_length; ///< Length of the range
+  uint32_t cxl_version;          ///< CXL Version
+  uint32_t hdm_decoder_count;    ///< No. of HDM decoders
+  uint32_t cfmws_count;
+  uint64_t cfmws_base[CXL_MAX_CFMWS_WINDOWS];
+  uint64_t cfmws_length[CXL_MAX_CFMWS_WINDOWS];
+  uint32_t cfmws_window[CXL_MAX_CFMWS_WINDOWS];
+} CXL_INFO_BLOCK;
+
+typedef struct {
+  uint32_t       num_entries;
+  CXL_INFO_BLOCK device[];
+} CXL_INFO_TABLE;
+
+void     pal_cxl_create_info_table(CXL_INFO_TABLE *CxlTable);
+uint32_t pal_cxl_get_host_bridge_uid(uint32_t bdf, uint32_t *uid);
+
 /**
   @brief  Instance of SMMU INFO block
 **/
@@ -812,6 +839,7 @@ void     pal_pe_data_cache_ops_by_va(uint64_t addr, uint32_t type);
 #define CLEAN_AND_INVALIDATE  0x1
 #define CLEAN                 0x2
 #define INVALIDATE            0x3
+#define CLEAN_POC             0x4
 
 /* Exerciser definitions */
 #define MAX_ARRAY_SIZE 32
@@ -857,7 +885,10 @@ typedef enum {
     ENABLE_POISON_MODE = 0xE,
     ENABLE_RAS_CTRL = 0xF,
     DISABLE_POISON_MODE = 0x10,
-    CLEAR_TXN = 0x11
+    CLEAR_TXN = 0x11,
+    ENABLE_CACHE_TXN = 0x12,
+    GENERATE_PMREQ_VDM = 0x13,
+    GENERATE_MEFN_VDM = 0x14
 } EXERCISER_PARAM_TYPE;
 
 typedef enum {
@@ -959,6 +990,7 @@ uint32_t pal_exerciser_check_poison_data_forwarding_support(void);
 uint32_t pal_exerciser_get_pcie_ras_compliant_err_node(uint32_t bdf, uint32_t rp_bdf);
 uint64_t pal_exerciser_get_ras_status(uint32_t ras_node, uint32_t e_bdf, uint32_t erp_bdf);
 uint32_t pal_exerciser_set_bar_response(uint32_t bdf);
+uint32_t pal_exerciser_check_firmware_handle_support(void);
 
 /* NIST related APIs */
 uint32_t pal_nist_generate_rng(uint32_t *rng_buffer);

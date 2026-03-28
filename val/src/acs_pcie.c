@@ -643,6 +643,7 @@ val_pcie_create_device_bdf_table()
                           g_pcie_integrated_devices++;
 
                       g_pcie_bdf_table->device[g_pcie_bdf_table->num_entries++].bdf = bdf;
+
                   }
               }
           }

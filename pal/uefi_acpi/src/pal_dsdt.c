@@ -39,38 +39,14 @@ UINT64 pal_get_fadt_ptr(VOID);
  * This parser supports only the AML constructs needed for MSC discovery:
  * DeviceOp, ScopeOp, NameOp, and simple data objects (string/integer/package).
  */
-#define PAL_AML_MAX_DEVICE_DEPTH  8u
-#define AML_OP_DEVICE_PREFIX 0x5Bu
-#define AML_OP_DEVICE        0x82u
-#define AML_OP_NAME          0x08u
-#define AML_OP_STRING        0x0Du
-#define AML_OP_BYTE          0x0Au
-#define AML_OP_WORD          0x0Bu
-#define AML_OP_DWORD         0x0Cu
-#define AML_OP_QWORD         0x0Eu
-#define AML_OP_PACKAGE       0x12u
-#define AML_OP_SCOPE         0x10u
-#define AML_OP_ZERO          0x00u
-#define AML_OP_ONE           0x01u
-#define AML_NAME_ROOT        0x5Cu
-#define AML_NAME_PARENT      0x5Eu
-#define AML_NAME_DUAL        0x2Eu
-#define AML_NAME_MULTI       0x2Fu
-#define AML_NAME_NULL        0x00u
-
-typedef enum {
-  AML_DATA_NONE,
-  AML_DATA_INTEGER,
-  AML_DATA_STRING
-} PAL_AML_DATA_TYPE;
 
 typedef UINT32 (*PAL_ACPI_MATCH_FN)(PAL_AML_DATA_TYPE data_type,
                                     UINT64 data_value,
-                                    CONST CHAR8 * data_text);
+                                    CONST CHAR8 *data_text);
 
 typedef VOID (*PAL_ACPI_RECORD_FN)(VOID *context,
                                    UINT32 uid,
-                                   CONST CHAR8 * dev_name);
+                                   CONST CHAR8 *dev_name);
 
 STATIC UINT32
 pal_acpi_parse_pkg_length(CONST UINT8 * data,
