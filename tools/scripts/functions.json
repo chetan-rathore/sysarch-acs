@@ -328,6 +328,11 @@
       "return_type": "uint32_t",
       "function_name": "pal_exerciser_set_bar_response",
       "parameters": ["uint32_t bdf"]
+    },
+    {
+      "return_type": "uint32_t",
+      "function_name": "pal_exerciser_check_firmware_handle_support",
+      "parameters": []
     }
   ]
 }

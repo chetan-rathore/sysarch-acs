@@ -21,6 +21,7 @@
 #include "pal_interface.h"
 #include "acs_drtm.h"
 #include "acs_pfdi.h"
+#include "acs_cxl.h"
 
 /* set G_PRINT_LEVEL to one of the below values in your application entry
   to control the verbosity of the prints */
@@ -330,6 +331,12 @@ void val_pcie_disable_ordering(uint32_t bdf);
 uint32_t val_pcie_dsm_ste_tags(void);
 pcie_bdf_list_t *val_pcie_get_pcie_peripheral_bdf_list(void);
 
+
+/* CXL VAL APIs */
+void val_cxl_create_info_table(uint64_t *cxl_info_table);
+void val_cxl_free_info_table(void);
+void val_cxl_print_component_summary(void);
+uint64_t val_cxl_get_info(CXL_INFO_e type, uint32_t index);
 
 /* IO-VIRT APIs */
 

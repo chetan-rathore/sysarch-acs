@@ -126,6 +126,16 @@ createWatchdogInfoTable(
 }
 
 void
+createCxlInfoTable()
+{
+    uint64_t   *CxlInfoTable;
+
+    CxlInfoTable = val_aligned_alloc(SIZE_4K, (sizeof(CXL_INFO_TABLE)
+                    + (PLATFORM_OVERRIDE_CXL_COUNT * sizeof(CXL_INFO_BLOCK))));
+    val_cxl_create_info_table(CxlInfoTable);
+}
+
+void
 createPeripheralInfoTable(
 )
 {

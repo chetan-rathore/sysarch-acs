@@ -107,6 +107,7 @@ freeAcsMem()
     val_timer_free_info_table();
     val_wd_free_info_table();
     val_pcie_free_info_table();
+    val_cxl_free_info_table();
     val_iovirt_free_info_table();
     val_peripheral_free_info_table();
     val_smbios_free_info_table();
@@ -194,6 +195,7 @@ execute_tests()
     createTimerInfoTable();
     createWatchdogInfoTable();
     createPcieVirtInfoTable();
+    createCxlInfoTable();
     createPeripheralInfoTable();
     createSmbiosInfoTable();
     createCacheInfoTable();

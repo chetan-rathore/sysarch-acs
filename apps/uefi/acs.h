@@ -103,9 +103,11 @@
                                        /*[72 B Each + 16 B Header]*/
 #define PCIE_INFO_TBL_SZ        1024   /*Supports max 40 RC's    */
                                        /*[24 B Each + 4 B Header]*/
+#define CXL_INFO_TBL_SZ         512    /*Supports 6 CXL host bridges*/
+                                       /*[80 B Each]*/
 #define SMBIOS_INFO_TBL_SZ      65536  /*Supports max 1024 Processor Slots/Sockets*/
                                        /*[64 B Each]*/
-#define PMU_INFO_TBL_SZ         20496  /*Supports maximum 512 PMUs*/
+#define PMU_INFO_TBL_SZ         20496  /*Suports maximum 512 PMUs*/
                                        /*[40 B Each + 4 B Header]*/
 #define RAS_INFO_TBL_SZ         40960  /*Supports maximum 256 RAS Nodes*/
                                        /*[144 B Each + 12 B Header]*/
@@ -192,6 +194,7 @@ uint32_t createRasInfoTable(void);
 void     createTimerInfoTable(void);
 void     createWatchdogInfoTable(void);
 void     createPcieVirtInfoTable(void);
+void     createCxlInfoTable(void);
 void     createPeripheralInfoTable(void);
 void     createSmbiosInfoTable(void);
 void     createPmuInfoTable(void);
