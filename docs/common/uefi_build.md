@@ -1,6 +1,6 @@
 # Common UEFI Build Guide
 
-This guide captures the shared steps required to build any of the ACS UEFI applications (BSA, SBSA, PC-BSA, VBSA, and derivatives) from source. Each individual README can reference this document and only highlight the variant-specific details.
+This guide captures the shared steps required to build any of the ACS UEFI applications (BSA, SBSA, PC-BSA, VBSA, PFDI and derivatives) from source. Each individual README can reference this document and only highlight the variant-specific details.
 
 ## Prerequisites
 - Linux host (x86_64 or AArch64) with a POSIX-compatible shell
@@ -11,7 +11,7 @@ This guide captures the shared steps required to build any of the ACS UEFI appli
 ## Workspace setup
 ```bash
 mkdir -p workspace && cd workspace
-git clone -b edk2-stable202508 https://github.com/tianocore/edk2.git
+git clone -b edk2-stable202511 https://github.com/tianocore/edk2.git
 cd edk2
 git submodule update --init --recursive
 git clone https://github.com/tianocore/edk2-libc.git
@@ -46,6 +46,7 @@ source ShellPkg/Application/sysarch-acs/tools/scripts/acsbuild.sh <target>
 | SBSA | `sbsa` | `Build/Shell/DEBUG_GCC/AARCH64/Sbsa.efi` | |
 | PC-BSA | `pc_bsa` | `Build/Shell/DEBUG_GCC/AARCH64/PC_Bsa.efi` | |
 | VBSA | `vbsa` | `Build/Shell/DEBUG_GCC/AARCH64/Vbsa.efi` | |
+| PFDI | `pfdi` | `Build/Shell/DEBUG_GCC/AARCH64/pfdi.efi` | |
 
 ### Tips
 - Pass extra edk2 build options via `BUILD_OPTIONS` before sourcing `acsbuild.sh`

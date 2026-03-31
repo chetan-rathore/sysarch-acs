@@ -29,7 +29,6 @@ uint32_t  g_enable_module;
 uint32_t  g_acs_tests_total;
 uint32_t  g_acs_tests_pass;
 uint32_t  g_acs_tests_fail;
-uint32_t  g_wakeup_timeout;
 uint32_t  g_build_sbsa = 0;
 uint32_t  g_build_pcbsa = 0;
 uint32_t  g_its_init = 0;
@@ -39,11 +38,6 @@ uint64_t  g_ret_addr;
 
 uint32_t  g_sbsa_level;
 uint32_t  g_execute_nist;
-uint32_t  *g_skip_test_num;
-uint32_t  *g_execute_tests;
-RULE_ID_e *g_rule_tests;
-uint32_t  g_rule_tests_num;
-uint32_t  *g_execute_modules;
 uint64_t  g_el3_param_magic = 0;
 uint64_t  g_el3_param_addr  = 0;
 

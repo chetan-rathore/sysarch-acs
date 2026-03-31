@@ -86,10 +86,8 @@ uint32_t apply_user_config_and_defaults(void)
         g_skip_modules = g_skip_modules_arr;
     }
 
-    /* Set default values for g_print_mmio and g_wakeup_timeout */
+    /* Set default values for g_print_mmio */
     g_print_mmio = 0;
-    g_wakeup_timeout = 1;
-
     /* If selected rule count is zero, default to BSA */
     if (g_rule_count == 0) {
         /* Standalone BSA Baremetal app, set g_arch_selection to BSA */
@@ -143,12 +141,12 @@ ShellAppMainbsa()
         goto exit_acs;
     }
 
-    /* NEW: apply any compile-time test/module overrides before
-    *      we look at g_num_tests/g_num_modules and build masks.
+    /* apply any compile-time rules/module overrides before
+    *  we look at g_num_modules and build masks.
     */
     acs_apply_compile_params();
-    /* NEW: apply any EL3-supplied test/module overrides before
-    *      we look at g_num_tests/g_num_modules and build masks.
+    /* apply any EL3-supplied rules/module overrides before
+    *  we look at g_rule_list/g_skip_rule_list/g_num_modules and build masks.
     */
     acs_apply_el3_params();
 
@@ -264,6 +262,5 @@ exit_acs:
     freeAcsMeM();
 
     val_pe_context_restore(AA64WriteSp(g_stack_pointer));
-    while (1);
-    return 0;
+    return val_exit_acs();
 }

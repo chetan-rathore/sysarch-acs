@@ -19,8 +19,8 @@
 #include "pal_pcie_enum.h"
 #include "platform_override_struct.h"
 
-extern PLATFORM_OVERRIDE_HMAT_INFO_TABLE platform_hmat_cfg;
-extern PLATFORM_OVERRIDE_HMAT_MEM_TABLE platform_hmat_mem_cfg;
+extern const PLATFORM_OVERRIDE_HMAT_INFO_TABLE platform_hmat_cfg;
+extern const PLATFORM_OVERRIDE_HMAT_MEM_TABLE platform_hmat_mem_cfg;
 
 /**
   @brief  This API prints hmat info table entries.
@@ -96,6 +96,6 @@ void pal_hmat_create_info_table(HMAT_INFO_TABLE *HmatTable)
       }
   }
 
-  if (g_print_level <= ACS_PRINT_DEBUG)
+  if (g_print_level <= ACS_PRINT_INFO)
       pal_hmat_dump_info_table(HmatTable);
 }

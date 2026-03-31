@@ -19,7 +19,7 @@
 #include "pal_pcie_enum.h"
 #include "platform_override_struct.h"
 
-extern PLATFORM_OVERRIDE_PCC_INFO_TABLE platform_pcc_cfg;
+extern const PLATFORM_OVERRIDE_PCC_INFO_TABLE platform_pcc_cfg;
 
 /**
   @brief  This API prints cache info table and cache entry indices for each pe.
@@ -130,7 +130,7 @@ pal_pcc_create_info_table(PCC_INFO_TABLE *PccInfoTable)
     curr_entry++;
   }
 
-  if (g_print_level <= ACS_PRINT_DEBUG)
+  if (g_print_level <= ACS_PRINT_INFO)
       pal_pcc_dump_info_table(PccInfoTable);
 
   return;

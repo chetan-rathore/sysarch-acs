@@ -38,12 +38,12 @@ The tests can also be executed in a Bare-metal environment. The initialization o
 
 ## Release details
 - **Code quality:** BETA
-- **Latest release version:** v8.0.0
-- **Release tag:** `v25.12_SBSA_8.0.0`
+- **Latest release version:** v8.0.1
+- **Release tag:** `v26.03_SBSA_8.0.1`
 - **Specification coverage:** SBSA v8.0
 - **Execution levels:** Pre-Silicon and Silicon.
 - **Scope:** The compliance suite is **not** a substitute for design verification.
-- **Prebuilt binaries:** [`prebuilt_images/SBSA/v25.12_SBSA_8.0.0`](../../prebuilt_images/SBSA/v25.12_SBSA_8.0.0)
+- **Prebuilt binaries:** [`prebuilt_images/SBSA/v26.03_SBSA_8.0.1`](../../prebuilt_images/SBSA/v26.03_SBSA_8.0.1)
 - **Access to logs:** Arm licensees can contact Arm through their partner managers.
 
 </br>
@@ -56,6 +56,7 @@ The tests can also be executed in a Bare-metal environment. The initialization o
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 |   SBSA Spec Version   |   ACS Coverage Mapping   |   SBSA ACS Version   |        SBSA Tag ID         |   BSA ACS Version   |          BSA Tag ID         |    Pre-Si Support    |
 |-----------------------|:------------------------:|:--------------------:|:--------------------------:|:-------------------:|:---------------------------:|:--------------------:|
+|       SBSA v8.0       |    BSA ACS + SBSA ACS    |      v8.0.1          |   v26.03_SBSA_8.0.1        |        v1.2.1       |       v26.03_BSA_1.2.1      |       Yes            |
 |       SBSA v8.0       |    BSA ACS + SBSA ACS    |      v8.0.0          |   v25.12_SBSA_8.0.0        |        v1.2.0       |       v25.12_BSA_1.2.0      |       Yes            |
 |       SBSA v7.2       |    BSA ACS + SBSA ACS    |      v7.2.2          |   v25.03_REL7.2.2          |        v1.1.0       |       v25.03_REL1.1.0       |       Yes            |
 |       SBSA v7.2       |    BSA ACS + SBSA ACS    |      v7.2.1          |   v24.11_REL7.2.1          |        v1.0.9       |       v24.11_REL1.0.9       |       Yes            |
@@ -79,7 +80,7 @@ The tests can also be executed in a Bare-metal environment. The initialization o
   - To get the latest version of the code with bug fixes and new features, use the **main** branch.
 
 ##### Prebuilt release binaries
-Prebuilt images for each release, including [`v25.12_SBSA_8.0.0`](../../prebuilt_images/SBSA/v25.12_SBSA_8.0.0), are available in the [`prebuilt_images`](../../prebuilt_images/SBSA) folder of the main branch.
+Prebuilt images for each release, including [`v26.03_SBSA_8.0.1`](../../prebuilt_images/SBSA/v26.03_SBSA_8.0.1), are available in the [`prebuilt_images`](../../prebuilt_images/SBSA) folder of the main branch.
 
 ## Documentation and Guides
 - [Arm SBSA Test Scenario Document](arm_sbsa_architecture_compliance_test_scenario.pdf) — algorithms for implementable rules and notes on unimplemented rules.
@@ -188,6 +189,8 @@ for additional context when constructing command lines.
 The details of the hardware or Verification IP which enable these exerciser tests are platform specific and are beyond the scope of this document.
 
 - The MPAM MSC PCC (ACPI Platform Communication Channel) support has been implemented but not yet verified on any platform. Please raise an issue if any failures or errors are encountered during the ACS run.
+
+- S_L8PE_06 requires BRBE to be enabled for Non-Secure EL2 (ENABLE_BRBE_FOR_NS) in TF-A; otherwise EL2 access to BRBE registers traps to EL3.
 
  #### Tests dependencies
  - MPAM tests will require EL3 firmware to enable access to MPAM registers from lower EL's.

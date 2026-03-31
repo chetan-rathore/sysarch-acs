@@ -15,11 +15,11 @@
  * limitations under the License.
  **/
 
-#include "include/acs_val.h"
-#include "include/acs_pe.h"
-#include "include/acs_mmu.h"
-#include "include/acs_timer_support.h"
-#include "include/acs_timer.h"
+#include "acs_val.h"
+#include "acs_pe.h"
+#include "acs_mmu.h"
+#include "acs_timer_support.h"
+#include "acs_timer.h"
 
 TIMER_INFO_TABLE  *g_timer_info_table;
 
@@ -247,7 +247,7 @@ val_timer_create_info_table(uint64_t *timer_info_table)
   /* UEFI or other EL1 software may have enabled the EL1 physical/virtual timer.
      Disable the timers to prevent interrupts at un-expected times */
 
-  if (!g_el1physkip) {
+  if (!(g_el1skiptrap_mask & EL1SKIPTRAP_CNTPCT)) {
      val_timer_set_phy_el1(0);
      val_timer_set_vir_el1(0);
   }
@@ -277,11 +277,11 @@ val_timer_create_info_table(uint64_t *timer_info_table)
       timer_entry = val_timer_get_info(TIMER_INFO_SYS_CNT_BASE_N, timer_num);
 
       val_print(ACS_PRINT_DEBUG, "   Add entry %lx entry in memmap", gt_entry);
-      if (val_mmu_update_entry(gt_entry, 0x10000))
+      if (val_mmu_update_entry(gt_entry, 0x10000, DEVICE_nGnRnE))
           val_print(ACS_PRINT_WARN, "\n   Adding %lx entry failed", gt_entry);
 
       val_print(ACS_PRINT_DEBUG, "\n   Add entry %lx entry in memmap", timer_entry);
-      if (val_mmu_update_entry(timer_entry, 0x10000))
+      if (val_mmu_update_entry(timer_entry, 0x10000, DEVICE_nGnRnE))
           val_print(ACS_PRINT_WARN, "\n   Adding %lx entry failed", timer_entry);
   }
 }
@@ -457,4 +457,21 @@ val_get_safe_timeout_ticks(void)
         ticks = 0xFFFFFFFF;
 
     return (uint32_t)ticks;
+}
+
+/**
+  @brief  convert timeout in terms of us to ticks.
+
+  @param  timeout_us input timeout in terms of us
+
+  @return uint64_t  timeout in terms of ticks.
+**/
+uint64_t
+val_get_timeout_to_ticks(uint32_t timeout_us)
+{
+
+    uint64_t freq = val_get_counter_frequency();
+    uint64_t ticks = (timeout_us * freq)/MICRO_SECONDS;
+
+    return ticks;
 }

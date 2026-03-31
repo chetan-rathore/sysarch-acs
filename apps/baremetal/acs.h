@@ -25,12 +25,11 @@
 
 #define BSA_ACS_MAJOR_VER      1
 #define BSA_ACS_MINOR_VER      2
-#define BSA_ACS_SUBMINOR_VER   0
+#define BSA_ACS_SUBMINOR_VER   1
 
 #define SBSA_ACS_MAJOR_VER       8
 #define SBSA_ACS_MINOR_VER       0
-#define SBSA_ACS_SUBMINOR_VER    0
-#define SBSA_FR_LEVEL            0x8
+#define SBSA_ACS_SUBMINOR_VER    1
 
 #define PC_BSA_ACS_MAJOR_VER     1
 #define PC_BSA_ACS_MINOR_VER     0
@@ -59,7 +58,7 @@
 
 #define G_SBSA_LEVEL             4
 #define SBSA_MIN_LEVEL_SUPPORTED 3
-#define SBSA_MAX_LEVEL_SUPPORTED 8
+#define SBSA_MAX_LEVEL_SUPPORTED 9
 
 /*******************************************************************************
  * Used to align variables on the biggest cache line size in the platform.
@@ -118,7 +117,6 @@ extern uint32_t  g_acs_tests_fail;
 extern uint64_t  g_stack_pointer;
 extern uint64_t  g_exception_ret_addr;
 extern uint64_t  g_ret_addr;
-extern uint32_t  g_wakeup_timeout;
 extern bool      g_pcie_skip_dp_nic_ms;
 extern uint32_t  g_build_sbsa;
 extern uint32_t  g_build_pcbsa;
@@ -148,6 +146,7 @@ void     createSratInfoTable(void);
 void     createPccInfoTable(void);
 void     createRas2InfoTable(void);
 void     createTpm2InfoTable(void);
+void     createCxlInfoTable(void);
 
 #endif /* __ASSEMBLER__ */
 /*

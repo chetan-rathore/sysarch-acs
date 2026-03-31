@@ -15,13 +15,13 @@
  * limitations under the License.
  **/
 
-#include "val/include/acs_val.h"
-#include "val/include/acs_pcie_enumeration.h"
-#include "val/include/acs_pcie.h"
-#include "val/include/acs_pe.h"
-#include "val/include/acs_smmu.h"
-#include "val/include/acs_memory.h"
-#include "val/include/acs_exerciser.h"
+#include "acs_val.h"
+#include "acs_pcie_enumeration.h"
+#include "acs_pcie.h"
+#include "acs_pe.h"
+#include "acs_smmu.h"
+#include "acs_memory.h"
+#include "acs_exerciser.h"
 
 static const
 test_config_t test_entries[] = {
@@ -166,11 +166,9 @@ payload(void *arg)
           status = val_smmu_pa2iova(smmu_index, (uint64_t)dram_buf_phys,
                                     (uint64_t *)&dram_buf_iova);
 
-      if (status == NOT_IMPLEMENTED) {
-        val_print(ACS_PRINT_ERR,
-                "\n       pal_smmu_pa2iova is unimplemented, Skipping test.", 0);
+      if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED)
         goto test_skip_unimplemented;
-      }
+
       /*
        * Issue a Memory Read request from exerciser to cause unsupported
        * request detected bit set in exercise's Device Status Register.
@@ -224,7 +222,7 @@ test_skip_unimplemented:
       val_pcie_enable_bme(erp_bdf);
     /* Return the buffer to the heap manager */
     val_memory_free_pages(dram_buf_virt, TEST_DATA_NUM_PAGES);
-    val_set_status(pe_index, RESULT_SKIP(test_data->test_num, 02));
+    val_set_status(pe_index, RESULT_WARN(test_data->test_num, 02));
 }
 
 uint32_t

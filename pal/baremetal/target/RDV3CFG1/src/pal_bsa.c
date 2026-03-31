@@ -29,15 +29,15 @@
 #define CONDUIT_HVC       1
 #define CONDUIT_NONE     -2
 
-extern PLATFORM_OVERRIDE_GIC_INFO_TABLE     platform_gic_cfg;
-extern PLATFORM_OVERRIDE_TIMER_INFO_TABLE   platform_timer_cfg;
-extern PLATFORM_OVERRIDE_IOVIRT_INFO_TABLE  platform_iovirt_cfg;
-extern PLATFORM_OVERRIDE_NODE_DATA          platform_node_type;
-extern PLATFORM_OVERRIDE_UART_INFO_TABLE    platform_uart_cfg;
-extern PLATFORM_OVERRIDE_MEMORY_INFO_TABLE  platform_mem_cfg;
-extern PCIE_INFO_TABLE                      platform_pcie_cfg;
-extern WD_INFO_TABLE                        platform_wd_cfg;
-extern DMA_INFO_TABLE                       platform_dma_cfg;
+extern const PLATFORM_OVERRIDE_GIC_INFO_TABLE     platform_gic_cfg;
+extern const PLATFORM_OVERRIDE_TIMER_INFO_TABLE   platform_timer_cfg;
+extern const PLATFORM_OVERRIDE_IOVIRT_INFO_TABLE  platform_iovirt_cfg;
+extern const PLATFORM_OVERRIDE_NODE_DATA          platform_node_type;
+extern const PLATFORM_OVERRIDE_UART_INFO_TABLE    platform_uart_cfg;
+extern const PLATFORM_OVERRIDE_MEMORY_INFO_TABLE  platform_mem_cfg;
+extern const PCIE_INFO_TABLE                      platform_pcie_cfg;
+extern const WD_INFO_TABLE                        platform_wd_cfg;
+extern const DMA_INFO_TABLE                       platform_dma_cfg;
 
 extern addr_t __TEXT_START__, __TEXT_END__;
 #define TEXT_START    ((addr_t)&__TEXT_START__)
@@ -686,7 +686,7 @@ pal_gic_free_irq (
 
   @return
     - 0               : Success
-    - NOT_IMPLEMENTED : Feature not implemented
+    - PAL_STATUS_NOT_IMPLEMENTED : Feature not implemented
     - non-zero        : Failure (implementation-specific error code)
 */
 uint64_t
@@ -696,7 +696,8 @@ pal_smmu_pa2iova(uint64_t SmmuBase, uint64_t Pa, uint64_t *dram_buf_iova)
   (void) Pa;
   (void) dram_buf_iova;
 
-  return NOT_IMPLEMENTED;
+  pal_warn_not_implemented(__func__);
+  return PAL_STATUS_NOT_IMPLEMENTED;
 }
 
 /**
@@ -706,7 +707,7 @@ pal_smmu_pa2iova(uint64_t SmmuBase, uint64_t Pa, uint64_t *dram_buf_iova)
 
   @return
     - 0               : Success
-    - NOT_IMPLEMENTED : Feature not implemented
+    - PAL_STATUS_NOT_IMPLEMENTED : Feature not implemented
     - non-zero        : Failure (implementation-specific error code)
 **/
 uint32_t pal_smmu_check_device_iova(void *port, uint64_t dma_addr)
@@ -714,7 +715,8 @@ uint32_t pal_smmu_check_device_iova(void *port, uint64_t dma_addr)
   (void) port;
   (void) dma_addr;
 
-  return NOT_IMPLEMENTED;
+  pal_warn_not_implemented(__func__);
+  return PAL_STATUS_NOT_IMPLEMENTED;
 }
 
 /**
@@ -755,7 +757,6 @@ pal_pcie_p2p_support(void)
   // in the PCIe platform configuration
 
   return 0;
-
 }
 
 /**
@@ -787,7 +788,7 @@ pal_pcie_device_driver_present(uint32_t seg, uint32_t bus, uint32_t dev, uint32_
 
   @return
   - 0               : Success
-  - NOT_IMPLEMENTED : Feature not implemented
+  - PAL_STATUS_NOT_IMPLEMENTED : Feature not implemented
   - non-zero        : Failure (implementation-specific error code)
 **/
 uint32_t
@@ -800,7 +801,8 @@ pal_get_msi_vectors(uint32_t Seg, uint32_t Bus, uint32_t Dev, uint32_t Fn,
   (void) MVector;
   (void) Fn;
 
-  return NOT_IMPLEMENTED;
+  pal_warn_not_implemented(__func__);
+  return PAL_STATUS_NOT_IMPLEMENTED;
 }
 
 /**
@@ -858,24 +860,6 @@ pal_pcie_mem_get_offset(uint32_t bdf, PCIE_MEM_TYPE_INFO_e mem_type)
 }
 
 /* Peripheral PAL API's */
-
-uint32_t
-pal_memory_ioremap(void *ptr, uint32_t size, uint32_t attr, void **baseptr)
-{
-  (void) size;
-  (void) attr;
-  *baseptr = ptr;
-  return NOT_IMPLEMENTED;
-}
-
-void
-pal_memory_unmap(void *ptr)
-{
-  (void) ptr;
-
-  return;
-}
-
 /**
   @brief  Platform specific code for UART initialisation
 
@@ -1211,7 +1195,7 @@ pal_mem_free_cacheable(uint32_t Bdf, uint32_t Size, void *Va, void *Pa)
 
   @return
   - 0               : Success
-  - NOT_IMPLEMENTED : Feature not implemented
+  - PAL_STATUS_NOT_IMPLEMENTED : Feature not implemented
   - non-zero        : Failure (implementation-specific error code)
 **/
 uint64_t
@@ -1223,7 +1207,8 @@ pal_dma_mem_alloc(void **buffer, uint32_t length, void *dev, uint32_t flag, addr
   (void) dma_addr;
   *buffer = (void *)pal_aligned_alloc(MEM_ALIGN_4K, length);
 
-  return NOT_IMPLEMENTED;
+  pal_warn_not_implemented(__func__);
+  return PAL_STATUS_NOT_IMPLEMENTED;
 }
 
 /**
@@ -1279,7 +1264,7 @@ pal_dma_scsi_get_dma_addr(void *port, void *dma_addr, unsigned int *dma_len)
 
   @return
   - 0               : Success
-  - NOT_IMPLEMENTED : Feature not implemented
+  - PAL_STATUS_NOT_IMPLEMENTED : Feature not implemented
   - non-zero        : Failure (implementation-specific error code)
 **/
 int
@@ -1293,5 +1278,22 @@ pal_dma_mem_get_attrs(void *buf, uint32_t *attr, uint32_t *sh)
   (void) attr;
   (void) sh;
 
-  return NOT_IMPLEMENTED;
+  pal_warn_not_implemented(__func__);
+  return PAL_STATUS_NOT_IMPLEMENTED;
+}
+
+/**
+  @brief   Exit ACS gracefully predominantly used
+           in pre-si environment, Should be implemented by partner
+           .Where as for FVPS we are waiting on while(1)
+
+  @return
+    - 0               : Success
+    - PAL_STATUS_NOT_IMPLEMENTED : Feature not implemented
+    - non-zero        : Failure (implementation-specific error code)
+**/
+uint32_t pal_exit_acs(void)
+{
+  while (1);
+  return 0;
 }

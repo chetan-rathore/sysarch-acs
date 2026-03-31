@@ -121,6 +121,7 @@ acs_entry:
 primary_cpu_entry:
     mov   x19, #1
 
+#if !defined(TARGET_SIMULATION)
    /*
      * Invalidate the instr cache for the code region.
      * This prevents re-use of stale data cache entries from
@@ -131,7 +132,6 @@ primary_cpu_entry:
     sub x1, x1, x0
     bl  val_inv_icache_range
 
-#if !defined(TARGET_SIMULATION)
     /*
      * Invalidate the data cache for the data regions.
      * This prevents re-use of stale data cache entries from
@@ -165,13 +165,14 @@ primary_cpu_entry:
   add  x1,x1,:lo12:__BSS_END__
   sub x1, x1, x0
   //bl  val_inv_dcache_range
-#endif
+
 1:
    stp xzr, xzr, [x0]
    add x0, x0, #16
    sub x1, x1, #16
    cmp xzr, x1
    b.ne 1b
+#endif
 
    b  0f
 

@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-#include "val/include/acs_val.h"
-#include "val/include/acs_pcie.h"
-#include "val/include/acs_memory.h"
+#include "acs_val.h"
+#include "acs_pcie.h"
+#include "acs_memory.h"
 
 #define TEST_NUM   (ACS_PCIE_TEST_NUM_BASE + 97)
 #define TEST_RULE  "PCI_MSI_2"
@@ -148,7 +148,8 @@ payload (void)
        * with base class codes greater than 13h as they
        * are reserved */
       if ((g_pcie_skip_dp_nic_ms &&
-          ((base_cc == CNTRL_CC) || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC)))
+          ((base_cc == UNCLAS_CC) || (base_cc == CNTRL_CC)
+          || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC)))
           || (base_cc > RES_CC))
       {
         tbl_index++;
@@ -169,10 +170,9 @@ payload (void)
 
         ret = val_get_msi_vectors (current_dev_bdf, &current_dev_mvec);
 
-        if (ret == NOT_IMPLEMENTED) {
-          val_print(ACS_PRINT_ERR,
-              "\n       pal_get_msi_vectors is unimplemented, Skipping test.", 0);
-          goto test_skip_unimplemented;
+        if (ret == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
+          clean_msi_list (current_dev_mvec);
+          goto test_warn_unimplemented;
         }
 
         if (ret) {
@@ -193,7 +193,8 @@ payload (void)
                 * with base class codes greater than 13h as they
                 * are reserved */
                 if ((g_pcie_skip_dp_nic_ms &&
-                    ((base_cc == CNTRL_CC) || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC)))
+                    ((base_cc == UNCLAS_CC) || (base_cc == CNTRL_CC)
+                    || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC)))
                     || (base_cc > RES_CC))
                 {
                   val_print(ACS_PRINT_DEBUG, "\n        Skipping DP/NIC/MAS/RES device.", 0);
@@ -216,10 +217,9 @@ payload (void)
                   /* Read MSI(X) vectors */
                   ret = val_get_msi_vectors (next_dev_bdf, &next_dev_mvec);
 
-                  if (ret == NOT_IMPLEMENTED) {
-                    val_print(ACS_PRINT_ERR,
-                        "\n       pal_get_msi_vectors is unimplemented, Skipping test.", 0);
-                    goto test_skip_unimplemented;
+                  if (ret == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
+                    clean_msi_list (next_dev_mvec);
+                    goto test_warn_unimplemented;
                   }
 
                   if (ret) {
@@ -255,8 +255,8 @@ payload (void)
   }
   return;
 
-test_skip_unimplemented:
-  val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+test_warn_unimplemented:
+  val_set_status(index, RESULT_WARN(TEST_NUM, 01));
 }
 
 uint32_t

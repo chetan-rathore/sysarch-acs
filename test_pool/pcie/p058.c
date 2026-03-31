@@ -15,10 +15,10 @@
  * limitations under the License.
  **/
 
-#include "val/include/acs_val.h"
-#include "val/include/acs_pe.h"
-#include "val/include/val_interface.h"
-#include "val/include/acs_pcie.h"
+#include "acs_val.h"
+#include "acs_pe.h"
+#include "val_interface.h"
+#include "acs_pcie.h"
 
 extern bool g_pcie_skip_dp_nic_ms;
 
@@ -93,7 +93,8 @@ get_dsf_bdf(uint32_t rp_bdf, uint32_t *target_bdf)
           val_print(ACS_PRINT_DEBUG, "\n       Downstream class code is 0x%x", reg_value);
           base_cc = reg_value >> TYPE01_BCC_SHIFT;
           if (g_pcie_skip_dp_nic_ms &&
-              ((base_cc == CNTRL_CC) || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC))) {
+              ((base_cc == UNCLAS_CC) || (base_cc == CNTRL_CC)
+              || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC))) {
               val_print(ACS_PRINT_DEBUG, "\n       Skipping downstream BDF 0x%x", dev_bdf);
               continue;
           }
@@ -200,7 +201,8 @@ payload(void *arg)
           val_print(ACS_PRINT_DEBUG, "\n       Class code is 0x%x", reg_value);
           base_cc = reg_value >> TYPE01_BCC_SHIFT;
           if (g_pcie_skip_dp_nic_ms &&
-              ((base_cc == CNTRL_CC) || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC))) {
+              ((base_cc == UNCLAS_CC) || (base_cc == CNTRL_CC)
+              || (base_cc == DP_CNTRL_CC) || (base_cc == MAS_CC))) {
               val_print(ACS_PRINT_DEBUG, "\n       Skipping for BDF 0x%x", bdf);
               continue;
           }
