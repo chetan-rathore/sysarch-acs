@@ -39,7 +39,7 @@ pfdi_fw_check(void)
 
   val_pfdi_invalidate_ret_params(pfdi_buffer);
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
   return;
 }
 
@@ -56,7 +56,7 @@ static void payload_fw_check(void *arg)
   if (g_pfdi_fw_check_details == NULL) {
     val_print(ERROR,
                 "\n       Allocation for PFDI FW Check Function Failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(index, RESULT_FAIL(2));
     return;
   }
 
@@ -78,7 +78,7 @@ static void payload_fw_check(void *arg)
 
       if (timeout == 0) {
         val_print(ERROR, "\n       **Timed out** for PE index = %d", i);
-        val_set_status(i, RESULT_FAIL(TEST_NUM, 3));
+        val_set_status(i, RESULT_FAIL(3));
         goto free_pfdi_details;
       }
     }
@@ -114,9 +114,9 @@ static void payload_fw_check(void *arg)
     }
 
     if (test_fail)
-      val_set_status(i, RESULT_FAIL(TEST_NUM, 3));
+      val_set_status(i, RESULT_FAIL(3));
     else
-      val_set_status(i, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(i, RESULT_PASS);
   }
 
 free_pfdi_details:

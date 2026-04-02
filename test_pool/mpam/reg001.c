@@ -50,7 +50,7 @@ static void payload(void)
             if (ext != 0) {
               /* Fail the test */
               val_print(ERROR, "\n       MPAMF_IDR.EXT value is not 0");
-              val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+              val_set_status(pe_index, RESULT_FAIL(01));
               return;
             }
         }
@@ -60,7 +60,7 @@ static void payload(void)
             if (ext != 1) {
               /* Fail the test */
               val_print(ERROR, "\n       MPAMF_IDR.EXT value is not 1");
-              val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+              val_set_status(pe_index, RESULT_FAIL(02));
               return;
             }
         }
@@ -68,12 +68,12 @@ static void payload(void)
             /* Invalid */
             /* TODO : Check for v0.1 */
             val_print(ERROR, "\n       MSC Version not valid");
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+            val_set_status(pe_index, RESULT_FAIL(03));
             return;
         }
     }
 
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
     return;
 }
 

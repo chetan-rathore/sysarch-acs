@@ -176,7 +176,7 @@ val_pe_get_mpid_index(uint32_t index)
   PE_INFO_ENTRY *entry;
 
   if (index > g_pe_info_table->header.num_of_pe) {
-        val_report_status(index, RESULT_FAIL(0, 0xFF), NULL);
+        val_report_status(index, RESULT_FAIL(0xFF), NULL);
         return 0xFFFFFF;
   }
 
@@ -262,7 +262,7 @@ val_execute_on_pe(uint32_t index, void (*payload)(void), uint64_t test_input)
   int timeout = TIMEOUT_LARGE;
   if (index > g_pe_info_table->header.num_of_pe) {
       val_print(ERROR, "Input Index exceeds Num of PE %x\n", index);
-      val_report_status(index, RESULT_FAIL(0, 0xFF), NULL);
+      val_report_status(index, RESULT_FAIL(0xFF), NULL);
       return;
   }
 
@@ -283,7 +283,7 @@ val_execute_on_pe(uint32_t index, void (*payload)(void), uint64_t test_input)
       val_print(WARN, "\n       WARNING: Skipping test for PE index %d "
                               "since it is already on\n", index);
 
-      val_set_status(index, RESULT_SKIP(0, 0x120 - (int)g_smc_args.Arg0));
+      val_set_status(index, RESULT_SKIP(0x120 - (int)g_smc_args.Arg0));
       return;
   }
   else {
@@ -295,7 +295,7 @@ val_execute_on_pe(uint32_t index, void (*payload)(void), uint64_t test_input)
           val_print(ERROR, "\n       PSCI_CPU_ON: failure[%d]", g_smc_args.Arg0);
 
   }
-  val_set_status(index, RESULT_FAIL(0, 0x120 - (int)g_smc_args.Arg0));
+  val_set_status(index, RESULT_FAIL(0x120 - (int)g_smc_args.Arg0));
 }
 
 /**
@@ -389,7 +389,7 @@ val_pe_default_esr(uint64_t interrupt_type, void *context)
     if (pal_target_is_dt()) {
       val_print(WARN, "\n        FAR reported = 0x%llx", bsa_gic_get_far());
       val_print(WARN, "\n        ESR reported = 0x%llx", bsa_gic_get_esr());
-      val_set_status(index, RESULT_FAIL(0, 1));
+      val_set_status(index, RESULT_FAIL(1));
       val_pe_update_elr(context, g_exception_ret_addr);
       return;
     }
@@ -403,7 +403,7 @@ val_pe_default_esr(uint64_t interrupt_type, void *context)
     }
 #endif
 
-    val_set_status(index, RESULT_FAIL(0, 1));
+    val_set_status(index, RESULT_FAIL(1));
     val_pe_update_elr(context, g_exception_ret_addr);
 }
 

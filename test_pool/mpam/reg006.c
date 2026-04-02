@@ -58,11 +58,11 @@ static void payload(void)
 
     if (nfu_bit != 0) {
         /* Fail The Test */
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_FAIL(01));
         return;
     }
 
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
     return;
 }
 

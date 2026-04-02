@@ -107,16 +107,16 @@ void intr_handler(void)
     if (!status_asserted) {
         val_print(ERROR,
             "\n       OFLOW_STATUS not set on overflow MSI for MSC %d", msc_index);
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(pe_index, RESULT_FAIL(02));
     } else {
         val_print(DEBUG,
             "\n       OFLOW_STATUS observed set on MSI for MSC %d", msc_index);
-        val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_PASS);
 
         if (val_mpam_mbwu_clear_overflow_status(msc_index)) {
             val_print(ERROR,
                 "\n       Failed to clear overflow status via helper for MSC %d", msc_index);
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 07));
+            val_set_status(pe_index, RESULT_FAIL(07));
         }
     }
 
@@ -263,7 +263,7 @@ void payload(void)
             if (status) {
                 val_print(ERROR,
                     "\n       Failed to configure overflow MSI for MSC %d", msc_index);
-                val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 06));
+                val_set_status(pe_index, RESULT_FAIL(06));
                 test_fail++;
                 goto monitor_cleanup;
             }
@@ -325,11 +325,11 @@ cleanup:
     val_mpam_reg_write(MPAM2_EL2, mpam2_el2_saved);
 
     if (test_skip)
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+        val_set_status(pe_index, RESULT_SKIP(1));
     else if (test_fail || !intr_enabled)
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(pe_index, RESULT_FAIL(1));
     else
-        val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+        val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t intr005_entry(void)

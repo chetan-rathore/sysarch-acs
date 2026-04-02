@@ -196,7 +196,7 @@ payload (void *arg)
     if (smmu_index != ACS_INVALID_INDEX) {
         if (val_smmu_disable(smmu_index)) {
             val_print(ERROR, "\n       Exerciser %x smmu disable error", instance);
-            val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 1));
+            val_set_status(pe_index, RESULT_FAIL(1));
             return;
         }
     }
@@ -207,7 +207,7 @@ payload (void *arg)
     if (!dram_buf1_virt) {
 
       val_print(ERROR, "\n       WB and OSH mem alloc failure %x", 2);
-      val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 2));
+      val_set_status(pe_index, RESULT_FAIL(2));
       return;
     }
 
@@ -230,13 +230,13 @@ payload (void *arg)
   }
 
   if (test_skip)
-      val_set_status(pe_index, RESULT_SKIP(test_data->test_num, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
   else
-      val_set_status(pe_index, RESULT_PASS(test_data->test_num, 1));
+      val_set_status(pe_index, RESULT_PASS);
   return;
 
 test_fail:
-  val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 3));
+  val_set_status(pe_index, RESULT_FAIL(3));
   val_memory_free_cacheable(e_bdf, TEST_DATA_BLK_SIZE, dram_buf1_virt, dram_buf1_phys);
   return;
 }
@@ -254,7 +254,7 @@ e008_entry(uint32_t num_pe)
   status = val_initialize_test(test_entries[0].test_num, test_entries[0].desc, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_configurable_payload(&data, payload);
   }
 
@@ -278,7 +278,7 @@ e038_entry(uint32_t num_pe)
   status = val_initialize_test(test_entries[1].test_num, test_entries[1].desc, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_configurable_payload(&data, payload);
   }
 

@@ -124,13 +124,13 @@ payload(void)
   if (test_skip == 1) {
       val_print(DEBUG,
           "\n       No EP/ DP/ UP type device found. Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
   }
 
   else if (fail_cnt)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, fail_cnt));
+      val_set_status(pe_index, RESULT_FAIL(fail_cnt));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

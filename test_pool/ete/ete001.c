@@ -36,11 +36,11 @@ static void payload(void)
                                                                              data, index);
 
     if (data == 0) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
         return;
     }
 
-    val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(index, RESULT_PASS);
 }
 
 uint32_t ete001_entry(uint32_t num_pe)

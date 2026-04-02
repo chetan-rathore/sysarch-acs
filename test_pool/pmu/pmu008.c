@@ -44,7 +44,7 @@ static void payload1(void)
 {
     val_memcpy(src_buf, dest_buf, BUFFER_SIZE / 2);
 
-    val_set_status(remote_pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(remote_pe_index, RESULT_PASS);
 }
 
 /* This payload generates remote PE traffic for 4 MB*/
@@ -52,7 +52,7 @@ static void payload2(void)
 {
     val_memcpy(src_buf, dest_buf, BUFFER_SIZE);
 
-    val_set_status(remote_pe_index, RESULT_PASS(TEST_NUM, 02));
+    val_set_status(remote_pe_index, RESULT_PASS);
 }
 
 static uint32_t generate_traffic(uint64_t prox_domain, uint32_t size, void (*remote_traffic)(void))
@@ -117,12 +117,12 @@ static void payload(void)
     val_print(DEBUG, "\n       PMU NODES = %d", node_count);
 
     if (node_count == 0) {
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
         val_print(INFO, "\n       No PMU nodes found in APMT table");
         val_print(INFO, "\n       The test must be considered fail"
                                    " if system has CoreSight PMU");
         val_print(INFO, "\n       For non CoreSight PMU, manually verify A.4 PMU rules "
                                    "in the SBSA specification");
+        val_set_status(index, RESULT_SKIP(02));
         return;
     }
 
@@ -131,10 +131,10 @@ static void payload(void)
         cs_com |= val_pmu_get_info(PMU_NODE_CS_COM, node_index);
     }
     if (cs_com != 0x1) {
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 03));
         val_print(INFO, "\n       No CoreSight PMU nodes found");
         val_print(INFO, "\n       For non CoreSight PMU, manually verify A.4 PMU rules "
                                    "in the SBSA specification");
+        val_set_status(index, RESULT_SKIP(03));
         return;
     }
 
@@ -142,7 +142,7 @@ static void payload(void)
     num_mem_range = val_srat_get_info(SRAT_MEM_NUM_MEM_RANGE, 0);
     if (num_mem_range == 0 || num_mem_range == SRAT_INVALID_INFO) {
         val_print(ERROR, "\n       No Proximity domains in the system");
-        val_set_status(index, RESULT_WARN(TEST_NUM, 2));
+        val_set_status(index, RESULT_WARNING(2));
         return;
     }
 
@@ -151,14 +151,14 @@ static void payload(void)
     pe_prox_domain = val_srat_get_info(SRAT_GICC_PROX_DOMAIN, pe_uid);
     if (pe_prox_domain == SRAT_INVALID_INFO) {
         val_print(ERROR, "\n       Could not get proximity domain info for given PE");
-        val_set_status(index, RESULT_WARN(TEST_NUM, 3));
+        val_set_status(index, RESULT_WARNING(3));
         return;
     }
     /* Get memory controller local to the primary PE */
     mc_node_index = val_pmu_get_node_index(pe_prox_domain, PMU_NODE_MEM_CNTR);
     if (mc_node_index == PMU_INVALID_INDEX) {
         val_print(ERROR, "\n       PMU node not found");
-        val_set_status(index, RESULT_WARN(TEST_NUM, 4));
+        val_set_status(index, RESULT_WARNING(4));
         return;
     }
 
@@ -166,7 +166,7 @@ static void payload(void)
     data = val_pmu_get_monitor_count(mc_node_index);
     if (data < 3) {
         val_print(ERROR, "\n       PMU node must support atleast 3 counter");
-        val_set_status(index, RESULT_WARN(TEST_NUM, 5));
+        val_set_status(index, RESULT_WARNING(5));
         return;
     }
 
@@ -177,7 +177,7 @@ static void payload(void)
             val_print(ERROR,
                         "\n       Required PMU Event 0x%x not supported", config_events[i]);
             val_print(ERROR, " at node %d", mc_node_index);
-            val_set_status(index, RESULT_WARN(TEST_NUM, 6));
+            val_set_status(index, RESULT_WARNING(6));
             return;
         }
     }
@@ -190,7 +190,7 @@ static void payload(void)
     remote_pe_prox_domain = val_srat_get_info(SRAT_GICC_REMOTE_PROX_DOMAIN, pe_prox_domain);
     if (remote_pe_prox_domain == SRAT_INVALID_INFO) {
         val_print(ERROR, "\n       Could not get remote PE proximity domain");
-        val_set_status(index, RESULT_WARN(TEST_NUM, 7));
+        val_set_status(index, RESULT_WARNING(7));
         return;
     }
     remote_pe_uid = val_srat_get_info(SRAT_GICC_PROC_UID, remote_pe_prox_domain);
@@ -203,7 +203,7 @@ static void payload(void)
     status = generate_traffic(pe_prox_domain, BUFFER_SIZE / 2, payload1);
     if (status) {
         val_print(ERROR, "\n       Memory allocation failed");
-            val_set_status(index, RESULT_WARN(TEST_NUM, 8));
+            val_set_status(index, RESULT_WARNING(8));
             return;
     }
 
@@ -222,7 +222,7 @@ static void payload(void)
 
     if (status) {
     val_print(ERROR, "\n       Memory allocation failed");
-        val_set_status(index, RESULT_WARN(TEST_NUM, 9));
+        val_set_status(index, RESULT_WARNING(9));
         return;
     }
 
@@ -233,7 +233,7 @@ static void payload(void)
     /*Consider delta for results*/
     for (i = 0 ; i < NUM_PMU_MON ; i++) {
         if (value2[i] <= value1[i]) {
-            val_set_status(index, RESULT_WARN(TEST_NUM, 10));
+            val_set_status(index, RESULT_WARNING(10));
             return;
         }
     }
@@ -241,7 +241,7 @@ static void payload(void)
     /* Disable PMU monitors */
     val_pmu_disable_all_monitors(mc_node_index);
 
-    val_set_status(index, RESULT_PASS(TEST_NUM, 03));
+    val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

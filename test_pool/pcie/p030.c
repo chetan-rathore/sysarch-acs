@@ -38,7 +38,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(TRACE, "\n       Received exception of type: %d", interrupt_type);
-  val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(pe_index, RESULT_PASS);
 }
 
 /*
@@ -123,7 +123,7 @@ payload(void)
   if (status)
   {
       val_print(ERROR, "\n      Failed in installing the exception handler");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
 
@@ -194,7 +194,7 @@ payload(void)
       val_pcie_disable_msa(bdf);
 
       /* Set test status as FAIL, update to PASS in exception handler */
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+      val_set_status(pe_index, RESULT_FAIL(2));
 
       /* If test runs for atleast an endpoint */
       test_skip = 0;
@@ -231,11 +231,11 @@ exception_return:
   }
 
   if (test_skip == 1)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
   else if (test_fails)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, test_fails));
+      val_set_status(pe_index, RESULT_FAIL(test_fails));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

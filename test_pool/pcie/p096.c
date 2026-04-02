@@ -52,14 +52,14 @@ payload (void)
   count = val_peripheral_get_info (NUM_ALL, 0);
 
   if (!count) {
-     val_set_status(index, RESULT_SKIP (TEST_NUM, 1));
+     val_set_status(index, RESULT_SKIP(1));
      return;
   }
 
   irq_map = val_aligned_alloc(MEM_ALIGN_4K, sizeof(PERIPHERAL_IRQ_MAP));
   if (!irq_map) {
     val_print(ERROR, "\n       Memory allocation error");
-    val_set_status(index, RESULT_FAIL (TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -149,13 +149,13 @@ payload (void)
   val_memory_free_aligned(irq_map);
 
   if (warn_cnt)
-    val_set_status(index, RESULT_WARN (TEST_NUM, 1));
+    val_set_status(index, RESULT_WARNING (1));
   else if (test_skip)
-    val_set_status(index, RESULT_SKIP (TEST_NUM, 2));
+    val_set_status(index, RESULT_SKIP (2));
   else if (!status)
-    val_set_status(index, RESULT_PASS (TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
   else
-    val_set_status(index, RESULT_FAIL (TEST_NUM, status));
+    val_set_status(index, RESULT_FAIL (status));
 
   return;
 }

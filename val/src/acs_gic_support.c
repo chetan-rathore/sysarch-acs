@@ -53,7 +53,7 @@ val_gic_reg_read(uint32_t reg_id)
           return read_ich_misr_el2();
       default:
            val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
-                                                  RESULT_FAIL(0, 0xFF), NULL);
+                                                  RESULT_FAIL(0xFF), NULL);
   }
 
   return 0x0;
@@ -90,7 +90,7 @@ val_gic_reg_write(uint32_t reg_id, uint64_t write_data)
           break;
       default:
            val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
-                                                  RESULT_FAIL(0, 0xFF), NULL);
+                                                  RESULT_FAIL(0xFF), NULL);
   }
 
 }

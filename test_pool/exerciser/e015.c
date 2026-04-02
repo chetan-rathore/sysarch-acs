@@ -191,11 +191,11 @@ payload(void)
 
 test_result:
   if (test_skip)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   else if (fail_cnt)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, fail_cnt));
+      val_set_status(pe_index, RESULT_FAIL(fail_cnt));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 
   return;
 
@@ -212,7 +212,7 @@ e015_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

@@ -253,7 +253,7 @@ print_rule_test_status(uint32_t rule_enum, uint32_t indent, uint32_t status)
 
     val_print(INFO, "\n");
     /* Print other PAL(s) that validate this rule */
-    if (status == TEST_PAL_NS) {
+    if (status == TEST_PAL_NOT_SUPPORTED) {
         print_pal_validation_info(rule_enum, indent);
     }
     /* Print indent spaces */
@@ -262,46 +262,43 @@ print_rule_test_status(uint32_t rule_enum, uint32_t indent, uint32_t status)
         indent--;
     }
 
-    val_print(INFO, "   Result: ");
-    val_print(INFO, " ");
+    uint8_t  state  = (uint8_t)GET_STATE(status);
+
+    val_print(INFO, "   Result: ", 0);
+    val_print(INFO, " ", 0);
 
     /* Update global counters for top-level rules only */
     if (top_level_rule) {
         g_rule_test_stats.total_rules_run++;
     }
 
-    switch (status) {
+    switch (state) {
     case TEST_PASS:
-        val_print(INFO, "PASSED");
         if (top_level_rule) g_rule_test_stats.passed++;
         break;
-    case TEST_PART_COV:
-        val_print(INFO, "PASSED(*PARTIAL)");
+    case TEST_PARTIAL_COVERED:
         if (top_level_rule) g_rule_test_stats.partial_coverage++;
         break;
-    case TEST_WARN:
-        val_print(INFO, "WARNING");
+    case TEST_WARNING:
         if (top_level_rule) g_rule_test_stats.warnings++;
         break;
     case TEST_SKIP:
-        val_print(INFO, "SKIPPED");
         if (top_level_rule) g_rule_test_stats.skipped++;
         break;
     case TEST_FAIL:
-        val_print(INFO, "FAILED");
         if (top_level_rule) g_rule_test_stats.failed++;
         break;
-    case TEST_NO_IMP:
-        val_print(INFO, "NOT TESTED (TEST NOT IMPLEMENTED)");
+    case TEST_NOT_IMPLEMENTED:
         if (top_level_rule) g_rule_test_stats.not_implemented++;
         break;
-    case TEST_PAL_NS:
-        val_print(INFO, "NOT TESTED (PAL NOT SUPPORTED)");
+    case TEST_PAL_NOT_SUPPORTED:
         if (top_level_rule) g_rule_test_stats.pal_not_supported++;
         break;
     default:
-        val_print(INFO, "STATUS:0x%x", status);
+        val_print(INFO, "STATUS:0x%08x", status);
     }
+
+    test_report_status(status);
     return;
 }
 
@@ -316,7 +313,7 @@ void rule_status_map_reset(void)
 {
     uint32_t i;
     for (i = 0; i < RULE_ID_SENTINEL; i++) {
-        rule_status_map[i] = TEST_STATUS_UNKNOWN;
+        rule_status_map[i] = TEST_STATE_UNKNOWN;
     }
 }
 

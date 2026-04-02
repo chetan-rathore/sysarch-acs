@@ -136,11 +136,11 @@ read_virt_timer:
     }
 
     if (test_fail == 1) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
     }
 
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
 
 }
 

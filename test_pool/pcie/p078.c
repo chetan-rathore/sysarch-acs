@@ -55,7 +55,7 @@ payload_primary(void)
   intr_map = val_aligned_alloc(MEM_ALIGN_4K, sizeof(PERIPHERAL_IRQ_MAP));
   if (!intr_map) {
     val_print (ERROR, "\n       Memory allocation error");
-    val_set_status(pe_index, RESULT_FAIL (test_num, 01));
+    val_set_status(pe_index, RESULT_FAIL(01));
     return;
   }
 
@@ -84,14 +84,14 @@ payload_primary(void)
       if (status) {
         /* Report warn if the Legacy IRQ map does not exist */
         if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
-            val_set_status(pe_index, RESULT_WARN(test_num, 01));
+            val_set_status(pe_index, RESULT_WARNING(01));
             val_memory_free_aligned(intr_map);
             return;
         }
         else {
             val_print (DEBUG,
                         "\n       PCIe Legacy IRQs unmapped. Skipping BDF %llx", bdf);
-            val_set_status(pe_index, RESULT_SKIP(test_num, 2));
+            val_set_status(pe_index, RESULT_SKIP(2));
             continue;
         }
       }
@@ -109,7 +109,7 @@ payload_primary(void)
       else {
         val_print(ERROR, "\n Int id %d is not SPI", intr_line);
         val_memory_free_aligned(intr_map);
-        val_set_status(pe_index, RESULT_FAIL(test_num, 02));
+        val_set_status(pe_index, RESULT_FAIL(02));
         return;
       }
   }
@@ -117,9 +117,9 @@ payload_primary(void)
   val_memory_free_aligned(intr_map);
 
   if (test_skip == 1)
-      val_set_status(pe_index, RESULT_SKIP(test_num, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   else
-      val_set_status(pe_index, RESULT_PASS(test_num, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 /* Payload for the rule PCI_LI_03 */
@@ -161,22 +161,22 @@ payload_secondary(void)
           status = val_gic_get_espi_intr_trigger_type(intr_line, &trigger_type);
 
       if (status) {
-          val_set_status(pe_index, RESULT_FAIL(test_num, 01));
+          val_set_status(pe_index, RESULT_FAIL(01));
           return;
       }
 
       if (trigger_type != INTR_TRIGGER_INFO_LEVEL_HIGH) {
           val_print(ERROR,
                    "\n       Legacy interrupt programmed with incorrect trigger type");
-          val_set_status(pe_index, RESULT_FAIL(test_num, 02));
+          val_set_status(pe_index, RESULT_FAIL(02));
           return;
       }
   }
 
   if (test_skip == 1)
-      val_set_status(pe_index, RESULT_SKIP(test_num, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   else
-      val_set_status(pe_index, RESULT_PASS(test_num, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

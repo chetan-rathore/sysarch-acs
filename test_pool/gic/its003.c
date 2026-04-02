@@ -49,13 +49,13 @@ payload()
 
   if ((!bdf_tbl_ptr) || (!bdf_tbl_ptr->num_entries)) {
       val_print(DEBUG, "\n       No entries in BDF table");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
       return;
   }
 
   if (val_iovirt_get_smmu_info(SMMU_NUM_CTRL, 0) == 0) {
       val_print(DEBUG, "\n       No SMMU, Skipping Test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 2));
+      val_set_status(pe_index, RESULT_SKIP(2));
       return;
   }
 
@@ -63,7 +63,7 @@ payload()
   streamID = val_aligned_alloc(MEM_ALIGN_4K, bdf_tbl_ptr->num_entries * sizeof(uint32_t));
   if (!streamID) {
       val_print(DEBUG, "\n       Stream ID memory allocation failed");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_FAIL(1));
       return;
   }
 
@@ -71,7 +71,7 @@ payload()
   smmu_index = val_aligned_alloc(MEM_ALIGN_4K, bdf_tbl_ptr->num_entries * sizeof(uint32_t));
   if (!smmu_index) {
       val_print(DEBUG, "\n       Smmu index memory allocation failed");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+      val_set_status(pe_index, RESULT_FAIL(2));
       return;
   }
 
@@ -79,7 +79,7 @@ payload()
   dev_bdf = val_aligned_alloc(MEM_ALIGN_4K, bdf_tbl_ptr->num_entries * sizeof(uint32_t));
   if (!dev_bdf) {
       val_print(DEBUG, "\n       Dev BDF memory allocation failed");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 3));
+      val_set_status(pe_index, RESULT_FAIL(3));
       return;
   }
 
@@ -111,7 +111,7 @@ payload()
     if (status) {
         val_print(DEBUG,
             "\n       Could not get device info for BDF : 0x%x", bdf);
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 4));
+        val_set_status(pe_index, RESULT_FAIL(4));
         /* Free allocated memory before return*/
         val_memory_free_aligned(streamID);
         val_memory_free_aligned(smmu_index);
@@ -172,11 +172,11 @@ payload()
   val_memory_free_aligned(dev_bdf);
 
   if (test_skip == 1)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 3));
+      val_set_status(pe_index, RESULT_SKIP(3));
   else if (test_fail)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 5));
+      val_set_status(pe_index, RESULT_FAIL(5));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

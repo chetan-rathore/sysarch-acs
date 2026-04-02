@@ -64,7 +64,7 @@ payload (void)
 
   if (val_gic_get_info(GIC_INFO_NUM_ITS) < 2) {
       val_print(DEBUG, "\n       Skipping Test as multiple ITS not available");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -101,7 +101,7 @@ payload (void)
     if (status) {
         val_print(ERROR,
             "\n       Could not get device info for BDF : 0x%x", e_bdf);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
     }
 
@@ -135,7 +135,7 @@ payload (void)
       if (status) {
           val_print(ERROR,
               "\n       MSI Assignment failed for bdf : 0x%x", e_bdf);
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+          val_set_status(index, RESULT_FAIL(2));
           return;
       }
 
@@ -144,7 +144,7 @@ payload (void)
       if (status) {
           val_print(ERROR,
               "\n       Intr handler registration fail, Interrupt : 0x%x", base_lpi_id + instance);
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+          val_set_status(index, RESULT_FAIL(3));
           return;
       }
 
@@ -167,7 +167,7 @@ payload (void)
               "\n       BDF : 0x%x, ", e_bdf);
           val_print(ERROR,
               "its_id : 0x%x", its_id);
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
+          val_set_status(index, RESULT_FAIL(4));
           val_gic_free_msi(e_bdf, device_id, its_id, base_lpi_id + instance, msi_index);
           return;
       }
@@ -179,12 +179,12 @@ payload (void)
   }
 
   if (test_skip) {
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+    val_set_status(index, RESULT_SKIP(2));
     return;
   }
 
   /* Pass Test */
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 
 }
 
@@ -200,7 +200,7 @@ e035_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
      if (val_exerciser_test_init() != ACS_STATUS_PASS)
-         return TEST_SKIP_VAL;
+         return RESULT_SKIP(1);
      val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

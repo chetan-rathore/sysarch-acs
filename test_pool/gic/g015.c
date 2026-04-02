@@ -44,7 +44,7 @@ payload(void)
   if (gic_version < 4) {
       val_print(ERROR,
                 "\n       Expected GICv4 or higher major version", gic_version);
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(index, RESULT_FAIL(01));
       return;
   }
 
@@ -66,12 +66,12 @@ payload(void)
       {
         val_print(TRACE,
                 "\n       Interrupt controller is compliant with Gicv4.1 or higher");
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
         return;
       }
   }
 
-  val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+  val_set_status(index, RESULT_FAIL(02));
   return;
 }
 

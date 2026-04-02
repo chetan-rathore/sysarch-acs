@@ -44,7 +44,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(ERROR, "\n       Received Exception of type %d", interrupt_type);
-  val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+  val_set_status(index, RESULT_FAIL(01));
 }
 
 static
@@ -68,7 +68,7 @@ payload(void)
   if (status)
   {
       val_print(ERROR, "\n       Failed in installing the exception handler");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
 
@@ -125,7 +125,7 @@ exception_return:
        if ((old_value != new_value && new_value == PCIE_UNKNOWN_RESPONSE) || val_pcie_is_urd(bdf)) {
 
           val_print(ERROR, "\n       Memory access check failed for BDF  0x%x", bdf);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+          val_set_status(pe_index, RESULT_FAIL(02));
           val_pcie_clear_urd(bdf);
           return;
        }
@@ -135,16 +135,16 @@ exception_return:
     }
   }
 
-val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+val_set_status(pe_index, RESULT_PASS);
 return;
 
 test_warn_unimplemented:
   val_memory_unmap(baseptr);
-  val_set_status(pe_index, RESULT_WARN(TEST_NUM, 01));
+  val_set_status(pe_index, RESULT_WARNING(01));
   return;
 
 test_fail:
-  val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+  val_set_status(pe_index, RESULT_FAIL(03));
   return;
 
 }
@@ -160,7 +160,7 @@ e016_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

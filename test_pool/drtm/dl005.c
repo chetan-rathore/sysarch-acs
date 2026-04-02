@@ -173,14 +173,14 @@ payload(uint32_t num_pe)
   drtm_params = (DRTM_PARAMETERS *)((uint64_t)val_aligned_alloc(DRTM_SIZE_4K, drtm_params_size));
   if (!drtm_params) {
     val_print(ERROR, "\n    Failed to allocate memory for DRTM Params");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
   status = val_drtm_init_drtm_params(drtm_params);
   if (status < DRTM_ACS_SUCCESS) {
     val_print(ERROR, "\n       DRTM Init Params failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(index, RESULT_FAIL(2));
     goto free_drtm_params;
   }
 
@@ -189,14 +189,14 @@ payload(uint32_t num_pe)
   /* This will return only in fail*/
   if (status < DRTM_ACS_SUCCESS) {
     val_print(ERROR, "\n       DRTM Dynamic Launch failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+    val_set_status(index, RESULT_FAIL(3));
     goto free_dlme_region;
   }
 
   status = val_drtm_unprotect_memory();
   if (status < DRTM_ACS_SUCCESS) {
     val_print(ERROR, "\n       DRTM Unprotect Memory failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
+    val_set_status(index, RESULT_FAIL(4));
     goto free_dlme_region;
   }
 
@@ -205,7 +205,7 @@ payload(uint32_t num_pe)
                                     drtm_params->dlme_data_offset);
   if (status == ACS_STATUS_FAIL) {
     val_print(ERROR, "\n       DRTM check DL result failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 5));
+    val_set_status(index, RESULT_FAIL(5));
     goto free_dlme_region;
   }
 
@@ -218,26 +218,26 @@ payload(uint32_t num_pe)
   if ((dlme_data_address + dlme_data_header->dlme_data_size) >
       (drtm_params->dlme_region_address + drtm_params->dlme_region_size)) {
     val_print(ERROR, "\n       DLME Data Header outside DLME Region");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 6));
+    val_set_status(index, RESULT_FAIL(6));
     goto free_dlme_region;
   }
 
   /* R314060 : Check if Protected Region size is not zero */
   if (dlme_data_header->protected_regions_size == 0) {
     val_print(ERROR, "\n       DLME Data Protected Region Size is 0");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 7));
+    val_set_status(index, RESULT_FAIL(7));
     goto free_dlme_region;
   }
   /* R314060 : Check if Address Map size is not zero */
   if (dlme_data_header->address_map_size == 0) {
     val_print(ERROR, "\n       DLME Data Address Map Size is 0");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 8));
+    val_set_status(index, RESULT_FAIL(8));
     goto free_dlme_region;
   }
   /* R314060 : Check if Event Log size is not zero */
   if (dlme_data_header->drtm_event_log_size <= 0) {
     val_print(ERROR, "\n       DLME Data Event Log Size is incorrect");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 9));
+    val_set_status(index, RESULT_FAIL(9));
     goto free_dlme_region;
   }
 
@@ -245,7 +245,7 @@ payload(uint32_t num_pe)
   if ((dlme_data_header->dlme_data_size) >
       (drtm_params->dlme_region_address + drtm_params->dlme_region_size - dlme_data_address)) {
     val_print(ERROR, "\n       DLME Data Header exceeds DLME Data");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 10));
+    val_set_status(index, RESULT_FAIL(10));
     goto free_dlme_region;
   }
 
@@ -253,7 +253,7 @@ payload(uint32_t num_pe)
   /* Do revision check and num of regions check */
   if ((prot_region->header.revision != 1) || (prot_region->header.num_regions == 0)) {
     val_print(ERROR, "\n       Protected region not populated");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 11));
+    val_set_status(index, RESULT_FAIL(11));
     goto free_dlme_region;
   }
 
@@ -262,7 +262,7 @@ payload(uint32_t num_pe)
     if ((prot_region->header.num_regions != 1) ||
         (prot_region->regions[0].start_addr != 0)) {
       val_print(ERROR, "\n       Protected region wrongly populated");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 12));
+      val_set_status(index, RESULT_FAIL(12));
       goto free_dlme_region;
     }
   }
@@ -271,7 +271,7 @@ payload(uint32_t num_pe)
   /* Do revision check and num of regions check */
   if ((addr_map->header.revision != 1) || (addr_map->header.num_regions == 0)) {
     val_print(ERROR, "\n       Address Map not populated");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 13));
+    val_set_status(index, RESULT_FAIL(13));
     goto free_dlme_region;
   }
 
@@ -281,7 +281,7 @@ payload(uint32_t num_pe)
   for (uint32_t i = 0; i < prot_region->header.num_regions; i++) {
     if (!(DRTM_IS_4KB_ALIGNED(prot_region->regions[i].start_addr))) {
       val_print(ERROR, "\n       Protected Memory Regions Not 4KB Aligned");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 14));
+      val_set_status(index, RESULT_FAIL(14));
       test_fails++;
     }
 
@@ -290,7 +290,7 @@ payload(uint32_t num_pe)
 
     if (prot_region->regions[i].start_addr < prot_region->regions[i-1].start_addr) {
       val_print(ERROR, "\n       Protected Regions Memory Regions Not Sorted");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 15));
+      val_set_status(index, RESULT_FAIL(15));
       test_fails++;
     }
   }
@@ -298,7 +298,7 @@ payload(uint32_t num_pe)
   for (uint32_t i = 0; i < addr_map->header.num_regions; i++) {
     if (!(DRTM_IS_4KB_ALIGNED(addr_map->regions[i].start_addr))) {
       val_print(ERROR, "\n       Address Map Memory Regions Not 4KB Aligned");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 16));
+      val_set_status(index, RESULT_FAIL(16));
       test_fails++;
     }
 
@@ -307,7 +307,7 @@ payload(uint32_t num_pe)
 
     if (addr_map->regions[i].start_addr < addr_map->regions[i-1].start_addr) {
       val_print(ERROR, "\n       Address Map Memory Regions Not Sorted");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 17));
+      val_set_status(index, RESULT_FAIL(17));
       test_fails++;
     }
   }
@@ -318,14 +318,14 @@ payload(uint32_t num_pe)
     if ((tcb_hash_table->header.revision != 1) || (tcb_hash_table->header.num_hashes == 0)) {
       /* Fail The test */
       val_print(ERROR, "\n       TCB_HASH_TABLE Not Correctly Formatted");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 18));
+      val_set_status(index, RESULT_FAIL(18));
       goto free_dlme_region;
     }
     /* R315040 In Success Case. Check if Maximum number of entries is greator than num_hashes */
     if (tcb_hash_table->header.num_hashes >
         VAL_EXTRACT_BITS(g_drtm_features.tcb_hash_features.value, 0, 7)) {
       val_print(ERROR, "\n       Number of hashes exceeds maximum allowed value");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 19));
+      val_set_status(index, RESULT_FAIL(19));
       test_fails++;
     }
   }
@@ -337,7 +337,7 @@ payload(uint32_t num_pe)
     if ((uint32_t)(*((uint64_t *)acpi_region_address)) !=
                         ACS_ACPI_SIGNATURE('X', 'S', 'D', 'T')) {
       val_print(ERROR, "\n       ACPI XSDT Table Check Failed");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 20));
+      val_set_status(index, RESULT_FAIL(20));
       test_fails++;
     }
   }
@@ -346,12 +346,12 @@ payload(uint32_t num_pe)
   if ((dlme_data_header->tcb_hash_table_size != 0) &&
       (dlme_data_header->acpi_table_region_size != 0)) {
     val_print(ERROR, "\n       TCB Hash Table & ACPI Table Region Check Failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 21));
+    val_set_status(index, RESULT_FAIL(21));
     test_fails++;
   }
 
   if (test_fails == 0)
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
 
 free_dlme_region:
   val_memory_free_aligned((void *)drtm_params->dlme_region_address);

@@ -35,7 +35,7 @@ static void payload(void)
                                                                             data, index);
 
     if (data == 0) {
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+        val_set_status(index, RESULT_SKIP(02));
         return;
     }
 
@@ -45,9 +45,9 @@ static void payload(void)
                                                                          data, index);
 
     if (data == 0x20 || data == 0x40)
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
     else
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
 }
 
 uint32_t pe061_entry(uint32_t num_pe)

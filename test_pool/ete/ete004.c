@@ -44,7 +44,7 @@ static void payload(void)
     data = VAL_EXTRACT_BITS(dfr0_value, 44, 47);
     if (data == 0) {
         val_print_primary_pe(ERROR, "\n       FEAT_TRBE not supported", 0, index);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
         return;
     }
 
@@ -52,7 +52,7 @@ static void payload(void)
     data = VAL_EXTRACT_BITS(dfr0_value, 40, 43);
     if (data == 0) {
         val_print_primary_pe(ERROR, "\n       FEAT_TRF not supported", 0, index);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(index, RESULT_FAIL(02));
         return;
     }
 
@@ -60,7 +60,7 @@ static void payload(void)
     data = VAL_EXTRACT_BITS(dfr0_value, 56, 59);
     if (data == 0) {
         val_print_primary_pe(ERROR, "\n       FEAT_TRBE_EXT not supported", 0, index);
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+        val_set_status(index, RESULT_SKIP(02));
         return;
     }
 
@@ -95,23 +95,23 @@ static void payload(void)
         (traced_timestamp_2 == ACS_STATUS_FAIL) ||
         (traced_timestamp_3 == ACS_STATUS_FAIL)) {
         val_print_primary_pe(ERROR, "\n       Trace Generation Failed", 0, index);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+        val_set_status(index, RESULT_FAIL(03));
         return;
     }
 
     if ((traced_timestamp_1 == 0) || (traced_timestamp_2 == 0) || (traced_timestamp_3 == 0)) {
         val_print_primary_pe(ERROR, "\n       Traced Timestamp is 0", 0, index);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
+        val_set_status(index, RESULT_FAIL(04));
         return;
     }
 
     /* Check Traced Timestamp is increasing */
     if ((traced_timestamp_1 < traced_timestamp_2) && (traced_timestamp_2 < traced_timestamp_3)) {
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
         return;
     }
 
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 05));
+    val_set_status(index, RESULT_FAIL(05));
 }
 
 uint32_t ete004_entry(uint32_t num_pe)

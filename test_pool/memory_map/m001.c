@@ -43,7 +43,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(TRACE, "\n       Received Exception of type %d", interrupt_type);
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 static
@@ -61,7 +61,7 @@ payload()
   val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
 
   /* If we don't find a single un-populated address, mark this test as skipped */
-  val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+  val_set_status(index, RESULT_SKIP(1));
 
   while (loop_var) {
       /* Get the base address of unpopulated region */
@@ -81,7 +81,7 @@ payload()
 
       if (val_memory_get_info(addr, &attr) == MEM_TYPE_NOT_POPULATED) {
          /* default value of FAIL, Pass is set in the exception handler */
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+          val_set_status(index, RESULT_FAIL(1));
 
           branch_to_test = &&exception_taken;
 

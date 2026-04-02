@@ -155,7 +155,7 @@ payload (void)
      returning SKIP if called for BSA */
   /* TODO revisit could be warning for BSA, since we can't deduce if condition of BSA rule */
   if (g_build_sbsa == 0) {
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
       return;
   }
 
@@ -186,7 +186,7 @@ payload (void)
     if (smmu_index != ACS_INVALID_INDEX) {
         if (val_smmu_disable(smmu_index)) {
             val_print(ERROR, "\n       Exerciser %x smmu disable error", instance);
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+            val_set_status(pe_index, RESULT_FAIL(2));
             return;
         }
     }
@@ -195,7 +195,7 @@ payload (void)
     dram_buf1_virt = val_memory_alloc_cacheable(e_bdf, TEST_DATA_BLK_SIZE, &dram_buf1_phys);
     if (!dram_buf1_virt) {
       val_print(ERROR, "\n       WB and OSH mem alloc failure %x", 2);
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+      val_set_status(pe_index, RESULT_FAIL(2));
       return;
     }
 
@@ -217,11 +217,11 @@ payload (void)
 
   }
 
-  val_set_status(pe_index, RESULT_PASS(TEST_NUM, 0));
+  val_set_status(pe_index, RESULT_PASS);
   return;
 
 test_fail:
-  val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+  val_set_status(pe_index, RESULT_FAIL(2));
   val_memory_free_cacheable(e_bdf, TEST_DATA_BLK_SIZE, dram_buf1_virt, dram_buf1_phys);
   return;
 }
@@ -237,7 +237,7 @@ e007_entry(uint32_t num_pe)
   status = val_initialize_test (TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_payload (TEST_NUM, num_pe, payload, 0);
   }
 

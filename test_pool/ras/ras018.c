@@ -72,7 +72,7 @@ payload()
 
     if (aderr == FEAT_ADERR_VAL2 || aderr == FEAT_ADERR_VAL3) {
         val_print(TRACE, "\n       FEAT_ADERR implemented.");
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
         return;
     }
 
@@ -86,7 +86,7 @@ payload()
         val_print(ERROR,
           "\n       RAS nodes not found. "
           "Firmware interface is missing. Please conduct a paper-based analysis.");
-        val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+        val_set_status(index, RESULT_WARNING(01));
         return;
     }
 
@@ -111,7 +111,7 @@ payload()
         if (!dev_addr) {
             val_print(ERROR,
                       "\n       Failed to obtain Device memory address.\n");
-            val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+            val_set_status(index, RESULT_FAIL(01));
             return;
         }
 
@@ -123,7 +123,7 @@ payload()
         status |= val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
         if (status) {
             val_print(ERROR, "\n      Failed in installing the exception handler");
-            val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+            val_set_status(index, RESULT_FAIL(02));
             return;
         }
         branch_to_test = &&exception_return;
@@ -184,18 +184,18 @@ payload()
     if (usable_node_cnt == 0) {
         val_print(TRACE,
                   "\n       No usable MMIO RAS nodes -- skipping test.\n");
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(index, RESULT_SKIP(01));
         return;
     }
 
     if (fail_cnt)
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+        val_set_status(index, RESULT_FAIL(03));
     else if (warn_cnt)
-        val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+        val_set_status(index, RESULT_WARNING(01));
     else if (test_skip)
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+        val_set_status(index, RESULT_SKIP(02));
     else
-        val_set_status(index, RESULT_PASS(TEST_NUM, 02));
+        val_set_status(index, RESULT_PASS);
 
     return;
 }

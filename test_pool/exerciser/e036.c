@@ -120,7 +120,7 @@ payload(void)
   dram_buf_base_virt = val_memory_alloc_pages(TEST_DATA_NUM_PAGES * 2);
   if (!dram_buf_base_virt) {
       val_print(ERROR, "\n       Cacheable mem alloc failure %x", 2);
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_FAIL(1));
       return;
   }
 
@@ -139,13 +139,13 @@ payload(void)
   if (val_pe_reg_read_tcr(0 /*for TTBR0*/, &pgt_desc.tcr))
   {
     val_print(ERROR, "\n       TCR read failure %x", 3);
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 3));
+    val_set_status(pe_index, RESULT_FAIL(3));
     return;
   }
   if (val_pe_reg_read_ttbr(0 /*TTBR0*/, &ttbr))
   {
     val_print(ERROR, "\n       TTBR0 read failure %x", 4);
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 4));
+    val_set_status(pe_index, RESULT_FAIL(4));
     return;
   }
 
@@ -393,14 +393,14 @@ payload(void)
   }
 
   if (e_valid_cnt)
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_PASS);
   else
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_SKIP(1));
 
   goto test_clean;
 
 test_fail:
-  val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+  val_set_status(pe_index, RESULT_FAIL(2));
 
 test_clean:
   val_memory_free_pages(dram_buf_base_virt, TEST_DATA_NUM_PAGES * 2);
@@ -420,7 +420,7 @@ e036_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return RESULT_SKIP(1);
       val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

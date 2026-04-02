@@ -276,11 +276,11 @@ cleanup:
     val_mem_free_at_address((uint64_t)src_buf, buf_size);
 
   if (test_skip)
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_SKIP(1));
   else if (test_fail)
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_FAIL(1));
   else
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_PASS);
 
   return;
 }

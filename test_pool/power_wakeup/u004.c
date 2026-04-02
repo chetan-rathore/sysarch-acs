@@ -45,8 +45,9 @@ isr_failsafe()
      is hit and test interrupt is not rcvd
   */
   if (g_wd_int_received == 0) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(index, RESULT_FAIL(1));
   }
+
   intid = val_timer_get_info(TIMER_INFO_PHY_EL1_INTID, 0);
   val_gic_end_of_interrupt(intid);
 }
@@ -99,11 +100,11 @@ payload4()
   wd_num = val_wd_get_info(0, WD_INFO_COUNT);
 
   // Assume a test passes until something causes a failure.
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 
   if (!wd_num) {
       val_print(DEBUG, "\n       No watchdog implemented      ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -130,7 +131,7 @@ payload4()
           if (status) {
               wakeup_clear_failsafe();
     	      val_print(ERROR, "\n       Setting watchdog timeout failed");
-              val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+              val_set_status(index, RESULT_FAIL(2));
               return;
           }
           val_power_enter_semantic(BSA_POWER_SEM_B);
@@ -157,14 +158,14 @@ payload4()
           if (!(g_wd_int_received || g_failsafe_int_received)) {
               intid = val_wd_get_info(wd_num, WD_INFO_GSIV);
 	      val_gic_clear_interrupt(intid);
-              val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
     	      val_print(DEBUG,
                         "\n       PE wakeup by some other events/int or didn't enter WFI");
+              val_set_status(index, RESULT_SKIP(1));
 	  }
 	  val_print(DEBUG, "\n       delay loop remainig value %d", delay_loop);
       } else {
           val_print(WARN, "\n       GIC Install Handler Failed...");
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+          val_set_status(index, RESULT_FAIL(3));
       }
 
       /* Disable watchdog so it doesn't trigger after this test. */
@@ -173,7 +174,7 @@ payload4()
 
   if (!ns_wdg) {
       val_print(DEBUG, "       No non-secure watchdog implemented\n");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+      val_set_status(index, RESULT_SKIP(2));
       return;
   }
 

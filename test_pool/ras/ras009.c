@@ -73,7 +73,7 @@ payload()
 
   if (anerr == FEAT_ANERR_VAL2 || anerr == FEAT_ANERR_VAL3) {
     val_print(TRACE, "\n       FEAT_ANERR implemented.");
-    val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(index, RESULT_PASS);
     return;
   }
 
@@ -85,7 +85,7 @@ payload()
   status = val_ras_get_info(RAS_INFO_NUM_NODES, 0, &num_node);
   if (status || (num_node == 0)) {
     val_print(ERROR, "\n       RAS nodes not found.");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+    val_set_status(index, RESULT_FAIL(01));
     return;
   }
 
@@ -93,7 +93,7 @@ payload()
   status = val_ras_get_info(RAS_INFO_NUM_MC, 0, &num_mc_node);
   if (status || (num_mc_node == 0)) {
     val_print(ERROR, "\n       RAS MC nodes not found.");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+    val_set_status(index, RESULT_FAIL(02));
     return;
   }
 
@@ -143,7 +143,7 @@ payload()
     if (status)
     {
       val_print(ERROR, "\n      Failed in installing the exception handler");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+      val_set_status(index, RESULT_FAIL(03));
       return;
     }
     branch_to_test = &&exception_return;
@@ -203,13 +203,13 @@ exception_return:
   }
 
   if (fail_cnt)
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
+    val_set_status(index, RESULT_FAIL(04));
   else if (warn_cnt)
-    val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+    val_set_status(index, RESULT_WARNING(01));
   else if (test_skip)
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+    val_set_status(index, RESULT_SKIP(02));
   else
-    val_set_status(index, RESULT_PASS(TEST_NUM, 02));
+    val_set_status(index, RESULT_PASS);
 
   return;
 }

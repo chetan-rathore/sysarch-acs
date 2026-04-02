@@ -41,7 +41,7 @@ static void payload(void)
     {
       /* Skip the test */
       val_print(TRACE, "\n       PE Does not Support MPAM for RME");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
       return;
     }
 
@@ -60,11 +60,11 @@ static void payload(void)
     if (num_sp4 == 0) {
       /* Fail The Test */
       val_print(ERROR, "\n       Four Space Region Number is 0");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
     }
 
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
     return;
 }
 

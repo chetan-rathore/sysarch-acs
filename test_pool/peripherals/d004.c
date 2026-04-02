@@ -52,7 +52,7 @@ payload_check_dma_mem_attribute(void)
   if (!target_dev_index)
   {
       val_print(INFO, "\n       No DMA controllers detected...    ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -83,7 +83,7 @@ payload_check_dma_mem_attribute(void)
                     "\n       DMA controller %d: Failed to get"
                     " memory attributes\n",
                     target_dev_index);
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+          val_set_status(index, RESULT_FAIL(1));
           flag_fail = 1;
           continue;
       }
@@ -97,17 +97,17 @@ payload_check_dma_mem_attribute(void)
                     "\n       DMA controller %d: DMA memory must be inner/outer writeback inner "
                     "shareable, inner/outer non-cacheable, or device type\n",
           target_dev_index);
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+          val_set_status(index, RESULT_FAIL(2));
           flag_fail = 1;
       }
   }
   /* PASS the test if no fail conditions hit */
   if (!flag_fail)
-      val_set_status(index, RESULT_PASS(TEST_NUM, 0));
+      val_set_status(index, RESULT_PASS);
     return;
 
 test_warn_unimplemented:
-    val_set_status(index, RESULT_WARN(TEST_NUM, 1));
+    val_set_status(index, RESULT_WARNING(1));
 }
 
 /* This test verifies I/O coherent DMA traffic must have the attribute
@@ -131,7 +131,7 @@ payload_check_io_coherent_dma_mem_attribute(void)
     if (!target_dev_index)
     {
         val_print(INFO, "\n       No DMA controllers detected...    ");
-        val_set_status(index, RESULT_SKIP(TEST_NUM1, 1));
+        val_set_status(index, RESULT_SKIP(1));
         return;
     }
 
@@ -152,7 +152,7 @@ payload_check_io_coherent_dma_mem_attribute(void)
                 val_print(ERROR,
                             "\n       DMA controller %d: Failed to get memory attributes\n",
                             target_dev_index);
-                val_set_status(index, RESULT_FAIL(TEST_NUM1, 1));
+                val_set_status(index, RESULT_FAIL(1));
                 flag_fail = 1;
                 continue;
             }
@@ -164,18 +164,18 @@ payload_check_io_coherent_dma_mem_attribute(void)
                             target_dev_index);
                 val_print(TRACE,
                             "       be inner/outer writeback, inner shareable\n");
-                val_set_status(index, RESULT_FAIL(TEST_NUM1, 2));
+                val_set_status(index, RESULT_FAIL(2));
                 flag_fail = 1;
             }
         }
     }
     /* PASS the test if no fail conditions hit */
     if (!flag_fail)
-        val_set_status(index, RESULT_PASS(TEST_NUM1, 0));
+        val_set_status(index, RESULT_PASS);
     return;
 
 test_warn_unimplemented:
-    val_set_status(index, RESULT_WARN(TEST_NUM1, 2));
+    val_set_status(index, RESULT_WARNING(2));
 }
 
 uint32_t

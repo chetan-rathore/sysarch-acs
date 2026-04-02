@@ -38,7 +38,7 @@ static void payload(void)
                                                                                 data, index);
 
     if (data == 0) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
         return;
     }
 
@@ -49,11 +49,11 @@ static void payload(void)
     if (index == primary_index)
         primary_pe_flag_updates = data;
     else if (primary_pe_flag_updates != data) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(index, RESULT_FAIL(02));
         return;
     }
 
-    val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(index, RESULT_PASS);
 }
 
 uint32_t ete006_entry(uint32_t num_pe)

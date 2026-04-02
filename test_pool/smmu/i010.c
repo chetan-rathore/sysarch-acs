@@ -42,14 +42,14 @@ payload()
 
   if (!s_el2) {
       val_print(ERROR, "\n       Secure EL2 not implemented");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
   num_smmu = val_smmu_get_info(SMMU_NUM_CTRL, 0);
   if (num_smmu == 0) {
     val_print(ERROR, "\n       No SMMU Controllers are discovered                  ");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+    val_set_status(index, RESULT_SKIP(2));
     return;
   }
 
@@ -59,14 +59,14 @@ payload()
       if (smmu_rev < 3) {
           val_print(ERROR,
                     "\n       SMMUv2 or lower detected: revision must be v3.2 or higher  ");
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+          val_set_status(index, RESULT_FAIL(1));
           return;
       } else {
           minor = VAL_EXTRACT_BITS(val_smmu_read_cfg(SMMUv3_AIDR, num_smmu), 0, 3);
           if (minor < 2) {
               val_print(ERROR,
                   "\n       SMMUv3.%d detected: revision must be v3.2 or higher  ", minor);
-              val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+              val_set_status(index, RESULT_FAIL(2));
               return;
           }
           s1p = VAL_EXTRACT_BITS(val_smmu_read_cfg(SMMUv3_IDR0, num_smmu), 1, 1);
@@ -74,14 +74,14 @@ payload()
               val_print(ERROR,
                         "\n       SMMUv3.%d detected: but "
                         "Stage 1 translation not supported  ", minor);
-              val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+              val_set_status(index, RESULT_FAIL(3));
               return;
           }
       }
 
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

@@ -134,7 +134,7 @@ static void pfdi_error_injection(void)
     val_pfdi_invalidate_ret_params(&err[i]);
   }
 
-  val_set_status(index, RESULT_PASS(test_num, 1));
+  val_set_status(index, RESULT_PASS);
   return;
 }
 
@@ -278,7 +278,7 @@ static void pfdi_error_recovery(void)
     val_data_cache_ops_by_va((addr_t)&rec_buffer->norm_mode_status[i], CLEAN_AND_INVALIDATE);
   }
 
-  val_set_status(index, RESULT_PASS(test_num, 1));
+  val_set_status(index, RESULT_PASS);
   return;
 }
 
@@ -295,7 +295,7 @@ static void payload_pfdi_error_injection(void *arg)
   if (g_pfdi_force_error_check == NULL) {
     val_print(ERROR,
                 "\n       Allocation for PFDI Force Error Check Failed");
-    val_set_status(index, RESULT_FAIL(test_num, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -319,7 +319,7 @@ static void payload_pfdi_error_injection(void *arg)
 
       if (timeout == 0) {
         val_print(ERROR, "\n       **Timed out** for PE index = %d", i);
-        val_set_status(i, RESULT_FAIL(test_num, 2));
+        val_set_status(i, RESULT_FAIL(2));
         goto free_pfdi_details;
       }
     }
@@ -361,9 +361,9 @@ static void payload_pfdi_error_injection(void *arg)
     }
 
     if (run_fail)
-      val_set_status(i, RESULT_FAIL(test_num, 3));
+      val_set_status(i, RESULT_FAIL(3));
     else
-      val_set_status(i, RESULT_PASS(test_num, 1));
+      val_set_status(i, RESULT_PASS);
   }
 
 free_pfdi_details:
@@ -385,7 +385,7 @@ static void payload_pfdi_error_recovery_check(void *arg)
   if (g_pfdi_err_recovery_check == NULL) {
     val_print(ERROR,
                 "\n       Allocation for PFDI Error Recovery Check Failed");
-    val_set_status(index, RESULT_FAIL(test_num, 2));
+    val_set_status(index, RESULT_FAIL(2));
     return;
   }
 
@@ -412,7 +412,7 @@ static void payload_pfdi_error_recovery_check(void *arg)
 
       if (timeout == 0) {
         val_print(ERROR, "\n       **Timed out** for PE index = %d", i);
-        val_set_status(i, RESULT_FAIL(test_num, 2));
+        val_set_status(i, RESULT_FAIL(2));
         goto free_pfdi_error_recovery;
       }
     }
@@ -476,11 +476,11 @@ static void payload_pfdi_error_recovery_check(void *arg)
     }
 
     if (run_fail)
-      val_set_status(i, RESULT_FAIL(test_num, 3));
+      val_set_status(i, RESULT_FAIL(3));
     else if (run_skip)
-      val_set_status(i, RESULT_SKIP(test_num, 1));
+      val_set_status(i, RESULT_SKIP(1));
     else
-      val_set_status(i, RESULT_PASS(test_num, 1));
+      val_set_status(i, RESULT_PASS);
   }
 
 free_pfdi_error_recovery:

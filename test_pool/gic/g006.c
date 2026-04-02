@@ -32,7 +32,7 @@ isr_phy()
 {
   val_timer_set_phy_el1(0);
   val_print(TRACE, "\n       Received phy el1 interrupt   ");
-  val_set_status(0, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(0, RESULT_PASS);
   val_gic_end_of_interrupt(intid);
 }
 
@@ -54,7 +54,7 @@ payload()
 
   if (val_gic_install_isr(intid, isr_phy)) {
       val_print(ERROR, "\n       GIC Install Handler Failed...");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+      val_set_status(index, RESULT_FAIL(2));
       return;
   }
 
@@ -67,7 +67,7 @@ payload()
   if (timeout == 0) {
     val_print(ERROR,
         "\n       EL0-Phy timer interrupt not received on INTID: %d   ", intid);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+    val_set_status(index, RESULT_FAIL(3));
     return;
   }
 

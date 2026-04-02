@@ -237,15 +237,15 @@ static void payload(void)
       } else {
         /* Invalid */
         val_print(ERROR, "\n       MSC Version not valid");
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_FAIL(01));
         return;
       }
     }
 
     if (test_fail)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+      val_set_status(pe_index, RESULT_FAIL(02));
     else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
     return;
 }
 

@@ -56,7 +56,7 @@ payload()
 
   val_pe_install_esr(EXCEPT_AARCH64_SYNCHRONOUS_EXCEPTIONS, esr);
   val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
-  val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+  val_set_status(index, RESULT_SKIP(1));
 
   if (g_el1skiptrap_mask & EL1SKIPTRAP_DEVMEM) {
       val_print(DEBUG,
@@ -83,7 +83,7 @@ payload()
           {};
 
 exception_taken_d:
-      val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(index, RESULT_PASS);
       loop_var--;
       instance++;
   }
@@ -109,7 +109,7 @@ normal_mem_test:
           {};
 
 exception_taken_n:
-      val_set_status(index, RESULT_PASS(TEST_NUM, 2));
+      val_set_status(index, RESULT_PASS);
       loop_var--;
       instance++;
   }

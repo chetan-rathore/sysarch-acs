@@ -49,7 +49,7 @@ payload(void)
   comp_count = val_cxl_get_component_info(CXL_COMPONENT_INFO_COUNT, 0);
   if (comp_count == 0) {
     val_print(TRACE, "\n       No CXL components discovered");
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_SKIP(1));
     return;
   }
 
@@ -90,11 +90,11 @@ payload(void)
 
   if (test_skip == 0) {
     val_print(TRACE, "\n       No CXL Type1/Type2 components discovered");
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 2));
+    val_set_status(pe_index, RESULT_SKIP(2));
   } else if (test_fail) {
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_FAIL(1));
   } else {
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_PASS);
   }
 }
 

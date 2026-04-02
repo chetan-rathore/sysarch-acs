@@ -35,7 +35,7 @@ payload()
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
 
   if (count == 0) {
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -45,7 +45,7 @@ payload()
           if (interface != SATA_TYPE_AHCI) {
               val_print(DEBUG, "\n       Detected SATA CTRL not AHCI 0x%x  ",
                         interface);
-              val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+              val_set_status(index, RESULT_FAIL(1));
               return;
           }
       }
@@ -61,20 +61,20 @@ payload()
               if (ret == PCIE_NO_MAPPING) {
                   val_print(DEBUG, "       Reading device class code using PciIo"
                             " protocol failed\n");
-                  val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+                  val_set_status(index, RESULT_FAIL(2));
                   return;
               }
               interface = (interface >> 8) & 0xFF;
               if (interface != 0x01) {
                   val_print(DEBUG, " Detected SATA CTRL not AHCI\n");
-                  val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+                  val_set_status(index, RESULT_FAIL(1));
                   return;
               }
           }
       }
       count--;
   }
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
   return;
 }
 

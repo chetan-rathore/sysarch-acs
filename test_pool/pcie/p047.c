@@ -70,7 +70,7 @@ static void payload(void)
                 data = VAL_EXTRACT_BITS(bar_data, 1, 2);
                 if (data != 0) {
                     val_print(ERROR, "\n       NP type-1 pcie is not 32-bit mem type");
-                    val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+                    val_set_status(index, RESULT_FAIL(01));
                     status = 2;
                     break;
                 }
@@ -80,7 +80,7 @@ static void payload(void)
                 if (ret) {
                     val_print(ERROR, "\n       NP type-1 pcie bridge end device"
                                                                  "is not 32-bit mem type");
-                    val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+                    val_set_status(index, RESULT_FAIL(01));
                     status = 2;
                     break;
                 }
@@ -96,10 +96,10 @@ static void payload(void)
     if (!status) {
         val_print(DEBUG,
                   "\n       No Type1 Non Prefetcable BAR Detected. Skipping test");
-        val_set_status(index, RESULT_SKIP (TEST_NUM, 3));
+        val_set_status(index, RESULT_SKIP(3));
     }
     else if (status == 1)
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
 }
 
 uint32_t p047_entry(uint32_t num_pe)

@@ -46,7 +46,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(ERROR, "\n       Received Exception %d", interrupt_type);
-  val_set_status(index, RESULT_FAIL(test_num, 02));
+  val_set_status(index, RESULT_FAIL(02));
 }
 
 static
@@ -79,7 +79,7 @@ payload(void)
   uint32_t msa_en = 0;
   uint32_t reg_value, base_cc;
 
-  val_set_status(index, RESULT_SKIP(test_num, 0));
+  val_set_status(index, RESULT_SKIP(0));
 
   /* Install exception handlers */
   status = val_pe_install_esr(EXCEPT_AARCH64_SYNCHRONOUS_EXCEPTIONS, esr);
@@ -87,7 +87,7 @@ payload(void)
   if (status)
   {
       val_print(ERROR, "\n       Failed to install exception handler");
-      val_set_status(index, RESULT_FAIL(test_num, 01));
+      val_set_status(index, RESULT_FAIL(01));
       return;
   }
 
@@ -224,7 +224,7 @@ next_bdf:
           else if (status) {
             val_print(ERROR, "\n       Failed in  ioremap with status %x", status);
             test_fail++;
-            val_set_status(index, RESULT_FAIL(test_num, test_fail));
+            val_set_status(index, RESULT_FAIL(test_fail));
             goto next_bar;
           }
 
@@ -243,7 +243,7 @@ exception_return_device:
               /* Setting the status to Pass to enable test for next BDF.
                * Failure has been recorded with test_fail.
                */
-              val_set_status(index, RESULT_PASS(test_num, 02));
+              val_set_status(index, RESULT_PASS);
               test_fail++;
           }
 
@@ -263,14 +263,14 @@ next_bar:
   }
 
   if (test_warn) {
-    val_set_status(index, RESULT_WARN(test_num, 0));
+    val_set_status(index, RESULT_WARNING(0));
     return;
   } else if (test_skip)
-      val_set_status(index, RESULT_SKIP(test_num, 1));
+      val_set_status(index, RESULT_SKIP(1));
   else if (test_fail)
-      val_set_status(index, RESULT_FAIL(test_num, test_fail));
+      val_set_status(index, RESULT_FAIL(test_fail));
   else
-      val_set_status(index, RESULT_PASS(test_num, 0));
+      val_set_status(index, RESULT_PASS);
 
 }
 

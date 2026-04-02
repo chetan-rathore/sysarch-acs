@@ -48,7 +48,7 @@ payload(void)
 
   /* Check If PCIe Hierarchy supports P2P */
   if (val_pcie_p2p_support() == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
-    val_set_status(pe_index, RESULT_WARN(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_WARNING(01));
     return;
   }
 
@@ -68,7 +68,7 @@ payload(void)
           /* Check If iEP_EP supports P2P with others. */
           status = val_pcie_dev_p2p_support(bdf);
           if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
-              val_set_status(pe_index, RESULT_WARN(TEST_NUM, 01));
+              val_set_status(pe_index, RESULT_WARNING(01));
               return;
           }
           if (status)
@@ -156,12 +156,12 @@ payload(void)
   if (test_skip == 1) {
       val_print(DEBUG,
            "\n       No iEP_EP type device found with P2P support. Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   }
   else if (test_fails)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, test_fails));
+      val_set_status(pe_index, RESULT_FAIL(test_fails));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

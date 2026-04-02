@@ -176,14 +176,14 @@ payload(uint32_t num_pe)
   drtm_params = (DRTM_PARAMETERS *)((uint64_t)val_aligned_alloc(DRTM_SIZE_4K, drtm_params_size));
   if (!drtm_params) {
     val_print(ERROR, "\n    Failed to allocate memory for DRTM Params");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
   status = val_drtm_init_drtm_params(drtm_params);
   if (status != ACS_STATUS_PASS) {
     val_print(ERROR, "\n       DRTM Init Params failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(index, RESULT_FAIL(2));
     goto free_drtm_params;
   }
 
@@ -192,7 +192,7 @@ payload(uint32_t num_pe)
   /* This will return only in fail*/
   if (status < DRTM_ACS_SUCCESS) {
     val_print(ERROR, "\n       DRTM Dynamic Launch failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+    val_set_status(index, RESULT_FAIL(3));
     goto free_dlme_region;
   }
 
@@ -200,7 +200,7 @@ payload(uint32_t num_pe)
   status = val_drtm_unprotect_memory();
   if (status < DRTM_ACS_SUCCESS) {
     val_print(ERROR, "\n       Unprotect Memory failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
+    val_set_status(index, RESULT_FAIL(4));
     goto free_dlme_region;
   }
 
@@ -219,7 +219,7 @@ payload(uint32_t num_pe)
   status = print_tcg_event_header(event_log_head);
   if (status != ACS_STATUS_PASS) {
     val_print(ERROR, "\n       Event Log Header Checks failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 5));
+    val_set_status(index, RESULT_FAIL(5));
     goto free_dlme_region;
   }
 
@@ -228,7 +228,7 @@ payload(uint32_t num_pe)
   status = print_event_spec(event_spec);
   if (status != ACS_STATUS_PASS) {
     val_print(ERROR, "\n       Event Log signature check failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 6));
+    val_set_status(index, RESULT_FAIL(6));
     goto free_dlme_region;
   }
 
@@ -287,7 +287,7 @@ payload(uint32_t num_pe)
     event = event2;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 
 free_dlme_region:
   val_memory_free_aligned((void *)drtm_params->dlme_region_address);

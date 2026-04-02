@@ -124,7 +124,7 @@ payload(void)
           if (func_config_space == NULL)
           {
               val_print(ERROR, "\n       Memory allocation fail");
-              val_set_status(pe_index, RESULT_FAIL(TEST_NUM, test_fails));
+              val_set_status(pe_index, RESULT_FAIL(test_fails));
               return;
           }
 
@@ -149,7 +149,7 @@ payload(void)
           {
               val_print(ERROR, "\n       Failed to time delay for BDF 0x%x ", bdf);
               val_memory_free_aligned(func_config_space);
-              val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+              val_set_status(pe_index, RESULT_FAIL(01));
               return;
           }
 
@@ -206,12 +206,12 @@ payload(void)
   if (test_skip == 1) {
       val_print(DEBUG,
         "\n       No target device type with FLR Cap found. Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   }
   else if (test_fails)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, test_fails));
+      val_set_status(pe_index, RESULT_FAIL(test_fails));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

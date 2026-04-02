@@ -36,11 +36,11 @@ payload(void)
   val_print(DEBUG, "\n       Non GIC Interrupt count: %d", num_non_gic);
   if (num_non_gic > 0) {
       val_print(ERROR, "\n       Non GIC Interrupt found");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(index, RESULT_FAIL(01));
       return;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+  val_set_status(index, RESULT_PASS);
   return;
 }
 

@@ -75,7 +75,7 @@ static void payload(void)
     llc_index = val_cache_get_llc_index();
     if (llc_index == CACHE_TABLE_EMPTY) {
       val_print(ERROR, "\n       Cache info table empty");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(index, RESULT_SKIP(01));
       return;
     }
 
@@ -83,7 +83,7 @@ static void payload(void)
     cache_identifier = val_cache_get_info(CACHE_ID, llc_index);
     if (cache_identifier == INVALID_CACHE_INFO) {
       val_print(ERROR, "\n       LLC invalid in PPTT");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+      val_set_status(index, RESULT_SKIP(02));
       return;
     }
 
@@ -119,7 +119,7 @@ static void payload(void)
 
     /* Skip the test if CSU monitors/ nodes supporting CCAP & CPOR are 0 */
     if ((ccap_cpor_nodes == 0) || (csumon_count == 0)) {
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 03));
+        val_set_status(index, RESULT_SKIP(03));
         return;
     }
 
@@ -195,7 +195,7 @@ static void payload(void)
 
             if ((src_buf == NULL) || (dest_buf == NULL)) {
                 val_print(ERROR, "\n       Mem allocation failed");
-                val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+                val_set_status(index, RESULT_FAIL(01));
                 if (dest_buf != NULL)
                     val_memory_free_pages(dest_buf, num_pages);
                 if (src_buf != NULL)
@@ -267,9 +267,9 @@ static void payload(void)
     }
 
     if (test_fail)
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+      val_set_status(index, RESULT_FAIL(02));
     else
-      val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(index, RESULT_PASS);
 
     return;
 }

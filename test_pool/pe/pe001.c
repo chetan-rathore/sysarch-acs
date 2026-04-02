@@ -221,9 +221,9 @@ id_regs_check(void)
   }
 
   if (check == 1)
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+      val_set_status(index, RESULT_FAIL(2));
   else
-      val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(index, RESULT_PASS);
 
   return;
 }
@@ -243,7 +243,7 @@ payload(uint32_t num_pe)
 
   if (num_pe == 1) {
       val_print(DEBUG, "\n       Skipping as num of PE is 1    ");
-      val_set_status(my_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(my_index, RESULT_SKIP(1));
       return;
   }
 
@@ -284,7 +284,7 @@ payload(uint32_t num_pe)
 
   if (g_pe_reg_info == NULL) {
       val_print(ERROR, "\n       Allocation for secondary PE Registers Failed \n");
-      val_set_status(my_index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(my_index, RESULT_FAIL(1));
       return;
   }
 
@@ -296,7 +296,7 @@ payload(uint32_t num_pe)
 
           if(timeout == 0) {
               val_print(ERROR, "\n       **Timed out** for PE index = %d", i);
-              val_set_status(i, RESULT_FAIL(TEST_NUM, 3));
+              val_set_status(i, RESULT_FAIL(3));
               return;
           }
       }
@@ -400,10 +400,10 @@ payload(uint32_t num_pe)
   if (total_fail) {
       val_print(ERROR, "\n\n    Total Register and cache fail for all PE %d \n",
                                                                              total_fail);
-      val_set_status(my_index, RESULT_FAIL(TEST_NUM, 4));
+      val_set_status(my_index, RESULT_FAIL(4));
   }
   else
-      val_set_status(my_index, RESULT_PASS(TEST_NUM, 2));
+      val_set_status(my_index, RESULT_PASS);
 
   val_memory_free((void *) g_pe_reg_info);
   return;

@@ -138,7 +138,7 @@ check_error_overwrite(void)
   result->first_call_x0 = (int64_t)val_pfdi_fw_check(NULL, NULL, NULL, NULL);
   val_data_cache_ops_by_va((addr_t)result, CLEAN_AND_INVALIDATE);
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 /* Validate error injection overwrite behavior across all PEs */
@@ -154,7 +154,7 @@ payload_check_error_overwrite(void *arg)
       val_memory_calloc(num_pe * PFDI_FN_MAX_IDX, sizeof(pfdi_error_injection_results));
   if (g_results == NULL) {
     val_print(ERROR, "\n       Allocation for results Failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -171,7 +171,7 @@ payload_check_error_overwrite(void *arg)
 
       if (timeout == 0) {
         val_print(ERROR, "\n       **Timed out** for PE index = %d", i);
-        val_set_status(i, RESULT_FAIL(TEST_NUM, 2));
+        val_set_status(i, RESULT_FAIL(2));
         goto free_results;
       }
     }
@@ -234,11 +234,11 @@ payload_check_error_overwrite(void *arg)
     }
 
     if (test_fail)
-      val_set_status(i, RESULT_FAIL(TEST_NUM, 3));
+      val_set_status(i, RESULT_FAIL(3));
     else if (test_skip)
-      val_set_status(i, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(i, RESULT_SKIP(1));
     else
-      val_set_status(i, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(i, RESULT_PASS);
   }
 
 free_results:

@@ -123,7 +123,7 @@ val_mpam_reg_read(MPAM_SYS_REGS reg_id)
       return read_mpam1_el1();
   default:
       val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
-                        RESULT_FAIL(0, STATUS_SYS_REG_ACCESS_FAIL), NULL);
+                        RESULT_FAIL(STATUS_SYS_REG_ACCESS_FAIL), NULL);
   }
 
   return 0;
@@ -149,7 +149,7 @@ val_mpam_reg_write(MPAM_SYS_REGS reg_id, uint64_t write_data)
       break;
   default:
       val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
-                        RESULT_FAIL(0, STATUS_SYS_REG_ACCESS_FAIL), NULL);
+                        RESULT_FAIL(STATUS_SYS_REG_ACCESS_FAIL), NULL);
   }
 
   return;

@@ -33,7 +33,7 @@ payload(uint32_t num_pe)
   if (status != DRTM_ACS_SUCCESS) {
     val_print(ERROR,
               "\n       DRTM query unprotect memory func check failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -41,25 +41,25 @@ payload(uint32_t num_pe)
   if (status != DRTM_ACS_SUCCESS) {
     val_print(ERROR,
               "\n       DRTM query close locality func check failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(index, RESULT_FAIL(2));
     return;
   }
 
   status = g_drtm_features.get_error;
   if (status != DRTM_ACS_SUCCESS) {
     val_print(ERROR, "\n       DRTM query get error func check failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+    val_set_status(index, RESULT_FAIL(3));
     return;
   }
 
   status = g_drtm_features.set_error;
   if (status != DRTM_ACS_SUCCESS) {
     val_print(ERROR, "\n       DRTM query set error func check failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
+    val_set_status(index, RESULT_FAIL(4));
     return;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

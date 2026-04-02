@@ -56,7 +56,7 @@ payload()
   status = val_ras_get_info(RAS_INFO_NUM_NODES, 0, &num_node);
   if (status || (num_node == 0)) {
     val_print(DEBUG, "\n       RAS Nodes not found. Skipping...");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+    val_set_status(index, RESULT_FAIL(01));
     return;
   }
 
@@ -84,7 +84,7 @@ payload()
     if (status)
     {
       val_print(ERROR, "\n      Failed in installing the exception handler");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+      val_set_status(index, RESULT_FAIL(02));
       return;
     }
     branch_to_test = &&exception_return;
@@ -92,7 +92,7 @@ payload()
     /* Setup an error in an implementation defined way */
     status = val_ras_setup_error(err_in_params, &err_out_params);
     if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
-        val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+        val_set_status(index, RESULT_WARNING(01));
         return;
     }
 
@@ -118,13 +118,13 @@ exception_return:
   }
 
   if (fail_cnt)
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+    val_set_status(index, RESULT_FAIL(03));
   else if (warn_cnt)
-    val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+    val_set_status(index, RESULT_WARNING(01));
   else if (test_skip)
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
+    val_set_status(index, RESULT_SKIP(01));
   else
-    val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(index, RESULT_PASS);
 
   return;
 }

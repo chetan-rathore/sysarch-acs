@@ -32,7 +32,7 @@ isr()
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
 
   val_print(TRACE, "\n Received SPI ");
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
   val_gic_end_of_interrupt(int_id);
 
   return;
@@ -53,7 +53,7 @@ payload()
   msi_frame = val_gic_get_info(GIC_INFO_NUM_MSI_FRAME);
   if (msi_frame == 0) {
       val_print(DEBUG, "\n       No MSI frame, Skipping               ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -68,7 +68,7 @@ payload()
     /* Register an interrupt handler to verify */
     if (val_gic_install_isr(int_id, isr)) {
       val_print(ERROR, "\n       GIC Install Handler Failed...");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(index, RESULT_FAIL(1));
       return;
     }
 
@@ -82,7 +82,7 @@ payload()
 
     if (timeout == 0) {
       val_print(ERROR, "\n       Interrupt not received within timeout");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+      val_set_status(index, RESULT_FAIL(2));
       return;
     }
 
@@ -96,7 +96,7 @@ payload()
 
     if (timeout == 0) {
       val_print(ERROR, "\n       Interrupt not received within timeout");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+      val_set_status(index, RESULT_FAIL(3));
       return;
     }
   }

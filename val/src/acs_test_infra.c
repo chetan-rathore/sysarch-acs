@@ -21,6 +21,7 @@
 #include "acs_exception.h"
 #include "pal_interface.h"
 #include "val_interface.h"
+#include "val_status.h"
 
 uint32_t g_override_skip;
 
@@ -410,7 +411,7 @@ val_initialize_test(uint32_t test_num, char8_t *desc, uint32_t num_pe)
   /* Skip the test if it one of the -skip option parameters */
   for (i = 0; i < g_num_skip; i++) {
       if (g_skip_test_num[i] == test_num) {
-          val_set_status(index, RESULT_SKIP(test_num, 0));
+          val_set_status(index, RESULT_SKIP(0));
           return ACS_STATUS_SKIP;
       }
   }
@@ -432,7 +433,7 @@ val_initialize_test(uint32_t test_num, char8_t *desc, uint32_t num_pe)
   }
 
   if ((!g_override_skip) && (g_num_tests || g_num_modules)) {
-      val_set_status(index, RESULT_SKIP(test_num, 0));
+      val_set_status(index, RESULT_SKIP(0));
       return ACS_STATUS_SKIP;
   }
 
@@ -474,9 +475,24 @@ val_initialize_test(uint32_t test_num, char8_t *desc, uint32_t num_pe)
 void
 val_allocate_shared_mem()
 {
+  uint32_t num_pe = val_pe_get_num();
 
-  pal_mem_allocate_shared(val_pe_get_num(), sizeof(VAL_SHARED_MEM_t));
+  uint32_t total_size =
+        (num_pe * sizeof(VAL_SHARED_MEM_t)) +
+        (num_pe * sizeof(val_test_status_t));
 
+  pal_mem_allocate_shared(1, total_size);
+
+}
+
+uintptr_t val_get_status_region_base(void)
+{
+    uintptr_t base = (uintptr_t)pal_mem_get_shared_addr();
+    uint32_t npe = val_pe_get_num();
+
+    /* Status region starts after ACS data region */
+    base += (uintptr_t)(npe * sizeof(VAL_SHARED_MEM_t));
+    return base;
 }
 
 /**
@@ -584,6 +600,8 @@ val_wait_for_test_completion(uint32_t test_num, uint32_t num_pe, uint32_t timeou
 
   uint32_t i = 0, j = 0;
 
+  val_print(TRACE, "Test_num= %d\n", test_num);
+
   //For single PE tests, there is no need to wait for the results
   if (num_pe == 1)
       return;
@@ -602,7 +620,7 @@ val_wait_for_test_completion(uint32_t test_num, uint32_t num_pe, uint32_t timeou
           return;
   }
   //We are here if we timed-out, set the last index PE as failed
-  val_set_status(j-1, RESULT_FAIL(test_num, 0xF));
+  val_set_status(j-1, RESULT_FAIL(0xF));
 }
 
 /**
@@ -728,36 +746,38 @@ val_check_for_error(uint32_t test_num, uint32_t num_pe, char8_t *ruleid)
   (void)ruleid;
   (void)test_num;
 
-  uint32_t i;
+  uint32_t i, checkpoint;
   uint32_t overall_status;
-  uint32_t status = TEST_FAIL;
-  uint32_t checkpoint;
+  uint32_t status = RESULT_FAIL(0);
   uint32_t my_index = val_pe_get_index_mpid(val_pe_get_mpid());
 
   if (num_pe == 1) {
       status = val_get_status(my_index);
-      checkpoint = status & STATUS_MASK;
-      status = (status >> STATE_BIT) & STATE_MASK;
       overall_status = status;
   } else {
       /* Start with least severe status */
-      overall_status = TEST_PASS;
+      overall_status = RESULT_PASS;
       for (i = 0; i < num_pe; i++) {
           status = val_get_status(i);
           /* Checkpoint info from last PE would be reflected */
-          checkpoint = status & STATUS_MASK;
-          status = (status >> STATE_BIT) & STATE_MASK;
+          //checkpoint = status & STATUS_MASK;
+          //status = (status >> STATE_BIT) & STATE_MASK;
           /* Overwrite status if higher severity status found*/
           if (status > overall_status) {
               overall_status = status;
           }
       }
   }
-  if (overall_status == TEST_FAIL) {
-      val_print(ERROR, "\n       Failed at checkpoint - %2d", checkpoint);
-  } else if (overall_status == TEST_SKIP) {
-      val_print(ERROR, "\n       Skipped at checkpoint - %2d", checkpoint);
+
+  checkpoint = (uint32_t)GET_CODE(overall_status);
+  if (GET_STATE(overall_status) == TEST_FAIL) {
+      val_print(ERROR, "\nFailed at checkpoint - %2d", checkpoint);
+  } else if (GET_STATE(overall_status) == TEST_SKIP) {
+      val_print(ERROR, "\nSkipped at checkpoint - %2d", checkpoint);
+  } else if (GET_STATE(overall_status) == TEST_WARNING) {
+      val_print(WARN, "\ncheckpoint - %2d", checkpoint);
   }
+
 
   return overall_status;
 }
@@ -924,7 +944,7 @@ val_check_for_prerequisite(uint32_t num_pe, uint32_t prereq_status,
         val_print(ERROR, "\n       Pre-requisite rule ");
         val_print(ERROR, prereq_config->rule);
         val_print(ERROR, " did not pass. Skipping the test");
-        val_set_status(index, RESULT_SKIP(curr_config->test_num, 0));
+        val_set_status(index, RESULT_SKIP(0));
         return ACS_STATUS_SKIP;
     }
 

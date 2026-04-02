@@ -40,9 +40,9 @@ static void payload(void)
      * address authentication support using QARMA5 and QARMA3.
      */
     if ((VAL_EXTRACT_BITS(data1, 4, 7) != 0) || (VAL_EXTRACT_BITS(data2, 12, 15) != 0))
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
     else
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
 }
 
 uint32_t pe032_entry(uint32_t num_pe)

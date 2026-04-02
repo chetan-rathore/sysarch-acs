@@ -49,7 +49,7 @@ pfdi_test_run(void)
   if (test_parts < PFDI_ACS_SUCCESS) {
     pfdi_range->x0 = test_parts;
     val_pfdi_invalidate_ret_params(pfdi_range);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 6));
+    val_set_status(index, RESULT_FAIL(6));
     return;
   }
 
@@ -59,7 +59,7 @@ pfdi_test_run(void)
                     &pfdi_range->x1, &pfdi_range->x2, &pfdi_range->x3, &pfdi_range->x4);
   val_pfdi_invalidate_ret_params(pfdi_range);
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 static void payload_run(void *arg)
@@ -75,7 +75,7 @@ static void payload_run(void *arg)
       (PFDI_RET_PARAMS *) val_memory_calloc(num_pe, sizeof(PFDI_RET_PARAMS));
   if (g_pfdi_range_status == NULL) {
     val_print(ERROR, "\n       Allocation for g_pfdi_range_status Failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -83,7 +83,7 @@ static void payload_run(void *arg)
       (PFDI_RET_PARAMS *) val_memory_calloc(num_pe, sizeof(PFDI_RET_PARAMS));
   if (g_pfdi_all_parts_status == NULL) {
     val_print(ERROR, "\n       Allocation for g_pfdi_all_parts_status Failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(index, RESULT_FAIL(2));
     goto free_pfdi_details_range;
   }
 
@@ -103,7 +103,7 @@ static void payload_run(void *arg)
       while ((--timeout) && (IS_RESULT_PENDING(val_get_status(i))));
       if (timeout == 0) {
         val_print(ERROR, "\n       **Timed out** for PE index = %d", i);
-        val_set_status(i, RESULT_FAIL(TEST_NUM, 3));
+        val_set_status(i, RESULT_FAIL(3));
         goto free_pfdi_details_both;
       }
     }
@@ -213,9 +213,9 @@ static void payload_run(void *arg)
     }
 
     if (test_fail)
-      val_set_status(i, RESULT_FAIL(TEST_NUM, 5));
+      val_set_status(i, RESULT_FAIL(5));
     else
-      val_set_status(i, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(i, RESULT_PASS);
   }
 
 free_pfdi_details_both:

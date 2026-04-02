@@ -37,7 +37,7 @@ isr_phy()
     /* We received our interrupt, so disable timer from generating further interrupts */
     val_timer_set_phy_el2(0);
     val_print(TRACE, "\n       Received phy el2 interrupt     ");
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
     val_gic_end_of_interrupt(intid);
 }
 
@@ -54,7 +54,7 @@ payload()
     if (val_pe_reg_read(CurrentEL) == AARCH64_EL1) {
         val_print(DEBUG, "\n       Skipping. Test accesses EL2"
                                     " Registers       ");
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+        val_set_status(index, RESULT_SKIP(1));
         return;
     }
 
@@ -67,13 +67,13 @@ payload()
     if ((intid < 16 || intid > 31) && (!val_gic_is_valid_eppi(intid))) {
         val_print(DEBUG,
             "\n       NS EL2 physical timer not mapped to PPI base range, INTID: %d   ", intid);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+        val_set_status(index, RESULT_FAIL(2));
         return;
     }
 
     if (val_gic_install_isr(intid, isr_phy)) {
         val_print(ERROR, "\n       GIC Install Handler Failed...");
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+        val_set_status(index, RESULT_FAIL(3));
         return;
     }
 
@@ -85,7 +85,7 @@ payload()
     if (timeout == 0) {
         val_print(ERROR,
             "\n       EL2-Phy timer interrupt not received on INTID: %d   ", intid);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
+        val_set_status(index, RESULT_FAIL(4));
     }
     return;
 }

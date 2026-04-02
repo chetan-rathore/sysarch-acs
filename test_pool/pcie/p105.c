@@ -43,7 +43,7 @@ payload(void)
 
   if (!target_dev_index) {
       val_print(DEBUG, "\n       No DMA controllers detected...    ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -67,7 +67,7 @@ payload(void)
             val_print(ERROR, "\n       The DMA addr allocated to device %d ",
                     target_dev_index);
             val_print(ERROR, "\n       is not present in the SMMU IOVA table\n");
-            val_set_status(index, RESULT_FAIL(TEST_NUM, target_dev_index));
+            val_set_status(index, RESULT_FAIL(target_dev_index));
             return;
           }
           /* Free the allocated memory here */
@@ -76,13 +76,13 @@ payload(void)
   }
 
   if (iommu_flag)
-      val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(index, RESULT_PASS);
   else
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+      val_set_status(index, RESULT_SKIP(2));
   return;
 
 test_warn_unimplemented:
-    val_set_status(index, RESULT_WARN(TEST_NUM, 1));
+    val_set_status(index, RESULT_WARNING(1));
 
 }
 

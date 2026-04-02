@@ -83,7 +83,7 @@ payload(void)
     /* Check if LLC is valid */
     if (llc_index == CACHE_TABLE_EMPTY) {
         val_print(DEBUG, "\n       No LLC found, skipping test");
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+        val_set_status(index, RESULT_SKIP(1));
         return;
     }
 
@@ -91,7 +91,7 @@ payload(void)
     cache_identifier = val_cache_get_info(CACHE_ID, llc_index);
     if (cache_identifier == INVALID_CACHE_INFO) {
         val_print(DEBUG, "\n       Invalid LLC ID, skipping test");
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+        val_set_status(index, RESULT_SKIP(2));
         return;
     }
 
@@ -162,7 +162,7 @@ payload(void)
 
             if ((src_buf == NULL) || (dest_buf == NULL)) {
                 val_print(ERROR, "\n       Mem allocation failed");
-                val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+                val_set_status(index, RESULT_FAIL(01));
                 if (dest_buf != NULL)
                     val_memory_free_pages(dest_buf, num_pages);
                 if (src_buf != NULL)
@@ -320,11 +320,11 @@ payload(void)
     }
 
     if (test_skip) {
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+        val_set_status(index, RESULT_SKIP(1));
     } else if (test_fail) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+        val_set_status(index, RESULT_FAIL(2));
     } else {
-        val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+        val_set_status(index, RESULT_PASS);
     }
 
     return;
@@ -348,7 +348,7 @@ cleanup:
     /* Restore MPAM2_EL2 settings */
     val_mpam_reg_write(MPAM2_EL2, saved_el2);
 
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+    val_set_status(index, RESULT_FAIL(03));
     return;
 }
 

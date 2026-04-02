@@ -149,7 +149,7 @@ static void generate_pcie_traffic(uint32_t num_ecam, uint32_t max_dev)
 
 /* This routine tests the scenario for the specified node type and primary instance,
    as listed in the APMT ACPT table. */
-test_status_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE node_type,
+uint32_t sys_pmu_test_scenario(TEST_SCENARIO_e scenario, PMU_NODE_INFO_TYPE node_type,
                                      uint64_t node_primary_instance)
 {
     uint32_t node_index;
@@ -309,7 +309,7 @@ static void payload_check_sys_pmu_scenario(void *arg)
     uint64_t num_mem_range;
     uint64_t mc_prox_domain;
     uint8_t run_flag = 0;
-    test_status_t status;
+    uint32_t status;
     uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
     test_data_t *test_data = (test_data_t *)arg;
 
@@ -327,7 +327,7 @@ static void payload_check_sys_pmu_scenario(void *arg)
     num_mem_range = val_srat_get_info(SRAT_MEM_NUM_MEM_RANGE, 0);
     if (num_mem_range == 0 || num_mem_range == SRAT_INVALID_INFO) {
         val_print(ERROR, "\n       No Proximity domains in the system");
-        val_set_status(index, RESULT_FAIL(test_data->test_num, 02));
+        val_set_status(index, RESULT_FAIL(02));
         return;
     }
 
@@ -367,16 +367,16 @@ static void payload_check_sys_pmu_scenario(void *arg)
 
     if (!run_flag) {
         val_print(ERROR, "\n       No PMU associated with PCIe interface");
-        val_set_status(index, RESULT_FAIL(test_data->test_num, 03));
+        val_set_status(index, RESULT_FAIL(03));
         return;
     }
 
     if (fail_cnt) {
-        val_set_status(index, RESULT_FAIL(test_data->test_num, 04));
+        val_set_status(index, RESULT_FAIL(04));
         return;
     }
 
-    val_set_status(index, RESULT_PASS(test_data->test_num, 01));
+    val_set_status(index, RESULT_PASS);
 }
 
 uint32_t pmu004_entry(uint32_t num_pe)

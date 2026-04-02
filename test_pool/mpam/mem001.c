@@ -140,7 +140,7 @@ void payload(void)
 
     /* Skip this test if no MBWPBM supported MSC present in the system */
     if (mbwpbm_node_cnt == 0) {
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_SKIP(01));
         return;
     }
 
@@ -236,14 +236,14 @@ void payload(void)
 
                 buf_size  = get_buffer_size(msc_index, rsrc_index, addr_len, index);
                 if (buf_size == ACS_STATUS_SKIP) {
-                    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 02));
+                    val_set_status(pe_index, RESULT_SKIP(02));
                     return;
                 }
 
                 if ((addr_base == SRAT_INVALID_INFO) || (addr_len == SRAT_INVALID_INFO) ||
                     (addr_len <= 2 * buf_size)) { /* src and dst buffer size */
                     val_print(ERROR, "\n       No SRAT mem range info found");
-                    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+                    val_set_status(pe_index, RESULT_FAIL(01));
 
                     /* Restore MPAM2_EL2 settings */
                     val_mpam_reg_write(MPAM2_EL2, mpam2_el2_temp);
@@ -255,7 +255,7 @@ void payload(void)
 
                 if ((src_buf == NULL) || (dest_buf == NULL)) {
                     val_print(ERROR, "\n       Memory allocation of buffers failed");
-                    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+                    val_set_status(pe_index, RESULT_FAIL(02));
 
                     /* Restore MPAM2_EL2 settings */
                     val_mpam_reg_write(MPAM2_EL2, mpam2_el2_temp);
@@ -265,7 +265,7 @@ void payload(void)
                 if (!val_mpam_get_mbwumon_count(msc_index)) {
                     val_print(INFO,
                           "\n       No MBWU Monitor found to validate the test. Skipping test");
-                          val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 03));
+                          val_set_status(pe_index, RESULT_SKIP(03));
                           return;
                 }
 
@@ -336,7 +336,7 @@ void payload(void)
                                                     > counter[index-1][msc_index][rsrc_index]) {
                         val_print(ERROR, "\n       Failed for msc_index : %d", msc_index);
                         val_print(ERROR, "\n       cfg_index : %d", index);
-                        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+                        val_set_status(pe_index, RESULT_FAIL(01));
                         return;
                     }
                 }
@@ -344,7 +344,7 @@ void payload(void)
         }
     }
 
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
 
     return;
 }

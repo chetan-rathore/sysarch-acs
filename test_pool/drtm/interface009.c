@@ -34,11 +34,11 @@ payload(uint32_t num_pe)
   {
     val_print(ERROR, "\n       Version not as expected, Current version =%d",
                              smccc_major_ver);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

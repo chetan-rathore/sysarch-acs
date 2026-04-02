@@ -70,7 +70,7 @@ payload()
   if (status)
   {
       val_print(ERROR, "\n       Failed in installing the exception handler");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
 
@@ -96,7 +96,7 @@ payload()
       if (status == NOT_IMPLEMENTED) {
           val_print(DEBUG, "\n       System doesn't trigger an external abort");
           val_print(DEBUG, "\n       Skipping for bdf %x", e_bdf);
-          val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+          val_set_status(pe_index, RESULT_SKIP(01));
           return;
       }
 
@@ -104,7 +104,7 @@ payload()
       if (ras_node == NOT_IMPLEMENTED) {
           val_print(DEBUG, "\n       No RAS compliant node to record PCIe Error");
           val_print(DEBUG, "\n       Skippping RAS check for BDF  - 0x%x", e_bdf);
-          val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 02));
+          val_set_status(pe_index, RESULT_SKIP(02));
           return;
       }
 
@@ -127,7 +127,7 @@ payload()
       val_pcie_disable_msa(e_bdf);
 
       /* Set test status as FAIL, update to PASS in exception handler */
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+      val_set_status(pe_index, RESULT_FAIL(02));
 
       /* Test runs for atleast one endpoint */
       test_skip = 0;
@@ -143,7 +143,7 @@ exception_return:
       val_print(DEBUG, "       bar_data %x ", bar_data);
       if (!(exception)) {
           val_print(ERROR, "\n       External Abort isnt recieved, BDF %x", e_bdf);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+          val_set_status(pe_index, RESULT_FAIL(03));
       }
 
       /* Get the RAS Error Status register value of the RAS node implemented*/
@@ -192,11 +192,11 @@ exception_return:
   }
 
   if (test_skip)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 03));
+      val_set_status(pe_index, RESULT_SKIP(03));
   else if (fail_cnt)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 04));
+      val_set_status(pe_index, RESULT_FAIL(04));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 
   return;
 }
@@ -212,7 +212,7 @@ e029_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

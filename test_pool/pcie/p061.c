@@ -91,11 +91,11 @@ payload(void *arg)
   }
 
   if (test_skip == 1)
-      val_set_status(pe_index, RESULT_SKIP(test_data->test_num, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   else if (test_fails)
-      val_set_status(pe_index, RESULT_FAIL(test_data->test_num, test_fails));
+      val_set_status(pe_index, RESULT_FAIL(test_fails));
   else
-      val_set_status(pe_index, RESULT_PASS(test_data->test_num, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

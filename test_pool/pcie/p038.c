@@ -96,12 +96,12 @@ next_bdf:
 
   if (test_skip == 1) {
       val_print(DEBUG, "\n       No RP or iEP_RP type device found. Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   }
   else if (test_fail)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, test_fail));
+      val_set_status(pe_index, RESULT_FAIL(test_fail));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

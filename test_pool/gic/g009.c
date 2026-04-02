@@ -37,7 +37,7 @@ isr_vir()
     /* We received our interrupt, so disable timer from generating further interrupts */
     val_timer_set_vir_el2(0);
     val_print(TRACE, "\n       Received vir el2 interrupt    ");
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
     val_gic_end_of_interrupt(intid);
 }
 
@@ -55,7 +55,7 @@ payload()
     if (val_pe_reg_read(CurrentEL) == AARCH64_EL1) {
         val_print(DEBUG, "\n       Skipping. Test accesses EL2"
                                     " Registers       ");
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+        val_set_status(index, RESULT_SKIP(1));
         return;
     }
 
@@ -69,7 +69,7 @@ payload()
      * ID_AA64MMFR1_EL1 VH, bits [11:8] must be 0x1 */
     if (!((data >> 8) & 0xF)) {
         val_print(DEBUG, "\n       v8.1 VHE not supported on this PE ");
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+        val_set_status(index, RESULT_SKIP(2));
         return;
     }
 
@@ -81,13 +81,13 @@ payload()
         val_print(DEBUG,
                     "\n       NS EL2 virtual timer not mapped to PPI base range, INTID: %d   ",
                    intid);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+        val_set_status(index, RESULT_FAIL(2));
         return;
     }
 
     if (val_gic_install_isr(intid, isr_vir)) {
         val_print(ERROR, "\n       GIC Install Handler Failed...");
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+        val_set_status(index, RESULT_FAIL(3));
         return;
     }
 
@@ -99,7 +99,7 @@ payload()
     if (timeout == 0) {
         val_print(ERROR,
             "\n       NS EL2 Virtual timer interrupt %d not received", intid);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
+        val_set_status(index, RESULT_FAIL(4));
     }
     return;
 }

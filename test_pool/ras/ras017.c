@@ -47,7 +47,7 @@ payload(void)
         val_print(ERROR,
                   "\n       RASv2 not implemented (ID_AA64PFR0_EL1.RAS = 0x%x).",
                   ras_field);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
     }
 
@@ -55,7 +55,7 @@ payload(void)
     status = val_ras_get_info(RAS_INFO_NUM_NODES, 0, &num_nodes);
     if (status || (num_nodes == 0)) {
         val_print(ERROR, "\n       RAS Nodes not found. ");
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+        val_set_status(index, RESULT_FAIL(2));
         return;
     }
 
@@ -129,9 +129,9 @@ payload(void)
     }
 
     if (fail_cnt)
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+        val_set_status(index, RESULT_FAIL(3));
     else
-        val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+        val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

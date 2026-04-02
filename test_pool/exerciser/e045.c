@@ -79,19 +79,19 @@ payload(void)
   status |= val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
   if (status) {
     val_print(ERROR, "\n       Failed in installing the exception handler");
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_FAIL(01));
     return;
   }
 
   status = val_exerciser_check_firmware_handle_support();
   if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
-    val_set_status(pe_index, RESULT_WARN(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_WARNING(1));
     return;
   }
 
   if (status != ACS_STATUS_PASS) {
     val_print(ERROR, "\n       Firmware first handling not supported");
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_SKIP(01));
     return;
   }
 
@@ -133,11 +133,11 @@ exception_return:
   }
 
   if (test_skip) {
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_SKIP(01));
   } else if (fail_count) {
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, fail_count));
+    val_set_status(pe_index, RESULT_FAIL(fail_count));
   } else {
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
   }
 }
 
@@ -152,7 +152,7 @@ e045_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
     if (val_exerciser_test_init() != ACS_STATUS_PASS)
-      return TEST_SKIP_VAL;
+      return TEST_SKIP;
     val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

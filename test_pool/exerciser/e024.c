@@ -124,7 +124,7 @@ save_config_space(uint32_t rp_bdf)
       if (cfg_space_buf[tbl_index] == NULL)
       {
           val_print(ERROR, "\n       Memory allocation failed.");
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+          val_set_status(pe_index, RESULT_FAIL(02));
           return 1;
       }
 
@@ -218,7 +218,7 @@ payload(void)
 
       if (status) {
           val_print(ERROR, "\n       iovirt_get_device failed for bdf 0x%x", e_bdf);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+          val_set_status(pe_index, RESULT_FAIL(01));
           return;
       }
 
@@ -226,7 +226,7 @@ payload(void)
       status = val_gic_request_msi(erp_bdf, device_id, its_id, lpi_int_id + instance, msi_index);
       if (status) {
           val_print(ERROR, "\n       MSI Assignment failed for bdf : 0x%x", erp_bdf);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+          val_set_status(pe_index, RESULT_FAIL(2));
           return;
       }
 
@@ -234,7 +234,7 @@ payload(void)
 
       if (status) {
           val_print(ERROR, "\n       Intr handler registration failed: 0x%x", lpi_int_id);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+          val_set_status(pe_index, RESULT_FAIL(02));
           return;
       }
 
@@ -367,7 +367,7 @@ err_check:
                       val_print(ERROR,
                                "\n       Failed to time delay for BDF 0x%x ", erp_bdf);
                       val_memory_free_aligned(cfg_space_buf);
-                      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+                      val_set_status(pe_index, RESULT_FAIL(02));
                       return;
                   }
 
@@ -407,11 +407,11 @@ disable_dpc:
   }
 
   if (test_skip)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   else if (fail_cnt)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, fail_cnt));
+      val_set_status(pe_index, RESULT_FAIL(fail_cnt));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 
   return;
 
@@ -428,7 +428,7 @@ e024_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return RESULT_SKIP(1);
       val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

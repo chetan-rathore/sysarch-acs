@@ -129,7 +129,7 @@ payload(void)
   if (!val_pcie_p2p_support())
   {
     val_print(DEBUG, "\n       P2P is supported, Skipping Test");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(index, RESULT_SKIP(1));
     return;
   }
 
@@ -159,7 +159,7 @@ payload(void)
       status = check_p2p_transaction(instance, bar_base);
       if (status)
       {
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+          val_set_status(index, RESULT_FAIL(1));
           return;
       }
 
@@ -169,12 +169,12 @@ payload(void)
     }
 
     if (test_skip) {
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+        val_set_status(index, RESULT_SKIP(2));
         return;
     }
 
   /* Pass Test */
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t
@@ -189,7 +189,7 @@ e014_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return RESULT_SKIP(1);
       val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

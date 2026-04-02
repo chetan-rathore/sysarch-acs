@@ -669,7 +669,7 @@ val_pmu_get_multi_traffic_support_interface(uint64_t *interface_acpiid,
   @return  TEST_PASS - success status
            non-zero - error status
 **/
-test_status_t is_coresight_pmu_present(void)
+uint32_t is_coresight_pmu_present(void)
 {
     uint32_t node_count;
     uint32_t cs_com = 0;
@@ -685,7 +685,7 @@ test_status_t is_coresight_pmu_present(void)
                                 " if system has CoreSight PMU");
         val_print(INFO, "\n       For non CoreSight PMU, manually verify A.4 PMU rules "
                                 "in the SBSA specification");
-        return TEST_SKIP;
+        return TEST_WARNING;
     }
 
     /* The test uses PMU CoreSight arch register map, skip if pmu node is not cs */
@@ -696,7 +696,7 @@ test_status_t is_coresight_pmu_present(void)
         val_print(INFO, "\n       No CoreSight PMU nodes found");
         val_print(INFO, "\n       For non CoreSight PMU, manually verify A.4 PMU rules "
                                 "in the SBSA specification");
-        return TEST_WARN;
+        return TEST_WARNING;
     }
 
     return TEST_PASS;

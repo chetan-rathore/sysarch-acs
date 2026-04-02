@@ -44,7 +44,7 @@ check_smmuv3_2_or_higher(void)
 
   if (num_smmu == 0) {
       val_print(ERROR, "\n       No SMMU Controllers are discovered ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(index, RESULT_SKIP(01));
       return;
   }
 
@@ -66,9 +66,9 @@ check_smmuv3_2_or_higher(void)
   }
 
   if (fail_cnt) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(index, RESULT_FAIL(01));
   } else {
-      val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(index, RESULT_PASS);
   }
 
 }
@@ -87,7 +87,7 @@ payload_check_l1_l2_table_resizing(void)
 
   if (num_smmu == 0) {
       val_print(ERROR, "\n       No SMMU Controllers are discovered ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM1, 01));
+      val_set_status(index, RESULT_SKIP(01));
       return;
   }
 
@@ -113,9 +113,9 @@ payload_check_l1_l2_table_resizing(void)
   }
 
   if (fail_cnt) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM1, 01));
+      val_set_status(index, RESULT_FAIL(01));
   } else {
-      val_set_status(index, RESULT_PASS(TEST_NUM1, 01));
+      val_set_status(index, RESULT_PASS);
   }
 }
 
@@ -132,7 +132,7 @@ payload_check_smmuv3_3_or_higher(void)
 
   if (num_smmu == 0) {
       val_print(ERROR, "\n       No SMMU Controllers are discovered ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM2, 01));
+      val_set_status(index, RESULT_SKIP(01));
       return;
   }
 
@@ -155,9 +155,9 @@ payload_check_smmuv3_3_or_higher(void)
   }
 
   if (fail_cnt) {
-    val_set_status(index, RESULT_FAIL(TEST_NUM2, 01));
+    val_set_status(index, RESULT_FAIL(01));
   } else {
-    val_set_status(index, RESULT_PASS(TEST_NUM2, 01));
+    val_set_status(index, RESULT_PASS);
   }
 
 }

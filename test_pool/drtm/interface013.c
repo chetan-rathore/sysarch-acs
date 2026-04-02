@@ -62,7 +62,7 @@ payload(uint32_t num_pe)
   if (status != DRTM_ACS_SUCCESS) {
     val_print(DEBUG,
               "\n       DRTM_SET_TCB_HASH function not supported err=%d", status);
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(index, RESULT_SKIP(1));
     return;
   }
 
@@ -71,14 +71,14 @@ payload(uint32_t num_pe)
   if (status != DRTM_ACS_SUCCESS) {
     val_print(ERROR,
               "\n       DRTM_LOCK_TCB_HASHES function not supported err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
   /* num_hashes value zero indicates that hashes cannot be recorded with DRTM_SET_TCB_HASH */
   if (!num_hashes) {
     val_print(ERROR, "\n       Max Hashes can be recorded with DRTM_SET_TCB_HASH is 0");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+    val_set_status(index, RESULT_SKIP(2));
   }
 
   /* Max number of hashes can be recorded plus one */
@@ -88,7 +88,7 @@ payload(uint32_t num_pe)
               ((sizeof(uint32_t) + (sizeof(uint8_t) * SHA_256_DIGEST_SIZE_BYTES)) * num_hashes));
   if (!drtm_hash_table) {
     val_print(ERROR, "\n       Failed to allocate tcb hash table");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(index, RESULT_FAIL(2));
     return;
   }
 
@@ -97,11 +97,11 @@ payload(uint32_t num_pe)
   status = val_drtm_set_tcb_hash((uint64_t)drtm_hash_table);
   if (status != DRTM_ACS_OUT_OF_RESOURCE) {
     val_print(ERROR, "\n       DRTM set invalid num of Hashes failed %d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+    val_set_status(index, RESULT_FAIL(3));
     goto free_tcb_hash;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 
 free_tcb_hash:
   val_memory_free(drtm_hash_table);

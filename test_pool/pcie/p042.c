@@ -96,11 +96,11 @@ static void payload(void)
 
   /* Report the status of test */
   if (skip)
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 0));
+      val_set_status(index, RESULT_SKIP(0));
   else if (fail_cnt)
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 0));
+      val_set_status(index, RESULT_FAIL(0));
   else
-      val_set_status(index, RESULT_PASS(TEST_NUM, 0));
+      val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

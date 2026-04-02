@@ -46,7 +46,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
   val_print(ERROR, "\n       Received exception type: %d", interrupt_type);
   exception = 1;
-  val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+  val_set_status(pe_index, RESULT_FAIL(1));
 }
 
 static
@@ -208,7 +208,7 @@ payload(void)
   if (atomic_feat < 0x2) {
     val_print(ERROR,
               "\n       FEAT_LSE not supported (ID_AA64ISAR0_EL1.Atomic = 0x%x)", atomic_feat);
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_FAIL(1));
     return;
   }
 
@@ -217,7 +217,7 @@ payload(void)
   if (lse2_feat == 0) {
     val_print(ERROR,
               "\n       FEAT_LSE2 not supported (ID_AA64MMFR2_EL1.AT = 0x%x)", lse2_feat);
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(pe_index, RESULT_FAIL(2));
     return;
   }
 
@@ -225,7 +225,7 @@ payload(void)
   status |= val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
   if (status) {
     val_print(ERROR, "\n       Failed to install exception handler");
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 3));
+    val_set_status(pe_index, RESULT_FAIL(3));
     return;
   }
   branch_to_test = &&exception_return;
@@ -233,21 +233,21 @@ payload(void)
 
   if (find_cxl_type3_target(&target) != ACS_STATUS_PASS) {
     val_print(TRACE, "\n       No CXL Type-3 memory target found");
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_SKIP(1));
     return;
   }
 
   status = val_cxl_get_cfmws_window(target.host_index, &cfmws_base, &cfmws_size);
   if ((status != ACS_STATUS_PASS) || (cfmws_base == 0) || (cfmws_size < SIZE_4KB)) {
     val_print(ERROR, "\n       Failed to locate usable CFMWS window");
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 4));
+    val_set_status(pe_index, RESULT_FAIL(4));
     return;
   }
 
   status = val_cxl_map_hdm_address(cfmws_base, SIZE_4KB, &mapped);
   if (status != ACS_STATUS_PASS) {
     val_print(ERROR, "\n       Failed to map CXL Type-3 memory region");
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 4));
+    val_set_status(pe_index, RESULT_FAIL(4));
     return;
   }
 
@@ -259,7 +259,7 @@ exception_return:
 
   if ((status != ACS_STATUS_PASS) || exception) {
     val_print(ERROR, "\n       Atomic sequence failed on CXL memory");
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 5));
+    val_set_status(pe_index, RESULT_FAIL(5));
     return;
   }
 
@@ -294,7 +294,7 @@ exception_return:
   if (mec_feat == 0)
     val_print(WARN, "\n       Optional feature FEAT_MEC is not supported");
 
-  val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

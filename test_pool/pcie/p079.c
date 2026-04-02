@@ -136,7 +136,7 @@ payload(void)
           iep_bdf = get_iep_bdf_under_rp(bdf);
           if (iep_bdf == 0x0) {
               val_print(ERROR, "\n       Could Not Find iEP_EP under iEP_RP.");
-              val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+              val_set_status(pe_index, RESULT_SKIP(01));
               return;
           }
 
@@ -146,7 +146,7 @@ payload(void)
           if (cfg_space_buf == NULL)
           {
               val_print(ERROR, "\n       Memory allocation failed.");
-              val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+              val_set_status(pe_index, RESULT_FAIL(02));
               return;
           }
 
@@ -173,7 +173,7 @@ payload(void)
           {
               val_print(ERROR, "\n       Failed to time delay for BDF 0x%x ", bdf);
               val_memory_free_aligned(cfg_space_buf);
-              val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+              val_set_status(pe_index, RESULT_FAIL(01));
               return;
           }
 
@@ -188,7 +188,7 @@ payload(void)
                   {
                       val_print(ERROR, "\n       Failed to time delay for BDF 0x%x ", bdf);
                       val_memory_free_aligned(cfg_space_buf);
-                      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+                      val_set_status(pe_index, RESULT_FAIL(02));
                       return;
                   }
 
@@ -222,12 +222,12 @@ free_cfg:
   /* Skip the test if no iEP_RP found */
   if (iep_rp_found == 0) {
       val_print(DEBUG, "\n       No iEP_RP type device found. Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 02));
+      val_set_status(pe_index, RESULT_SKIP(02));
   }
   else if (test_fails)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, test_fails));
+      val_set_status(pe_index, RESULT_FAIL(test_fails));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

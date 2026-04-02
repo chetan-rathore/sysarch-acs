@@ -36,7 +36,7 @@ payload(void)
 
   if (val_pcie_get_info(PCIE_INFO_NUM_ECAM, 0) == 0) {
       val_print(DEBUG, "\n        No ECAMs discovered, Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
       return;
   }
 
@@ -44,11 +44,11 @@ payload(void)
   ret = val_pcie_register_bitfields_check((void *)&bf_info_table21, table_entries);
 
   if (ret == ACS_STATUS_SKIP)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
   else if (ret)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, ret));
+      val_set_status(pe_index, RESULT_FAIL(ret));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 
 }
 

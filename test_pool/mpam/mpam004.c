@@ -44,7 +44,7 @@ static void payload(void)
    /* Check if PE implements FEAT_MPAM */
     if (!((VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64PFR0_EL1), 40, 43) > 0) ||
         (VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64PFR1_EL1), 16, 19) > 0))) {
-            val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 02));
+            val_set_status(pe_index, RESULT_SKIP(02));
             return;
     }
 
@@ -53,7 +53,7 @@ static void payload(void)
     val_print(DEBUG, "\n       MSC count = %d", msc_node_cnt);
 
     if (!msc_node_cnt) {
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_FAIL(01));
         return;
     }
 
@@ -96,7 +96,7 @@ static void payload(void)
                 if (mbwu_bw == HMAT_INVALID_INFO)
                 {
                     val_print(ERROR, "\n       No HMAT info ");
-                    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+                    val_set_status(pe_index, RESULT_FAIL(02));
                     return;
                 }
                 if ((val_mpam_mbwu_supports_lwd(msc_index) == MBWU_COUNTER_44BIT)
@@ -110,11 +110,11 @@ static void payload(void)
     }
 
     if (test_fails)
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+        val_set_status(pe_index, RESULT_FAIL(03));
     else if (test_skip)
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 03));
+        val_set_status(pe_index, RESULT_SKIP(03));
     else
-        val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_PASS);
 
     return;
 }

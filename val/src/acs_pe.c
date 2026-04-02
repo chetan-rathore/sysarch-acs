@@ -230,7 +230,7 @@ val_pe_reg_read(uint32_t reg_id)
           return read_vtcr_el2();
       default:
            val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
-                                                 RESULT_FAIL(0, 0xFF), NULL);
+                                                 RESULT_FAIL(0xFF), NULL);
            break;
   }
 
@@ -291,7 +291,7 @@ val_pe_reg_write(uint32_t reg_id, uint64_t write_data)
           break;
       default:
            val_report_status(val_pe_get_index_mpid(val_pe_get_mpid()),
-                                                  RESULT_FAIL(0, 0xFF), NULL);
+                                                  RESULT_FAIL(0xFF), NULL);
   }
 
 }
@@ -344,7 +344,7 @@ val_pe_get_pmu_gsiv(uint32_t index)
   PE_INFO_ENTRY *entry;
 
   if (index > g_pe_info_table->header.num_of_pe) {
-        val_report_status(index, RESULT_FAIL(0, 0xFF), NULL);
+        val_report_status(index, RESULT_FAIL(0xFF), NULL);
         return 0xFFFFFF;
   }
 
@@ -367,7 +367,7 @@ val_pe_get_gicc_trbe_interrupt(uint32_t index)
   PE_INFO_ENTRY *entry;
 
   if (index > g_pe_info_table->header.num_of_pe) {
-        val_report_status(index, RESULT_FAIL(0, 0xFF), NULL);
+        val_report_status(index, RESULT_FAIL(0xFF), NULL);
         return 0xFFFFFF;
   }
 
@@ -391,7 +391,7 @@ val_pe_get_gmain_gsiv(uint32_t index)
   PE_INFO_ENTRY *entry;
 
   if (index > g_pe_info_table->header.num_of_pe) {
-        val_report_status(index, RESULT_FAIL(0, 0xFF), NULL);
+        val_report_status(index, RESULT_FAIL(0xFF), NULL);
         return 0xFFFFFF;
   }
 
