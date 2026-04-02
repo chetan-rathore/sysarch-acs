@@ -38,7 +38,7 @@ payload(void)
 
   if (wd_num == 0) {
       val_print(WARN, "\n       No Watchdogs reported          %d  ", wd_num);
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(index, RESULT_FAIL(01));
       return;
   }
 
@@ -58,7 +58,7 @@ payload(void)
 
       if (data != 1) {
           val_print(ERROR, "\n       Watchdog Architecture version is %x", data);
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+          val_set_status(index, RESULT_FAIL(02));
           return;
       }
 
@@ -66,11 +66,11 @@ payload(void)
 
   if(!ns_wdg) {
       val_print(WARN, "\n       No non-secure Watchdogs reported");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+      val_set_status(index, RESULT_FAIL(03));
       return;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+  val_set_status(index, RESULT_PASS);
 
 }
 

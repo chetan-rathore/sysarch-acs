@@ -162,19 +162,19 @@ isr()
 
   uart_disable_txintr();
   val_print(DEBUG, "\n       Received interrupt on %d     ", int_id);
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
   val_gic_end_of_interrupt(int_id);
 }
 
 static
-test_status_t
+uint32_t
 check_arm_generic_uart()
 {
 
   uint32_t count = val_peripheral_get_info(NUM_UART, 0);
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
   uint32_t interface_type;
-  test_status_t status = TEST_STATUS_UNKNOWN;
+  uint32_t status = TEST_STATE_UNKNOWN;
 
   val_pe_install_esr(EXCEPT_AARCH64_SYNCHRONOUS_EXCEPTIONS, esr);
   val_pe_install_esr(EXCEPT_AARCH64_SERROR, esr);
@@ -221,7 +221,7 @@ exception_taken:
 }
 
 static
-test_status_t
+uint32_t
 check_uart_16550()
 {
   uint64_t count = val_peripheral_get_info(NUM_UART, 0);
@@ -366,7 +366,7 @@ static
 void
 payload_check_uart_compliance()
 {
-  test_status_t gen_uart_status, uart_16550_status;
+  uint32_t gen_uart_status, uart_16550_status;
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
 
   /* Run the checks for Arm generic UART and 16550 compatible UART */
@@ -375,13 +375,13 @@ payload_check_uart_compliance()
 
   /* Pass if UART is found and is either one of the type required by test */
   if (gen_uart_status == TEST_PASS || uart_16550_status == TEST_PASS)
-      val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(index, RESULT_PASS);
   /* Skip if UART not found by test */
   else if (gen_uart_status == TEST_SKIP || uart_16550_status == TEST_SKIP)
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
   /* Fail if neither passed or both skipped */
   else
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(index, RESULT_FAIL(1));
   return;
 }
 
@@ -396,10 +396,10 @@ payload_check_arm_generic_uart_interrupt()
 
   if (count == 0) {
       val_print(ERROR, "\n       No UART defined by Platform      ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM1, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
-  val_set_status(index, RESULT_SKIP(TEST_NUM1, 2));
+  val_set_status(index, RESULT_SKIP(2));
   while (count != 0) {
       timeout = TIMEOUT_LARGE;
       int_id    = val_peripheral_get_info(UART_GSIV, count - 1);
@@ -417,7 +417,7 @@ payload_check_arm_generic_uart_interrupt()
               /* Check int_id is SPI or ESPI */
               if (!(IsSpi(int_id)) && !(val_gic_is_valid_espi(int_id))) {
                  val_print(ERROR, "\n       Interrupt-%d is neither SPI nor ESPI", int_id);
-                 val_set_status(index, RESULT_FAIL(TEST_NUM1, 2));
+                 val_set_status(index, RESULT_FAIL(2));
                  return;
               }
 
@@ -432,7 +432,7 @@ payload_check_arm_generic_uart_interrupt()
               /* Install ISR */
               if (val_gic_install_isr(int_id, isr)) {
                  val_print(ERROR, "\n       GIC Install Handler Failed...");
-                 val_set_status(index, RESULT_FAIL(TEST_NUM1, 3));
+                 val_set_status(index, RESULT_FAIL(3));
                  return;
               }
 
@@ -450,16 +450,16 @@ payload_check_arm_generic_uart_interrupt()
                  test_fail++;
               }
           } else {
-              val_set_status(index, RESULT_SKIP(TEST_NUM1, 3));
+              val_set_status(index, RESULT_SKIP(3));
           }
       }
       count--;
   }
 
   if (test_fail)
-    val_set_status(index, RESULT_FAIL(TEST_NUM1, 4));
+    val_set_status(index, RESULT_FAIL(4));
   else
-    val_set_status(index, RESULT_PASS(TEST_NUM1, 2));
+    val_set_status(index, RESULT_PASS);
 
   return;
 }

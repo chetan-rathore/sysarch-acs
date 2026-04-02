@@ -34,9 +34,9 @@ static void payload(void)
     val_print_primary_pe(DEBUG, "\n       ID_AA64ISAR1_EL1.SPECRES = %llx", data, index);
 
     if (data != 1 && data != 2)
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
     else
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
 }
 
 uint32_t pe047_entry(uint32_t num_pe)

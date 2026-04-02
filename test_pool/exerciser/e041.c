@@ -167,7 +167,7 @@ payload(void)
 
   comp_count = val_cxl_get_component_info(CXL_COMPONENT_INFO_COUNT, 0);
   if (comp_count == 0) {
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_SKIP(01));
     return;
   }
 
@@ -211,16 +211,16 @@ payload(void)
     status = cache_sequence(instance, e_bdf);
     if (status != ACS_STATUS_PASS) {
       val_print(ERROR, "\n       CXL.cache exerciser sequence failed");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_FAIL(1));
       return;
     }
 
   }
 
   if (test_skip)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 02));
+      val_set_status(pe_index, RESULT_SKIP(02));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t
@@ -234,7 +234,7 @@ e041_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
     if (val_exerciser_test_init() != ACS_STATUS_PASS)
-      return TEST_SKIP_VAL;
+      return TEST_SKIP;
 
     val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }

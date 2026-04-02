@@ -54,7 +54,7 @@ payload()
   if (num_smmu == 0) {
     val_print(DEBUG, "\n       No SMMU Controllers are discovered"
                                  "                  ");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(index, RESULT_SKIP(1));
     return;
   }
 
@@ -62,7 +62,7 @@ payload()
     if (val_smmu_get_info(SMMU_CTRL_ARCH_MAJOR_REV, num_smmu) < 3) {
       val_print(DEBUG, "\n       Not valid for SMMUv2 or older"
                                     "version               ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+      val_set_status(index, RESULT_SKIP(2));
       return;
     }
 
@@ -73,13 +73,13 @@ payload()
       if (data_btm != 0x1) {
         val_print(ERROR, "\n       Broadcast TLB Maintenance unsupported "
                                      "for SMMU %x", num_smmu);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
       }
     }
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

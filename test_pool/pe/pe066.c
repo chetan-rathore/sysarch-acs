@@ -55,7 +55,7 @@ payload()
         val_print_primary_pe(ERROR,
                              "\n       Number of PE breakpoints reported: %d, expected >= 6",
                              breakpointcount, pe_index);
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(pe_index, RESULT_FAIL(1));
         return;
     }
 
@@ -84,7 +84,7 @@ payload()
         val_print_primary_pe(ERROR,
                              "\n       Context-aware breakpoints reported: %u, expected >= 2",
                              context_aware_breakpoints, pe_index);
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+        val_set_status(pe_index, RESULT_FAIL(2));
         return;
     }
 
@@ -109,12 +109,12 @@ payload()
 
     /* Breakpoints 4 and 5 must be context-aware */
     if (ctx_start <= 4 && ctx_end >= 5)
-        val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+        val_set_status(pe_index, RESULT_PASS);
     else
     {
         val_print_primary_pe(ERROR,
                 "\n       Breakpoints 4 and 5 are not context-aware as required", 0, pe_index);
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 3));
+        val_set_status(pe_index, RESULT_FAIL(3));
     }
 }
 

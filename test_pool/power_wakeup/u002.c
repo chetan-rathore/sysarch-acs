@@ -45,8 +45,9 @@ isr_failsafe()
      is hit and test interrupt is not rcvd
   */
   if (g_el1vir_int_received == 0) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+      val_set_status(index, RESULT_FAIL(2));
   }
+
   intid = val_timer_get_info(TIMER_INFO_PHY_EL1_INTID, 0);
   val_gic_end_of_interrupt(intid);
 }
@@ -80,7 +81,7 @@ isr2()
   val_timer_set_vir_el1(0);
   val_print(TRACE, "       Received EL1 VIRT interrupt\n");
   g_el1vir_int_received = 1;
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
   intid = val_timer_get_info(TIMER_INFO_VIR_EL1_INTID, 0);
   val_gic_end_of_interrupt(intid);
   val_timer_set_phy_el1(0);
@@ -99,7 +100,7 @@ payload2()
   intid = val_timer_get_info(TIMER_INFO_VIR_EL1_INTID, 0);
   if (val_gic_install_isr(intid, isr2)) {
     val_print(WARN, "\n       GIC Install Handler Failed...");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -133,9 +134,9 @@ payload2()
       val_timer_set_vir_el1(0);
       intid = val_timer_get_info(TIMER_INFO_VIR_EL1_INTID, 0);
       val_gic_end_of_interrupt(intid);
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
       val_print(DEBUG,
                 "\n       PE wakeup by some other events/int or didn't enter WFI");
+      val_set_status(index, RESULT_SKIP(1));
   }
   val_print(TRACE, "\n       delay loop remainig value %d", delay_loop);
   return;

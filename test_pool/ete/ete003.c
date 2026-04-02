@@ -83,9 +83,9 @@ void check_timestamp(uint32_t num_pe)
                   "\n       Primary PE start_timestamp : 0x%llx", start_timestamp[index]);
         val_print(TRACE,
                   "\n       Primary PE end_timestamp   : 0x%llx", end_timestamp[index]);
-        val_set_status(index, RESULT_FAIL(0, 06));
+        val_set_status(index, RESULT_FAIL(06));
     } else
-        val_set_status(index, RESULT_PASS(0, 02));
+        val_set_status(index, RESULT_PASS);
 }
 
 static void payload(void)
@@ -102,7 +102,7 @@ static void payload(void)
     if (data == 0) {
         test_fail = 1;
         val_print_primary_pe(ERROR, "\n       FEAT_TRBE not supported", 0, index);
-        val_set_status(index, RESULT_FAIL(0, 01));
+        val_set_status(index, RESULT_FAIL(01));
         return;
     }
 
@@ -111,7 +111,7 @@ static void payload(void)
     if (data == 0) {
         test_fail = 1;
         val_print_primary_pe(ERROR, "\n       FEAT_TRF not supported", 0, index);
-        val_set_status(index, RESULT_FAIL(0, 02));
+        val_set_status(index, RESULT_FAIL(02));
         return;
     }
 
@@ -147,7 +147,7 @@ static void payload(void)
         test_fail = 1;
         val_data_cache_ops_by_va((addr_t)(&test_fail), CLEAN_AND_INVALIDATE);
         val_print_primary_pe(ERROR, "\n       Trace Generation Failed", 0, index);
-        val_set_status(index, RESULT_FAIL(0, 03));
+        val_set_status(index, RESULT_FAIL(03));
         return;
     }
 
@@ -156,19 +156,19 @@ static void payload(void)
         test_fail = 1;
         val_data_cache_ops_by_va((addr_t)(&test_fail), CLEAN_AND_INVALIDATE);
         val_print_primary_pe(ERROR, "\n       Traced Timestamp is 0", 0, index);
-        val_set_status(index, RESULT_FAIL(0, 04));
+        val_set_status(index, RESULT_FAIL(04));
         return;
     }
 
     if ((start_timestamp[index] <= traced_timestamp) &&
         (traced_timestamp <= end_timestamp[index])) {
-        val_set_status(index, RESULT_PASS(0, 01));
+        val_set_status(index, RESULT_PASS);
         return;
     }
 
     test_fail = 1;
     val_data_cache_ops_by_va((addr_t)(&test_fail), CLEAN_AND_INVALIDATE);
-    val_set_status(index, RESULT_FAIL(0, 05));
+    val_set_status(index, RESULT_FAIL(05));
 }
 
 /* ETE_04 - This test verifies that all the trace units

@@ -65,7 +65,7 @@ payload()
     val_print(DEBUG, "\n       No RAS Nodes found in AEST table.");
     val_print(DEBUG, "\n       The test must be considered fail if system \
                                         components supports RAS nodes");
-    val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+    val_set_status(index, RESULT_WARNING(01));
     return;
   }
 
@@ -159,13 +159,13 @@ payload()
   }
 
   if (fail_cnt)
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+    val_set_status(index, RESULT_FAIL(01));
   else if (warn_cnt)
-    val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+    val_set_status(index, RESULT_WARNING(01));
   else if (test_skip)
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+    val_set_status(index, RESULT_SKIP(02));
   else
-    val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(index, RESULT_PASS);
 
   return;
 }

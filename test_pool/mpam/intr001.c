@@ -41,7 +41,7 @@ esr(uint64_t exception_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(WARN, "\n       Received Exception of type %d", exception_type);
-  val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
+  val_set_status(index, RESULT_FAIL(04));
 }
 
 static void intr_handler(void)
@@ -49,7 +49,7 @@ static void intr_handler(void)
     uint32_t pe_index = val_pe_get_index_mpid(val_pe_get_mpid());
 
     val_print(DEBUG, "\n       Received MSC Err interrupt %d", intr_num);
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
 
     /* Restore Error Control Register original settings */
     val_mpam_mmr_write(msc_index, REG_MPAMF_ECR, mpamf_ecr_saved);
@@ -100,7 +100,7 @@ void payload(void)
         status    = val_mpam_msc_reset_errcode(msc_index);
 
         if (!status) {
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+            val_set_status(pe_index, RESULT_FAIL(01));
             return;
         }
 
@@ -118,7 +118,7 @@ void payload(void)
 
         /* Register the interrupt handler */
         if (val_gic_install_isr(intr_num, intr_handler)) {
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+            val_set_status(pe_index, RESULT_FAIL(02));
             return;
         }
 
@@ -140,18 +140,18 @@ void payload(void)
         val_mpam_mmr_write(msc_index, REG_MPAMF_ECR, mpamf_ecr_saved);
         if (timeout == 0) {
             val_print(ERROR, "\n       MSC Err Interrupt not received on %d", intr_num);
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+            val_set_status(pe_index, RESULT_FAIL(03));
             return;
         }
     }
 
     /* Set the test status to Skip as none of the MPAM nodes implemented error interrupts */
     if (intr_count == 0) {
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_SKIP(01));
         return;
     }
 
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 02));
+    val_set_status(pe_index, RESULT_PASS);
     return;
 
 exception_taken:

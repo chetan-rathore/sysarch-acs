@@ -81,7 +81,7 @@ payload(void)
 
   if (num_cxl_hb == 0) {
       val_print(TRACE, "\n       No CXL Host Bridges discovered via CEDT");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
       return;
   }
 
@@ -109,9 +109,9 @@ payload(void)
   }
 
   if (test_fail) {
-    val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_FAIL(1));
   } else {
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_PASS);
   }
 
 }

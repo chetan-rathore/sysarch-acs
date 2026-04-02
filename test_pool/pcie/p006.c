@@ -46,7 +46,7 @@ payload(void)
   intr_map = val_aligned_alloc(MEM_ALIGN_4K, sizeof(PERIPHERAL_IRQ_MAP));
   if (!intr_map) {
     val_print(ERROR, "\n       Memory allocation error");
-    val_set_status(pe_index, RESULT_FAIL (TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_FAIL(1));
     return;
   }
 
@@ -75,12 +75,12 @@ payload(void)
       if (status) {
         // Report warn if the Legacy IRQ map does not exist
         if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
-            val_set_status(pe_index, RESULT_WARN(TEST_NUM, 1));
+            val_set_status(pe_index, RESULT_WARNING(1));
             return;
         } else {
             val_print (DEBUG,
                         "\n       PCIe Legacy IRQs unmapped. Skipping BDF %llx", bdf);
-            val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 2));
+            val_set_status(pe_index, RESULT_SKIP(2));
             continue;
         }
       }
@@ -98,7 +98,7 @@ payload(void)
       }
       else {
           val_print(ERROR, "\n Int id %d is not SPI", intr_line);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 3));
+          val_set_status(pe_index, RESULT_FAIL(3));
           return;
       }
   }
@@ -106,9 +106,9 @@ payload(void)
   val_memory_free_aligned(intr_map);
 
   if (test_skip == 1)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

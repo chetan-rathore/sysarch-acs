@@ -34,7 +34,7 @@ payload(void)
   num_cxl_hb = val_cxl_get_info(CXL_INFO_NUM_DEVICES, 0);
   if (num_cxl_hb == 0) {
       val_print(DEBUG, "\n       No CXL devices discovered");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
       return;
   }
 
@@ -48,9 +48,9 @@ payload(void)
   }
 
   if (test_fails)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_FAIL(1));
 
-  val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

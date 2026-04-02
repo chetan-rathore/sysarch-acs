@@ -80,7 +80,7 @@ payload(void *arg)
 
   /* Check If PCIe Hierarchy supports P2P */
   if (val_pcie_p2p_support() == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
-    val_set_status(pe_index, RESULT_WARN(test_data->test_num, 01));
+    val_set_status(pe_index, RESULT_WARNING(01));
     return;
   }
 
@@ -106,7 +106,7 @@ payload(void *arg)
           /* Check If Endpoint supports P2P with other Functions. */
           status = val_pcie_dev_p2p_support(bdf);
           if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
-              val_set_status(pe_index, RESULT_WARN(test_data->test_num, 01));
+              val_set_status(pe_index, RESULT_WARNING(01));
               return;
           }
           if (status)
@@ -170,12 +170,12 @@ payload(void *arg)
   if (test_skip == 1) {
       val_print(DEBUG,
       "\n       No target device type with Multifunction and P2P support.Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(test_data->test_num, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   }
   else if (test_fails + aer_cap_fail)
-      val_set_status(pe_index, RESULT_FAIL(test_data->test_num, test_fails));
+      val_set_status(pe_index, RESULT_FAIL(test_fails));
   else
-      val_set_status(pe_index, RESULT_PASS(test_data->test_num, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t
@@ -235,11 +235,11 @@ p016_entry(uint32_t num_pe)
 
   if (status != ACS_STATUS_SKIP) {
       if (g_aer_cap_status == ACS_STATUS_SKIP)
-          val_set_status(pe_index, RESULT_SKIP(test_entries[2].test_num, 01));
+          val_set_status(pe_index, RESULT_SKIP(01));
       else if (g_aer_cap_status == ACS_STATUS_FAIL)
-          val_set_status(pe_index, RESULT_FAIL(test_entries[2].test_num, 01));
+          val_set_status(pe_index, RESULT_FAIL(01));
       else
-          val_set_status(pe_index, RESULT_PASS(test_entries[2].test_num, 01));
+          val_set_status(pe_index, RESULT_PASS);
   }
 
   /* get the result from all PE and check for failure */

@@ -87,14 +87,14 @@ payload(void *arg)
   pgt_base_array = val_aligned_alloc(MEM_ALIGN_4K, sizeof(uint64_t) * num_exercisers);
   if (!pgt_base_array) {
       val_print(ERROR, "\n       mem alloc failure for pgt_base_array");
-      val_set_status(pe_index, RESULT_FAIL(payload_data->test_num, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
 
   pgt_base = val_aligned_alloc(MEM_ALIGN_4K, sizeof(uint64_t) * num_exercisers);
   if (!pgt_base) {
       val_print(ERROR, "\n       mem alloc failure for pgt_base");
-      val_set_status(pe_index, RESULT_FAIL(payload_data->test_num, 02));
+      val_set_status(pe_index, RESULT_FAIL(02));
       val_memory_free_aligned(pgt_base_array);
       return;
   }
@@ -223,14 +223,14 @@ disable_ro:
   }
 
 test_pass:
-  val_set_status(pe_index, RESULT_PASS(payload_data->test_num, 01));
+  val_set_status(pe_index, RESULT_PASS);
   goto test_clean;
 
   if (test_skip)
-      val_set_status(pe_index, RESULT_SKIP(payload_data->test_num, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
 
 test_fail:
-  val_set_status(pe_index, RESULT_FAIL(payload_data->test_num, 03));
+  val_set_status(pe_index, RESULT_FAIL(03));
 test_clean:
   val_memory_free_aligned(pgt_base_array);
   val_memory_free_aligned(pgt_base);
@@ -250,7 +250,7 @@ e026_entry(uint32_t num_pe)
   status = val_initialize_test(test_entries[0].test_num, test_entries[0].desc, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_configurable_payload(&data, payload);
   }
 
@@ -275,7 +275,7 @@ e032_entry(uint32_t num_pe)
   status = val_initialize_test(test_entries[1].test_num, test_entries[1].desc, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_configurable_payload(&data, payload);
   }
 

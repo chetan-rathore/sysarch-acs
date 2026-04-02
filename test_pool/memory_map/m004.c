@@ -45,7 +45,7 @@ check_peripheral_dma_capability (void)
 
   if (pcie_peripherals_bdf_list == NULL || pcie_peripherals_bdf_list->count == 0) {
       val_print(DEBUG, "\n       Skip as no peripherals detected   ");
-      val_set_status(index, RESULT_SKIP (TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -63,9 +63,9 @@ check_peripheral_dma_capability (void)
   }
 
   if (fail_cnt) {
-      val_set_status (index, RESULT_FAIL (TEST_NUM, 01));
+      val_set_status (index, RESULT_FAIL(01));
   } else {
-      val_set_status (index, RESULT_PASS (TEST_NUM, 01));
+      val_set_status (index, RESULT_PASS);
   }
 
 }
@@ -85,7 +85,7 @@ payload_check_dev_dma_if_behind_smmu (void)
 
   if (pcie_peripherals_bdf_list == NULL || pcie_peripherals_bdf_list->count == 0) {
       val_print(DEBUG, "\n       Skip as no peripherals detected   ");
-      val_set_status(index, RESULT_SKIP (TEST_NUM1, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -105,11 +105,11 @@ payload_check_dev_dma_if_behind_smmu (void)
   }
 
   if (!test_run) {
-      val_set_status (index, RESULT_SKIP (TEST_NUM1, 02));
+      val_set_status (index, RESULT_SKIP(02));
   } else if (fail_cnt) {
-      val_set_status (index, RESULT_FAIL (TEST_NUM1, 01));
+      val_set_status (index, RESULT_FAIL(01));
   } else {
-      val_set_status (index, RESULT_PASS (TEST_NUM1, 01));
+      val_set_status (index, RESULT_PASS);
   }
 }
 
@@ -128,7 +128,7 @@ payload_check_if_non_dma_dev_behind_smmu (void)
 
   if (pcie_peripherals_bdf_list == NULL || pcie_peripherals_bdf_list->count == 0) {
       val_print(DEBUG, "\n       Skip as no peripherals detected   ");
-      val_set_status(index, RESULT_SKIP (TEST_NUM2, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -150,11 +150,11 @@ payload_check_if_non_dma_dev_behind_smmu (void)
   }
 
   if (!test_run) {
-      val_set_status (index, RESULT_SKIP (TEST_NUM2, 02));
+      val_set_status (index, RESULT_SKIP(02));
   } else if (fail_cnt) {
-      val_set_status (index, RESULT_FAIL (TEST_NUM2, 01));
+      val_set_status (index, RESULT_FAIL(01));
   } else {
-      val_set_status (index, RESULT_PASS (TEST_NUM2, 01));
+      val_set_status (index, RESULT_PASS);
   }
 }
 

@@ -129,7 +129,7 @@ call_pfdi_functions_on_other_pe(void)
 
   call_all_pfdi_functions(cross_pe);
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 2));
+  val_set_status(index, RESULT_PASS);
   return;
 }
 
@@ -150,7 +150,7 @@ payload_check_pe_locality(void *arg)
 
   if (num_pe < 2) {
     val_print(WARN, "\n       Test requires minimum 2 PEs, skipping");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(index, RESULT_SKIP(1));
     return;
   }
 
@@ -160,7 +160,7 @@ payload_check_pe_locality(void *arg)
       val_memory_calloc(1, sizeof(pfdi_pe_locality_check));
   if (g_pfdi_pe_locality_check == NULL) {
     val_print(ERROR, "\n       Memory allocation failed");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -188,7 +188,7 @@ payload_check_pe_locality(void *arg)
   if (timeout == 0) {
     val_print(ERROR, "\n       **Timed out** waiting for other PE index = %d",
               other_pe_index);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(index, RESULT_FAIL(2));
     goto free_locality_buffer;
   }
 
@@ -244,11 +244,11 @@ payload_check_pe_locality(void *arg)
 
   /* Report aggregate pass/fail for the calling PE */
   if (test_fail) {
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+    val_set_status(index, RESULT_FAIL(3));
   } else if (test_skip) {
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+    val_set_status(index, RESULT_SKIP(2));
   } else {
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
   }
 
 free_locality_buffer:

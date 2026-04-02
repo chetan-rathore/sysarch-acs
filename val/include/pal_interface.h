@@ -96,8 +96,6 @@
   typedef INT16   int16_t;
   typedef INT32   int32_t;
   typedef INT64   int64_t;
-  typedef CHAR8   char8_t;
-  typedef CHAR16  char16_t;
   typedef UINT8   uint8_t;
   typedef UINT16  uint16_t;
   typedef UINT32  uint32_t;
@@ -108,6 +106,8 @@
   typedef INTN   intptr_t;
   typedef INT64  intmax_t;
   typedef UINT64 uintmax_t;
+  typedef CHAR8   char8_t;
+  typedef CHAR16  char16_t;
 
   #if defined __STDC_VERSION__ && __STDC_VERSION__ > 201710L
    /* bool is a keyword  */

@@ -228,7 +228,7 @@ payload (void)
                     if (check_list_duplicates (current_dev_mvec, next_dev_mvec))
                     {
                       val_print (ACS_STATUS_ERR, "\n       Allocated MSIs are not unique", 0);
-                      val_set_status (index, RESULT_FAIL(TEST_NUM, 01));
+                      val_set_status (index, RESULT_FAIL(01));
                       status = 1;
                     }
 
@@ -249,14 +249,14 @@ payload (void)
 
   if (test_skip) {
     val_print(ERROR, "\n       No MSI vectors found ");;
-    val_set_status (index, RESULT_SKIP(TEST_NUM, 01));
+    val_set_status (index, RESULT_SKIP(01));
   } else  if (!status) {
-    val_set_status (index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status (index, RESULT_PASS);
   }
   return;
 
 test_warn_unimplemented:
-  val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+  val_set_status(index, RESULT_WARNING(01));
 }
 
 uint32_t

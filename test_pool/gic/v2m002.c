@@ -38,7 +38,7 @@ payload()
   msi_frame = val_gic_get_info(GIC_INFO_NUM_MSI_FRAME);
   if (msi_frame == 0) {
       val_print(DEBUG, "\n       No MSI frame, Skipping               ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -84,11 +84,11 @@ payload()
 
   if (fail_cnt) {
       val_print(ERROR, "\n       MSI_TYPER Register Check Failed");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(index, RESULT_FAIL(1));
       return;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

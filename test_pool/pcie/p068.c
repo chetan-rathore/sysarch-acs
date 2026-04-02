@@ -35,7 +35,7 @@ payload(void)
 
   if (!num_pcie_rc) {
      val_print(DEBUG, "\n       Skip because no PCIe RC detected  ");
-     val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+     val_set_status(index, RESULT_SKIP(1));
      return;
   }
 
@@ -44,11 +44,11 @@ payload(void)
       mem_attr = val_iovirt_get_pcie_rc_info(RC_MEM_ATTRIBUTE, num_pcie_rc);
 
       if (mem_attr == INNER_SHAREABLE)
-         val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+         val_set_status(index, RESULT_PASS);
       else {
          val_print(ERROR,
                  "\n       Failed mem attribute check for PCIe RC %d", num_pcie_rc);
-         val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+         val_set_status(index, RESULT_FAIL(1));
          return;
       }
   }

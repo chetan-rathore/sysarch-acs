@@ -132,12 +132,12 @@ payload(void)
 
   if (test_skip) {
       val_print(DEBUG, "\n       No RP/iEP_RP type device found. Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
   }
   if (test_fail)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_FAIL(1));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

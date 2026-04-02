@@ -90,9 +90,9 @@ static void payload_regs_preserve_check(void *arg)
   }
 
   if (reg_verify_fail)
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
   else
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
 
   return;
 }

@@ -47,13 +47,13 @@ payload(void)
   status = val_get_device_path("ARMHC97C", etr_path);
   if (status != 0) {
     val_print(ERROR, "\n       Unable to get ETR device info from ACPI namespace");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
   if ((char)etr_path[0][0] == '\0') {
     val_print(ERROR, "\n       No ETR devices are discovered                 ");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(index, RESULT_SKIP(1));
     return;
   } else {
     /*Counting num of ETR Devices*/
@@ -98,21 +98,21 @@ payload(void)
       if (status == ACS_STATUS_PAL_NOT_IMPLEMENTED) {
         val_print(DEBUG,
                     "\n       val_smmu_is_etr_behind_catu API not implemented");
-        val_set_status(index, RESULT_WARN(TEST_NUM, 1));
+	val_set_status(index, RESULT_WARNING(1));
         return;
       } else if (status) {
         val_print(DEBUG, "\n       No CATU found in ETR path at index %d", i);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+        val_set_status(index, RESULT_FAIL(2));
         return;
       }
     }
 
     if (!smmu_found) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+      val_set_status(index, RESULT_FAIL(3));
       return;
     }
   }
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

@@ -193,7 +193,7 @@ payload()
   /* Generate a Random file with binary ASCII values */
   status = create_random_file();
   if (status != ACS_STATUS_PASS) {
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+      val_set_status(index, RESULT_SKIP(02));
       return;
   }
 
@@ -233,7 +233,7 @@ payload()
   status |= mkdir(dirname, 0777);
   if (status != ACS_STATUS_PASS) {
       val_print(ERROR, "\n       Directory not created");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 03));
+      val_set_status(index, RESULT_SKIP(03));
       return;
   }
   else
@@ -247,9 +247,9 @@ payload()
           test_select = test_list[i];
           status = main(argc, argv);    // NIST STS
           if (status == ACS_STATUS_NIST_PASS) {
-              val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+              val_set_status(index, RESULT_PASS);
           } else {
-              val_set_status(index, RESULT_SKIP(TEST_NUM, 04));
+              val_set_status(index, RESULT_SKIP(04));
               return;
           }
       }
@@ -260,9 +260,9 @@ payload()
        */
       status = main(argc, argv);    // NIST STS
       if (status == ACS_STATUS_NIST_PASS) {
-          val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+          val_set_status(index, RESULT_PASS);
       } else {
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 05));
+          val_set_status(index, RESULT_SKIP(05));
           return;
       }
   }

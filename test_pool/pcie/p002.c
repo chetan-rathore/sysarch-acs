@@ -43,7 +43,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(TRACE, "\n       Received exception of type: %d", interrupt_type);
-  val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+  val_set_status(pe_index, RESULT_FAIL(01));
 }
 
 /*
@@ -117,7 +117,7 @@ payload(void)
   if (status)
   {
       val_print(ERROR, "\n       Failed in installing the exception handler");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(index, RESULT_FAIL(01));
       return;
   }
 
@@ -127,7 +127,7 @@ payload(void)
 
   if (num_ecam == 0) {
       val_print(DEBUG, "\n       No ECAM in MCFG. Skipping test               ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(index, RESULT_SKIP(01));
       return;
   }
 
@@ -136,7 +136,7 @@ payload(void)
       ecam_base = val_pcie_get_info(PCIE_INFO_ECAM, num_ecam);
       if (ecam_base == 0) {
           val_print(ERROR, "\n       ECAM Base in MCFG is 0            ");
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+          val_set_status(index, RESULT_SKIP(02));
           return;
       }
       segment = val_pcie_get_info(PCIE_INFO_SEGMENT, num_ecam);
@@ -155,7 +155,7 @@ payload(void)
                if (ret == PCIE_NO_MAPPING || (data == 0)) {
                   val_print(ERROR, "\n       Incorrect data at ECAM Base %4x    ", data);
                   val_print(ERROR, "\n       BDF is  %x    ", bdf);
-                  val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+                  val_set_status(index, RESULT_FAIL(02));
                   return;
                }
 
@@ -191,7 +191,7 @@ payload(void)
                         val_print(ERROR,
                                 "\n       Invalid data read from ECAP offset 0x%x", next_offset);
                         val_memory_set(skip_rid_list, sizeof(uint32_t) * MAX_VFS, 0);
-                        val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+                        val_set_status(index, RESULT_FAIL(03));
                         return;
                      }
 
@@ -221,8 +221,7 @@ payload(void)
                   /* Returned data must be FF's, otherwise the test must fail */
                   if (data != PCIE_UNKNOWN_RESPONSE) {
                      val_print(ERROR, "\n       Incorrect data for Bdf 0x%x    ", bdf);
-                     val_set_status(index, RESULT_FAIL(TEST_NUM,
-                                     (bus_index << PCIE_BUS_SHIFT)|dev_index));
+                     val_set_status(index, RESULT_FAIL((bus_index << PCIE_BUS_SHIFT)|dev_index));
                      return;
                   }
 
@@ -231,8 +230,7 @@ payload(void)
                   /* Returned data must be FF's, otherwise the test must fail */
                   if (data != PCIE_UNKNOWN_RESPONSE) {
                      val_print(ERROR, "\n       Incorrect data for Bdf 0x%x    ", bdf);
-                     val_set_status(index, RESULT_FAIL(TEST_NUM,
-                                     (bus_index << PCIE_BUS_SHIFT)|dev_index));
+                     val_set_status(index, RESULT_FAIL((bus_index << PCIE_BUS_SHIFT)|dev_index));
                      return;
                   }
 
@@ -243,7 +241,7 @@ payload(void)
       val_memory_set(skip_rid_list, sizeof(uint32_t) * MAX_VFS, 0);
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+  val_set_status(index, RESULT_PASS);
 
 exception_return:
   return;

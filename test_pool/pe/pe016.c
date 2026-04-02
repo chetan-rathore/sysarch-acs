@@ -53,7 +53,7 @@ payload()
   /* If PE implements SVE2, it's a pass. No need to check architecture family, as
    * BSA mandates SVE2 from v9 */
   if (VAL_EXTRACT_BITS(data, 0, 3) > 0) {
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
     tmp_reg_data->status = ACS_STATUS_PASS;
     return;
   }
@@ -63,20 +63,20 @@ payload()
 
   /* SVE2 not implemented, SMBIOS info missing, cannot confirm if PE is v9. Skipping the test */
   if (pe_family == ACS_STATUS_ERR) {
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+    val_set_status(index, RESULT_SKIP(2));
     tmp_reg_data->status = ACS_STATUS_ERR;
     return;
   }
 
   /* SVE2 not implemented, SMBIOS does not report Armv9, skipping the test */
   if (pe_family != PROCESSOR_FAMILY_ARMV9) {
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 3));
+    val_set_status(index, RESULT_SKIP(3));
     tmp_reg_data->status = ACS_STATUS_SKIP;
     return;
   }
 
   /* SVE2 not implemented, SMBIOS reports Armv9, failing the test */
-  val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+  val_set_status(index, RESULT_FAIL(1));
   tmp_reg_data->status = ACS_STATUS_FAIL;
 }
 
@@ -95,14 +95,14 @@ pe016_entry(uint32_t num_pe)
   if (smbios_slots == 0) {
     val_print(WARN, "\n       SMBIOS Table Not Found, Skipping the test\n");
     status = ACS_STATUS_SKIP;
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(index, RESULT_SKIP(1));
 
     /* get the result from all PE and check for failure */
     status = val_check_for_error(TEST_NUM, 1, TEST_RULE);
   }
 
   /* This check is when user is forcing us to skip this test */
-  if (status != TEST_SKIP_VAL) {
+  if (GET_STATE(status) != TEST_SKIP) {
     g_sve_reg_info = (sve_reg_details *) val_memory_calloc(num_pe, sizeof(sve_reg_details));
     if (g_sve_reg_info == NULL) {
       val_print(ERROR, "\n       Memory Allocation for SVE Register data Failed");

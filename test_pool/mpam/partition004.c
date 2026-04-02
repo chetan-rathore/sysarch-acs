@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 **/
-
 #include "acs_val.h"
 #include "acs_pe.h"
 #include "acs_mpam.h"
@@ -81,15 +80,15 @@ payload(void)
     /* Check if LLC is valid */
     if (llc_idx == CACHE_TABLE_EMPTY) {
         val_print(DEBUG, "\n       No LLC found, skipping test");
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
         return;
+        val_set_status(index, RESULT_SKIP(1));
     }
 
     /* Get the LLC Cache ID */
     cache_identifier = val_cache_get_info(CACHE_ID, llc_idx);
     if (cache_identifier == INVALID_CACHE_INFO) {
         val_print(DEBUG, "\n       Invalid LLC ID, skipping test");
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+        val_set_status(index, RESULT_SKIP(2));
         return;
     }
 
@@ -172,7 +171,7 @@ payload(void)
 
             if ((src_buf == NULL) || (dest_buf == NULL)) {
                 val_print(ERROR, "\n       Mem allocation failed");
-                val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+                val_set_status(index, RESULT_FAIL(01));
                 if (dest_buf != NULL)
                     val_memory_free_pages(dest_buf, num_pages);
                 if (src_buf != NULL)
@@ -215,7 +214,7 @@ payload(void)
 
                 val_memory_free_aligned(src_buf);
                 val_memory_free_aligned(dest_buf);
-                val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+                val_set_status(index, RESULT_FAIL(02));
                 return;
             }
 
@@ -276,7 +275,7 @@ payload(void)
 
                 val_memory_free_aligned(src_buf);
                 val_memory_free_aligned(dest_buf);
-                val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+                val_set_status(index, RESULT_FAIL(03));
                 return;
             }
 
@@ -337,7 +336,7 @@ payload(void)
 
                 val_memory_free_aligned(src_buf);
                 val_memory_free_aligned(dest_buf);
-                val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
+                val_set_status(index, RESULT_FAIL(04));
                 return;
             }
 
@@ -389,11 +388,11 @@ payload(void)
     }
 
     if (test_skip)
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 3));
+        val_set_status(index, RESULT_SKIP(3));
     else if (test_fail)
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 5));
+        val_set_status(index, RESULT_FAIL(5));
     else
-        val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+        val_set_status(index, RESULT_PASS);
 
     return;
 }

@@ -39,7 +39,7 @@ check_pe_test_run_start_beyond_max(void)
     /* Get number of test parts supported on current PE */
     test_parts = val_pfdi_pe_test_part_count(NULL, NULL, NULL, NULL);
     if (test_parts < PFDI_ACS_SUCCESS) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
     }
 
@@ -53,7 +53,7 @@ check_pe_test_run_start_beyond_max(void)
 
     val_pfdi_invalidate_ret_params(pfdi_buffer);
 
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
 }
 
 /* Validate test case where start index is beyond max supported index */
@@ -69,7 +69,7 @@ payload_check_pe_test_run_start_beyond_max(void *arg)
         val_memory_calloc(num_pe, sizeof(PFDI_RET_PARAMS));
     if (g_pfdi_status == NULL) {
         val_print(ERROR, "\n       Allocation for PFDI Run Function Failed");
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
     }
 
@@ -84,7 +84,7 @@ payload_check_pe_test_run_start_beyond_max(void *arg)
 
             if (timeout == 0) {
                 val_print(ERROR, "\n       **Timed out** for PE index = %d", i);
-                val_set_status(i, RESULT_FAIL(TEST_NUM, 2));
+                val_set_status(i, RESULT_FAIL(2));
                 goto free_pfdi_details;
             }
         }
@@ -102,7 +102,7 @@ payload_check_pe_test_run_start_beyond_max(void *arg)
 
         if (IS_TEST_FAIL(val_get_status(i))) {
             val_print(ERROR, "\n       Failed to get Test Part count on PE %d", i);
-            val_set_status(i, RESULT_SKIP(TEST_NUM, 1));
+            val_set_status(i, RESULT_SKIP(1));
             continue;
         }
 
@@ -125,9 +125,9 @@ payload_check_pe_test_run_start_beyond_max(void *arg)
         }
 
         if (test_fail)
-            val_set_status(i, RESULT_FAIL(TEST_NUM, 4));
+            val_set_status(i, RESULT_FAIL(4));
         else
-            val_set_status(i, RESULT_PASS(TEST_NUM, 1));
+            val_set_status(i, RESULT_PASS);
     }
 
 free_pfdi_details:

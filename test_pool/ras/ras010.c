@@ -41,7 +41,7 @@ payload()
   num_of_mem_blocks = val_ras2_get_mem_info(RAS2_NUM_MEM_BLOCK, 0);
   if (num_of_mem_blocks == 0) {
     val_print(DEBUG, "\n       No nodes in RAS2 table or RAS2 table not present");
-    val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+    val_set_status(index, RESULT_WARNING(01));
     return;
   }
 
@@ -57,11 +57,11 @@ payload()
   }
 
   if (fail_cnt) {
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+    val_set_status(index, RESULT_FAIL(01));
     return;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+  val_set_status(index, RESULT_PASS);
   return;
 }
 

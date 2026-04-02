@@ -46,7 +46,7 @@ payload()
   bdf_tbl_ptr = val_pcie_bdf_table_ptr();
   if ((!bdf_tbl_ptr) || (!bdf_tbl_ptr->num_entries)) {
       val_print(DEBUG, "\n       No entries in BDF table");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
       return;
   }
 
@@ -69,7 +69,7 @@ payload()
                                         &stream_id, &its_id);
     if (status) {
         val_print(DEBUG, "\n       Could not get device info for BDF : 0x%x", bdf);
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(pe_index, RESULT_FAIL(1));
         return;
     }
 
@@ -104,11 +104,11 @@ payload()
   }
 
   if (test_skip == 1)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
   else if (test_fail)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 2));
+      val_set_status(pe_index, RESULT_FAIL(2));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

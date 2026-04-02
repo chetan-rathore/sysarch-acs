@@ -52,7 +52,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, branch_to_test);
 
   val_print(ERROR, "\n       Error : Received Sync Exception type %d", interrupt_type);
-  val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+  val_set_status(index, RESULT_FAIL(01));
 }
 
 static
@@ -71,14 +71,14 @@ payload(void)
 
   if (count == 0) {
       val_print(WARN, "\n       No UART defined by Platform      ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(index, RESULT_SKIP(01));
       return;
   }
 
   while (count != 0) {
       l_uart_base = val_peripheral_get_info(UART_BASE0, count - 1);
       if (l_uart_base == 0) {
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+          val_set_status(index, RESULT_SKIP(02));
           return;
       }
 
@@ -88,7 +88,7 @@ payload(void)
 
       *((volatile uint32_t *)(l_uart_base + UART_RES)) = (uint32_t)(0xDEAD);
 
-      val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(index, RESULT_PASS);
 
       count--;
   }

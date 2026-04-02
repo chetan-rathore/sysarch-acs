@@ -41,9 +41,9 @@ static void payload_check_if_pmuv3_5(void)
 
     /* Read ID_AA64DFR0_EL1.PMUVer[11:8] >= 0b0110 and != 0xF for PMU v3.5 or higher support */
     if ((data < PE_PMUv3p5) || (data == 0xF)) /* 0xF is PMUv3 not supported */
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
     else
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
 }
 
 static void payload_check_if_pmuv3_7(void)
@@ -57,9 +57,9 @@ static void payload_check_if_pmuv3_7(void)
 
     /* Read ID_AA64DFR0_EL1.PMUVer[11:8] >= 0b0111 and != 0xF for PMU v3.7 or higher support */
     if ((data < PE_PMUv3p7) || (data == 0xF))
-        val_set_status(index, RESULT_FAIL(TEST_NUM1, 01));
+        val_set_status(index, RESULT_FAIL(01));
     else
-        val_set_status(index, RESULT_PASS(TEST_NUM1, 01));
+        val_set_status(index, RESULT_PASS);
 }
 
 uint32_t pe040_entry(uint32_t num_pe)

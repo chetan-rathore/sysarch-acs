@@ -37,7 +37,7 @@ payload()
 
   if (!timer_num) {
       val_print(DEBUG, "\n       No System timers are defined  ");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -53,7 +53,7 @@ payload()
 
       if (cnt_ctl_base == 0) {
           val_print(DEBUG, "\n       CNTCTL BASE is zero             ");
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+          val_set_status(index, RESULT_SKIP(2));
           return;
       }
       //Read CNTACR to determine whether access permission from NS state is permitted
@@ -61,7 +61,7 @@ payload()
       if (status == ACS_STATUS_SKIP) {
           val_print(DEBUG,
                     "\n       Security doesn't allow access to timer registers      ");
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 3));
+          val_set_status(index, RESULT_SKIP(3));
           return;
       }
 
@@ -71,13 +71,13 @@ payload()
       if (data != val_mmio_read(cnt_ctl_base + CNTTIDR)) {
           val_print(DEBUG, "\n       Read-write check failed for"
               " CNTCTLBase.CNTTIDR, expected value %x ", data);
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+          val_set_status(index, RESULT_FAIL(1));
           return;
       }
 
       if (cnt_base_n == 0) {
           val_print(DEBUG, "\n       CNT_BASE_N is zero                 ");
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 4));
+          val_set_status(index, RESULT_SKIP(4));
           return;
       }
 
@@ -89,8 +89,8 @@ payload()
       val_mmio_write64(cnt_base_n + CNTPCT_LOWER, (data1 - ARBIT_VALUE));
 
       if (val_mmio_read64(cnt_base_n + CNTPCT_LOWER) < data1) {
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
           val_print(DEBUG, "\n       CNTBaseN: CNTPCT reg must be read-only ");
+          val_set_status(index, RESULT_FAIL(2));
           return;
       }
 
@@ -102,8 +102,8 @@ payload()
       val_mmio_write64(cnt_base_n + CNTVCT_LOWER, (data1 - ARBIT_VALUE));
 
       if (val_mmio_read64(cnt_base_n + CNTVCT_LOWER) < data1) {
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
           val_print(DEBUG, "\n       CNTBaseN: CNTVCT reg must be read-only ");
+          val_set_status(index, RESULT_FAIL(3));
           return;
       }
 
@@ -116,8 +116,8 @@ payload()
       val_mmio_write(cnt_base_n + CNTBaseN_CNTFRQ, (data - ARBIT_VALUE));
 
       if (val_mmio_read(cnt_base_n + CNTBaseN_CNTFRQ) != data) {
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
           val_print(DEBUG, "\n       CNTBaseN: CNTFRQ reg must be read-only ");
+          val_set_status(index, RESULT_FAIL(4));
           return;
       }
 
@@ -129,7 +129,7 @@ payload()
               "CNTBaseN.CNTP_CTL, expected value %x ", data);
           val_print(DEBUG, "\n       Read value %x ",
                     val_mmio_read(cnt_base_n + CNTP_CTL));
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 5));
+          val_set_status(index, RESULT_FAIL(5));
           val_mmio_write(cnt_base_n + CNTP_CTL, 0x0); // Disable the timer before return
           return;
       }
@@ -145,7 +145,7 @@ payload()
           val_print(DEBUG, "\n       Read-write check failed for "
               "CNTBaseN.CNTP_CVAL[31:0], read value %x ",
               val_mmio_read(cnt_base_n + CNTP_CVAL_LOWER));
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 6));
+          val_set_status(index, RESULT_FAIL(6));
           return;
       }
 
@@ -153,16 +153,16 @@ payload()
           val_print(DEBUG, "\n       Read-write check failed for"
               " CNTBaseN.CNTP_CVAL[63:32], read value %x ",
               val_mmio_read(cnt_base_n + CNTP_CVAL_HIGHER));
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 7));
+          val_set_status(index, RESULT_FAIL(7));
           return;
       }
 
-      val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(index, RESULT_PASS);
   }
 
   if (!ns_timer) {
       val_print(DEBUG, "\n       No non-secure systimer implemented");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 5));
+      val_set_status(index, RESULT_SKIP(5));
       return;
   }
 

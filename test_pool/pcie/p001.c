@@ -35,12 +35,12 @@ payload(void)
   if (num_ecam == 0) {
       val_print(ERROR, "\n       No ECAMs discovered              ");
       if (g_build_sbsa)
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+          val_set_status(index, RESULT_FAIL(1));
       else
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+          val_set_status(index, RESULT_SKIP(1));
       return;
   }
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 
 }
 

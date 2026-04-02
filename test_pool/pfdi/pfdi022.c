@@ -61,7 +61,7 @@ pfdi_invalid_feature_check(void)
     val_pfdi_invalidate_ret_params(&pfdi_buffer->inval[i]);
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
   return;
 }
 
@@ -79,7 +79,7 @@ static void payload_invalid_pe_feature_check(void *arg)
                             val_memory_calloc(num_pe, sizeof(PFDI_INVAL_RETURNS));
   if (g_pfdi_invalid_feature == NULL) {
     val_print(ERROR, "\n       Allocation for PFDI Invalid Feature Failed \n");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -103,7 +103,7 @@ static void payload_invalid_pe_feature_check(void *arg)
 
       if (timeout == 0) {
         val_print(ERROR, "\n       **Timed out** for PE index = %d", i);
-        val_set_status(i, RESULT_FAIL(TEST_NUM, 2));
+        val_set_status(i, RESULT_FAIL(2));
         goto free_pfdi_details;
       }
     }
@@ -140,9 +140,9 @@ static void payload_invalid_pe_feature_check(void *arg)
     }
 
     if (test_fail)
-      val_set_status(i, RESULT_FAIL(TEST_NUM, 3));
+      val_set_status(i, RESULT_FAIL(3));
     else
-      val_set_status(i, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(i, RESULT_PASS);
   }
 
 free_pfdi_details:

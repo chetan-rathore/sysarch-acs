@@ -46,7 +46,7 @@ static void payload_check_s2_64kb_granule_support(void)
 
     if (data == 0) {
         val_print(DEBUG, "\n       EL2 not implemented, Skipping the test.");
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_SKIP(01));
         return;
     }
 
@@ -56,11 +56,11 @@ static void payload_check_s2_64kb_granule_support(void)
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64MMFR0_EL1), 36, 39);
     if (data != 0x2) {
         val_print(ERROR, "\n       64KB granule not supported at stage 2.");
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_FAIL(01));
         return;
     }
 
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
     return;
 }
 
@@ -78,7 +78,7 @@ static void payload_check_peripheral_addr_64kb_apart(void)
 
     if (peri_count < 2) {
         val_print(DEBUG, "\n       No or one peripherals reported by the system.");
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM1, 01));
+        val_set_status(pe_index, RESULT_SKIP(01));
         return;
     }
 
@@ -107,9 +107,9 @@ static void payload_check_peripheral_addr_64kb_apart(void)
     }
 
     if (fail_cnt) {
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM1, 01));
+        val_set_status(pe_index, RESULT_FAIL(01));
     } else {
-        val_set_status(pe_index, RESULT_PASS(TEST_NUM1, 01));
+        val_set_status(pe_index, RESULT_PASS);
     }
 }
 

@@ -50,7 +50,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(DEBUG, "\n       Received exception of type: %d", interrupt_type);
-  val_set_status(pe_index, RESULT_PASS(test_num, 01));
+  val_set_status(pe_index, RESULT_PASS);
 }
 
 
@@ -137,7 +137,7 @@ payload(void *arg)
   if (status)
   {
       val_print(ERROR, "\n       Failed in installing the exception handler");
-      val_set_status(pe_index, RESULT_FAIL(test_num, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
 
@@ -233,7 +233,7 @@ payload(void *arg)
       val_pcie_disable_msa(bdf);
 
       /* Set test status as FAIL, update to PASS in exception handler */
-      val_set_status(pe_index, RESULT_FAIL(test_num, 02));
+      val_set_status(pe_index, RESULT_FAIL(02));
 
       /* If test runs for atleast an endpoint */
       test_skip = 0;
@@ -272,12 +272,12 @@ exception_return:
   if (test_skip == 1) {
       val_print(DEBUG,
         "\n       Found no target device type with MMIO BAR. Skipping test.");
-      val_set_status(pe_index, RESULT_SKIP(test_num, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   }
   else if (test_fails)
-      val_set_status(pe_index, RESULT_FAIL(test_num, test_fails));
+      val_set_status(pe_index, RESULT_FAIL(test_fails));
   else
-      val_set_status(pe_index, RESULT_PASS(test_num, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

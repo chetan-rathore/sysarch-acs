@@ -31,25 +31,25 @@ static void payload(void)
     if (!g_crypto_support) {
         val_print_primary_pe(DEBUG, "\n       Crypto extension not supported",
                                                                                       0, index);
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+        val_set_status(index, RESULT_SKIP(1));
         return;
   }
 
     /* Read ID_AA64ISAR0_EL1.SHA3[35:32] for cryptography support for SHA3 */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64ISAR0_EL1), 32, 35);
     if (data == 0x1)
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
     else {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
         return;
     }
 
     /* Read ID_AA64ISAR0_EL1.SHA3[15:12] for cryptography support for SHA512 */
     data = VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64ISAR0_EL1), 12, 15);
     if (data == 0x2)
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
     else
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
 }
 
 uint32_t pe034_entry(uint32_t num_pe)

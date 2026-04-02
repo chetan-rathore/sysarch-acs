@@ -48,11 +48,11 @@ payload()
     val_print(ERROR, "\n       Counter frequency is %ld KHz", print_freq);
 
   if (counter_freq >= 50*1000*1000) {
-      val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(index, RESULT_PASS);
       return;
   }
 
-  val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+  val_set_status(index, RESULT_FAIL(1));
 }
 
 uint32_t

@@ -318,7 +318,7 @@ payload(void)
 
       if (val_pcie_find_capability(erp_bdf, PCIE_ECAP, ECID_AER, &rp_aer_offset) != PCIE_SUCCESS) {
           val_print(ERROR, "\n       AER Capability not supported for RP : 0x%x", erp_bdf);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+          val_set_status(pe_index, RESULT_FAIL(01));
           return;
       }
 
@@ -327,7 +327,7 @@ payload(void)
       if (status == PCIE_CAP_NOT_FOUND)
       {
           val_print(ERROR, "\n       ECID_DPC not found");
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+          val_set_status(pe_index, RESULT_FAIL(01));
           return;
       }
 
@@ -356,7 +356,7 @@ payload(void)
 
       if (status) {
           val_print(ERROR, "\n       iovirt_get_device failed for bdf 0x%x", e_bdf);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+          val_set_status(pe_index, RESULT_FAIL(01));
           return;
       }
 
@@ -364,7 +364,7 @@ payload(void)
       status = val_gic_request_msi(erp_bdf, device_id, its_id, lpi_int_id + instance, msi_index);
       if (status) {
           val_print(ERROR, "\n       MSI Assignment failed for bdf : 0x%x", erp_bdf);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+          val_set_status(pe_index, RESULT_FAIL(02));
           return;
       }
 
@@ -372,7 +372,7 @@ payload(void)
 
       if (status) {
           val_print(ERROR, "\n       Intr handler registration failed: 0x%x", lpi_int_id);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+          val_set_status(pe_index, RESULT_FAIL(02));
           return;
       }
 
@@ -387,7 +387,7 @@ err_check:
       clear_status_bits(e_bdf, aer_offset, 0, 0);
       if (inject_error(e_bdf, instance, aer_offset))
       {
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+          val_set_status(pe_index, RESULT_FAIL(03));
           return;
       }
 
@@ -396,7 +396,7 @@ err_check:
       clear_status_bits(e_bdf, aer_offset, AER_ERROR_MASK, 0);
       if (inject_error(e_bdf, instance, aer_offset))
       {
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 04));
+          val_set_status(pe_index, RESULT_FAIL(04));
           return;
       }
       mask_value = 0;
@@ -405,7 +405,7 @@ err_check:
       clear_status_bits(e_bdf, aer_offset, 0, AER_UNCORR_SEVR_FATAL);
       if (inject_error(e_bdf, instance, aer_offset))
       {
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 05));
+          val_set_status(pe_index, RESULT_FAIL(05));
           return;
       }
 
@@ -425,9 +425,9 @@ err_check:
   }
 
   if (test_skip == 1)
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 
   return;
 
@@ -444,7 +444,7 @@ e023_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return RESULT_SKIP(1);
       val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 

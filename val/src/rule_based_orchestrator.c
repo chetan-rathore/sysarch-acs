@@ -55,10 +55,10 @@ static uint32_t check_rule_support(RULE_ID_e rule_id)
         /* Report if rule is not supported by ACS across all available PALs*/
         if (plat_bitmask == 0) {
             /* Not covered by ACS in any supported PAL */
-            return TEST_NOT_IMPLEMENTED;
+            return RESULT_NOT_IMPLEMENTED;
         } else {
             /* Test not supported with current PAL */
-            return TEST_PAL_NOT_SUPPORTED;
+            return RESULT_PAL_NOT_SUPPORTED;
         }
     }
 
@@ -484,14 +484,14 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
                     test_entry_func_table[rule_test_map[rule_list[i]].test_entry_id](num_pe);
 
                 /* If precheck fails, report alias rule status as SKIP as it wont be applicable */
-                if (precheck_status == TEST_FAIL) {
-                    rule_test_status = TEST_SKIP;
+                if (precheck_status == TEST_FAIL ||  (GET_STATE(precheck_status) == TEST_FAIL)) {
+                    rule_test_status = RESULT_SKIP(0);
                     goto report_status;
                 }
             }
 
             /* reset rule test status to unknown */
-            rule_test_status = TEST_STATUS_UNKNOWN;
+            rule_test_status = TEST_STATE_UNKNOWN;
             /* init a flag to track partial coverage */
             test_ns_flag = 0;
             /* track whether any base rule completed with PASS */
@@ -545,20 +545,20 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
                 }
                 else
                 {
-                    val_print(ERROR, "\n\n  Rule failed due to NULL entry \n\r ");
-                    base_rule_status = TEST_FAIL;
+                    val_print(ERROR, "\n\n  Rule failed due to NULL entry \n\r ", 0);
+                    base_rule_status = RESULT_FAIL(1);
                 }
                 /* record base rule status */
                 rule_status_map[base_rule_id] = base_rule_status;
-                if (base_rule_status == TEST_PASS)
+                if (GET_STATE(base_rule_status) == TEST_PASS)
                     test_pass_flag = 1;
-                if (base_rule_status == TEST_WARN)
+                if (GET_STATE(base_rule_status) == TEST_WARNING)
                     test_warn_flag = 1;
                 /* report status of base rule run */
                 print_rule_test_status(base_rule_list[j], 1, base_rule_status);
                 /* update overall alias rule status */
                 if ((base_rule_status > rule_test_status)
-                                      || (rule_test_status == TEST_STATUS_UNKNOWN)) {
+                                      || (rule_test_status == TEST_STATE_UNKNOWN)) {
                     rule_test_status = base_rule_status;
                 }
             }
@@ -567,15 +567,16 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
                   WARN or SKIP, report partial coverage.
                2) If any base rule was not supported and the aggregated alias
                   status is PASS, report partial coverage. */
-            if ((test_pass_flag &&
-                 ((rule_test_status == TEST_SKIP) ||
-                  (rule_test_status == TEST_WARN))) ||
-                (test_ns_flag && (rule_test_status == TEST_PASS))) {
-                rule_test_status = TEST_PART_COV;
-            }
-            /* If the alias only saw WARN/SKIP outcomes, prefer WARN over SKIP. */
-            if (test_warn_flag && (rule_test_status == TEST_SKIP)) {
-                rule_test_status = TEST_WARN;
+	    if ((test_pass_flag &&
+                 ((GET_STATE(rule_test_status) == TEST_SKIP) ||
+                  (GET_STATE(rule_test_status) == TEST_WARNING))) ||
+                (test_ns_flag &&
+                (GET_STATE(rule_test_status) == TEST_PASS))) {
+                  rule_test_status = RESULT_PARTIAL_COVERED;
+             }
+	    /* If the alias only saw WARN/SKIP outcomes, prefer WARN over SKIP. */
+            if (test_warn_flag && (GET_STATE(rule_test_status) == TEST_SKIP)) {
+                rule_test_status = TEST_WARNING;
             }
 
             /* Print end header for alias rule */
@@ -593,7 +594,7 @@ run_tests(RULE_ID_e *rule_list, uint32_t list_size)
             else
             {
                 val_print(ERROR, "\n\n  Rule failed due to NULL entry \n\r ", 0);
-                rule_test_status = TEST_FAIL;
+                rule_test_status = RESULT_FAIL(1);
             }
         }
 report_status:

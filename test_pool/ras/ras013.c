@@ -47,7 +47,7 @@ static void payload(void)
      val_print(DEBUG, "\n       No RAS Nodes found in AEST table.");
      val_print(DEBUG, "\n       The test must be considered fail if PE \
                                         supports RAS nodes");
-      val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+      val_set_status(index, RESULT_WARNING(01));
       return;
   }
   /* Get Number of RAS nodes */
@@ -95,16 +95,16 @@ static void payload(void)
   }
 
   if (fail_cnt) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(index, RESULT_FAIL(01));
       return;
   } else if (test_skip) {
       val_print(ERROR, "\n       No Resource are Shared between two or more PE. "
                                "Skipping... ", 0);
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 03));
+      val_set_status(index, RESULT_SKIP(03));
       return;
     }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t ras013_entry(uint32_t num_pe)

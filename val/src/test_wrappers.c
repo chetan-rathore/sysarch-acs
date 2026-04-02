@@ -37,32 +37,33 @@ extern RULE_ID_e g_base_rule;
 static uint32_t run_test_entries(TEST_ENTRY_ID_e *tst_entry_list, uint32_t num_pe)
 {
     uint32_t i;
-    uint32_t entry_status = TEST_STATUS_UNKNOWN;
-    uint32_t rule_status = TEST_STATUS_UNKNOWN;
+    uint32_t entry_status = TEST_STATE_UNKNOWN;
+    uint32_t rule_status = TEST_STATE_UNKNOWN;
     bool test_pass_flag = 0;
     bool test_ns_flag = 0;
     bool test_warn_flag = 0;
+
 
     for (i = 0; tst_entry_list[i] != TEST_ENTRY_SENTINEL ; i++) {
         if (test_entry_func_table[tst_entry_list[i]] != NULL) {
             entry_status = test_entry_func_table[tst_entry_list[i]](num_pe);
         } else {
             /* If entry is NULL, then the entry is not supported in current PAL */
-            entry_status = TEST_PART_COV;
+            entry_status = RESULT_PARTIAL_COVERED;
             test_ns_flag = 1;
         }
 
         /* Track atleast one pass */
-        if (entry_status == TEST_PASS) {
+        if (GET_STATE(entry_status) == TEST_PASS) {
             test_pass_flag = 1;
         }
         /* Track atleast one warn */
-        if (entry_status == TEST_WARN) {
+        if (GET_STATE(entry_status) == TEST_WARNING) {
             test_warn_flag = 1;
         }
 
         /* Update overall status for the rule */
-        if ((entry_status > rule_status) || (rule_status == TEST_STATUS_UNKNOWN)) {
+        if ((entry_status > rule_status) || (rule_status == TEST_STATE_UNKNOWN)) {
             rule_status = entry_status;
         }
     }
@@ -70,14 +71,16 @@ static uint32_t run_test_entries(TEST_ENTRY_ID_e *tst_entry_list, uint32_t num_p
     /* Mixed PASS+SKIP/WARN or PASS+unsupported entry should be reported as partial coverage
        rather than worst-case max. */
     if ((test_pass_flag &&
-        ((rule_status == TEST_SKIP) || (rule_status == TEST_WARN))) ||
-        (test_ns_flag && (rule_status == TEST_PASS))) {
-        rule_status = TEST_PART_COV;
+        ((GET_STATE(rule_status) == TEST_SKIP) ||
+         (GET_STATE(rule_status) == TEST_WARNING))) ||
+        (test_ns_flag &&
+         (GET_STATE(rule_status) == TEST_PASS))) {
+        rule_status = RESULT_PARTIAL_COVERED;
     }
 
     /* If the combined result only saw WARN/SKIP outcomes, prefer WARN over SKIP. */
     if (test_warn_flag && (rule_status == TEST_SKIP)) {
-        rule_status = TEST_WARN;
+        rule_status = TEST_WARNING;
     }
 
     return rule_status;
@@ -99,17 +102,17 @@ static uint32_t run_pcie_static_and_exerciser(TEST_ENTRY_ID_e *static_list,
 
     /* Report partial coverage for mixed PASS+SKIP/WARN aggregated results. */
     if (((static_status == TEST_PASS) &&
-        ((exr_status == TEST_SKIP) || (exr_status == TEST_WARN))) ||
+        ((exr_status == TEST_SKIP) || (exr_status == TEST_WARNING))) ||
         ((exr_status == TEST_PASS) &&
-        ((static_status == TEST_SKIP) || (static_status == TEST_WARN))))
-        return TEST_PART_COV;
+        ((static_status == TEST_SKIP) || (static_status == TEST_WARNING))))
+        return TEST_PARTIAL_COVERED;
 
     /* For all other combinations, fall back to severity-based aggregation. */
     rule_status = max_status(static_status, exr_status);
     /* If the combined result only saw WARN/SKIP outcomes, prefer WARN over SKIP. */
-    if (((static_status == TEST_WARN) || (exr_status == TEST_WARN)) &&
+    if (((static_status == TEST_WARNING) || (exr_status == TEST_WARNING)) &&
         (rule_status == TEST_SKIP)) {
-        rule_status = TEST_WARN;
+        rule_status = TEST_WARNING;
     }
 
     return rule_status;

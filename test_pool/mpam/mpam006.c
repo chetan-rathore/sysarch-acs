@@ -227,7 +227,7 @@ payload(void)
     llc_index = val_cache_get_llc_index();
     if (llc_index == CACHE_TABLE_EMPTY) {
         val_print(ERROR, "\n       Cache info table empty");
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
         return;
     }
 
@@ -235,7 +235,7 @@ payload(void)
     llc_identifier = val_cache_get_info(CACHE_ID, llc_index);
     if (llc_identifier == INVALID_CACHE_INFO) {
         val_print(ERROR, "\n       LLC invalid in PPTT");
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(index, RESULT_FAIL(02));
         return;
     }
 
@@ -244,7 +244,7 @@ payload(void)
     val_print(DEBUG, "\n       MSC count = %d", msc_node_cnt);
 
     if (msc_node_cnt == 0) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+        val_set_status(index, RESULT_FAIL(03));
         return;
     }
 
@@ -254,7 +254,7 @@ payload(void)
 
     if ((src_buf == NULL) || (dest_buf == NULL)) {
         val_print(ERROR, "\n       Mem allocation failed");
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
+        val_set_status(index, RESULT_FAIL(04));
         if (dest_buf != NULL)
             val_memory_free_aligned(dest_buf);
         if (src_buf != NULL)
@@ -332,7 +332,7 @@ payload(void)
 
     /* Test fails if storage_value1 is non zero or storage_value2 is zero */
     if (fail_cnt) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 05));
+        val_set_status(index, RESULT_FAIL(05));
 
         /*Restore MPAM2_EL2 settings */
         val_mpam_reg_write(MPAM2_EL2, mpam2_el2_temp);
@@ -351,7 +351,7 @@ payload(void)
     val_memory_free_aligned(src_buf);
     val_memory_free_aligned(dest_buf);
 
-    val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(index, RESULT_PASS);
     return;
 }
 

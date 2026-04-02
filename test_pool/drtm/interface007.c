@@ -33,7 +33,7 @@ payload(uint32_t num_pe)
   /*Status lessthan zero are error case*/
   if (status < DRTM_ACS_SUCCESS) {
     val_print(ERROR, "\n       DRTM query Min memory req feature failed err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
@@ -46,9 +46,9 @@ payload(uint32_t num_pe)
   } else {
     val_print(ERROR,
               "\n       Min memory requirement feature value not available in return value");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+    val_set_status(index, RESULT_FAIL(2));
   }
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

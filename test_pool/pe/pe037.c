@@ -38,7 +38,7 @@ void payload(void)
 
     if (data == 0) {
         /* SVE Not Implemented Skip the test */
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+        val_set_status(index, RESULT_SKIP(02));
         return;
     }
 
@@ -49,12 +49,12 @@ void payload(void)
 
     if (data == 0)
         /* SPE Not Implemented Skip the test */
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 03));
+        val_set_status(index, RESULT_SKIP(03));
     if (data == 1)
         /* SPE Implemented but SPEv1p1 not implemented. Fail the test*/
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
     else
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
 
 }
 

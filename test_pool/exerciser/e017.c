@@ -89,7 +89,7 @@ payload(void *arg)
   if (status)
   {
       val_print(ERROR, "\n       Failed in installing the exception handler");
-      val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
 
@@ -102,7 +102,7 @@ payload(void *arg)
   {
       val_print(ERROR,
             "\n       Unable to allocate memory for buffer of %x pages", TEST_DATA_NUM_PAGES);
-      val_set_status(pe_index, RESULT_FAIL(test_data->test_num, 02));
+      val_set_status(pe_index, RESULT_FAIL(02));
       return;
   }
 
@@ -210,11 +210,11 @@ exception_return:
   val_memory_free_pages(dram_buf_virt, TEST_DATA_NUM_PAGES);
 
   if (test_skip)
-  val_set_status(pe_index, RESULT_SKIP(test_data->test_num, 01));
+  val_set_status(pe_index, RESULT_SKIP(01));
   else if (fail_cnt)
-      val_set_status(pe_index, RESULT_FAIL(test_data->test_num, fail_cnt));
+      val_set_status(pe_index, RESULT_FAIL(fail_cnt));
   else
-      val_set_status(pe_index, RESULT_PASS(test_data->test_num, 01));
+      val_set_status(pe_index, RESULT_PASS);
   return;
 
 test_skip_unimplemented:
@@ -222,7 +222,7 @@ test_skip_unimplemented:
       val_pcie_enable_bme(erp_bdf);
     /* Return the buffer to the heap manager */
     val_memory_free_pages(dram_buf_virt, TEST_DATA_NUM_PAGES);
-    val_set_status(pe_index, RESULT_WARN(test_data->test_num, 02));
+    val_set_status(pe_index, RESULT_WARNING(02));
 }
 
 uint32_t
@@ -238,7 +238,7 @@ e017_entry(uint32_t num_pe)
   status = val_initialize_test(data.test_num, test_entries[0].desc, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_configurable_payload(&data, payload);
   }
 
@@ -263,7 +263,7 @@ e034_entry(uint32_t num_pe)
   status = val_initialize_test(data.test_num, test_entries[1].desc, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return TEST_SKIP;
       val_run_test_configurable_payload(&data, payload);
   }
 

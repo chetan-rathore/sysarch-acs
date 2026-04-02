@@ -37,7 +37,7 @@ void intr_handler(void)
     uint32_t ctl;
 
     val_print(DEBUG, "\n       Received Oflow error interrupt %d     ", intr_num);
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
 
     ctl = val_mpam_mmr_read(msc_index, REG_MSMON_CFG_MBWU_CTL);
     ctl &= ~(((uint32_t)1 << MBWU_CTL_OFLOW_STATUS_BIT_SHIFT) |
@@ -129,7 +129,7 @@ void payload(void)
             /* Register the interrupt handler */
             status = val_gic_install_isr(intr_num, intr_handler);
             if (status) {
-                val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+                val_set_status(pe_index, RESULT_FAIL(01));
                 val_mpam_reg_write(MPAM2_EL2, mpam2_el2_temp);
                 return;
             }
@@ -150,7 +150,7 @@ void payload(void)
 
             if ((src_buf == NULL) || (dest_buf == NULL)) {
                 val_print(ERROR, "\n       Mem allocation for buffers failed", 0x0);
-                val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+                val_set_status(pe_index, RESULT_FAIL(02));
                 val_mpam_reg_write(MPAM2_EL2, mpam2_el2_temp);
                 return;
             }
@@ -193,7 +193,7 @@ void payload(void)
             if (isr_completion_flag == 0) {
                 val_print(ERROR,
                     "\n       MSC MSMON Oflow Err Interrupt not received on %d", intr_num);
-                val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+                val_set_status(pe_index, RESULT_FAIL(03));
                 val_mpam_reg_write(MPAM2_EL2, mpam2_el2_temp);
                 return;
             }
@@ -205,7 +205,7 @@ void payload(void)
                   (((esr_value >> ESR_OVRWR_SHIFT) & ESR_OVRWR_MASK) != 0)) {
                 val_print(ERROR,
                     "\n       MPAMF_ESR.ERRCODE/OVRWR is not cleared by ISR for MSC %d", msc_index);
-                val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 04));
+                val_set_status(pe_index, RESULT_FAIL(04));
                 val_mpam_reg_write(MPAM2_EL2, mpam2_el2_temp);
                 return;
             }
@@ -217,11 +217,11 @@ void payload(void)
 
     /* Set the test status to Skip if none of the MPAM nodes implement error interrupts */
     if (intr_count == 0) {
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_SKIP(01));
         return;
     }
 
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
     return;
 }
 

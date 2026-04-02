@@ -44,7 +44,7 @@ static void payload(void)
     val_print(DEBUG, "\n       MSC count = %d", msc_node_cnt);
 
     if (msc_node_cnt == 0) {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
         return;
     }
 
@@ -105,9 +105,9 @@ static void payload(void)
     }
 
     if (test_fails)
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(index, RESULT_FAIL(02));
     else
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
 }
 
 uint32_t mpam005_entry(uint32_t num_pe)

@@ -123,11 +123,11 @@ static void payload_pmcg_present(void)
     uint32_t result = check_smmu_pmcg(0);
 
     if (result == ACS_STATUS_SKIP)
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(index, RESULT_SKIP(01));
     else
         val_set_status(index, result == ACS_STATUS_FAIL ?
-                    RESULT_FAIL(TEST_NUM, 01) :
-                    RESULT_PASS(TEST_NUM, 01));
+                    RESULT_FAIL(01) :
+                    RESULT_PASS);
 }
 
 /**
@@ -139,11 +139,11 @@ static void payload_counter_check(void)
     uint32_t result = check_smmu_pmcg(1);
 
     if (result == ACS_STATUS_SKIP)
-        val_set_status(index, RESULT_SKIP(TEST_NUM1, 01));
+        val_set_status(index, RESULT_SKIP(01));
     else
         val_set_status(index, result == ACS_STATUS_FAIL ?
-                    RESULT_FAIL(TEST_NUM1, 01) :
-                    RESULT_PASS(TEST_NUM1, 01));
+                    RESULT_FAIL(01) :
+                    RESULT_PASS);
 }
 
 /**

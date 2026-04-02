@@ -84,12 +84,12 @@ payload()
   }
 
   if (test_fails)
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(index, RESULT_FAIL(01));
   else if (!num_dma_req) {
       val_print(DEBUG, "\n       No DMA requestors present");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+      val_set_status(index, RESULT_SKIP(02));
   } else {
-      val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(index, RESULT_PASS);
   }
 }
 

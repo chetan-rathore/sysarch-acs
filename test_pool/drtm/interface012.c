@@ -33,7 +33,7 @@ payload(uint32_t num_pe)
   if (status != DRTM_ACS_SUCCESS) {
     val_print(DEBUG,
               "\n       DRTM_SET_TCB_HASH function not supported err=%d", status);
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+    val_set_status(index, RESULT_SKIP(1));
     return;
   }
 
@@ -42,11 +42,11 @@ payload(uint32_t num_pe)
   if (status != DRTM_ACS_SUCCESS) {
     val_print(ERROR,
               "\n       DRTM_LOCK_TCB_HASHES function not supported err=%d", status);
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

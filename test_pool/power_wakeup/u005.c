@@ -45,9 +45,10 @@ isr_failsafe()
      is hit and test interrupt is not rcvd
   */
   if (g_timer_int_rcvd == 0) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(index, RESULT_FAIL(1));
   }
-  val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+  val_set_status(index, RESULT_FAIL(1));
+
   intid = val_timer_get_info(TIMER_INFO_PHY_EL1_INTID, 0);
   val_gic_end_of_interrupt(intid);
 }
@@ -63,7 +64,7 @@ isr5()
   val_timer_disable_system_timer((addr_t)cnt_base_n);
   val_print(TRACE, "       Received Sys timer interrupt\n");
   g_timer_int_rcvd = 1;
-  val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+  val_set_status(index, RESULT_PASS);
   intid = val_timer_get_info(TIMER_INFO_SYS_INTID, timer_num);
   val_gic_end_of_interrupt(intid);
   val_timer_set_phy_el1(0);
@@ -104,7 +105,7 @@ payload5()
   timer_num = val_timer_get_info(TIMER_INFO_NUM_PLATFORM_TIMERS, 0);
   if (!timer_num) {
       val_print(DEBUG, "\n       No system timers implemented");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
       return;
   }
 
@@ -117,14 +118,14 @@ payload5()
       status = val_timer_skip_if_cntbase_access_not_allowed(timer_num);
       if (status == ACS_STATUS_SKIP) {
           val_print(DEBUG, "       Timer cntbase can't accessed\n");
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 2));
+          val_set_status(index, RESULT_SKIP(2));
           return;
       }
 
       cnt_base_n = val_timer_get_info(TIMER_INFO_SYS_CNT_BASE_N, timer_num);
       if (cnt_base_n == 0) {
           val_print(DEBUG, "       Timer cntbase is invalid\n");
-          val_set_status(index, RESULT_SKIP(TEST_NUM, 3));
+          val_set_status(index, RESULT_SKIP(3));
           return;
       }
 
@@ -158,7 +159,7 @@ payload5()
           if (!(g_timer_int_rcvd || g_failsafe_int_rcvd)) {
               intid = val_timer_get_info(TIMER_INFO_SYS_INTID, timer_num);
               val_gic_clear_interrupt(intid);
-              val_set_status(index, RESULT_SKIP(TEST_NUM, 4));
+              val_set_status(index, RESULT_SKIP(4));
               val_print(DEBUG,
                         "\n       PE wakeup by some other events/int or didn't enter WFI", 0);
           }
@@ -167,14 +168,14 @@ payload5()
 
       } else{
           val_print(WARN, "\n       GIC Install Handler Failed...");
-          val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+          val_set_status(index, RESULT_FAIL(2));
           return;
       }
   }
 
   if (!ns_timer) {
       val_print(WARN, "       No non-secure systimer implemented\n");
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 5));
+      val_set_status(index, RESULT_SKIP(5));
       return;
   }
 }

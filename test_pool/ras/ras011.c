@@ -89,7 +89,7 @@ payload_poison_supported()
   status = val_ras_get_info(RAS_INFO_NUM_NODES, 0, &num_node);
   if (status || (num_node == 0)) {
     val_print(DEBUG, "\n       RAS Nodes not found. Skipping...");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+    val_set_status(index, RESULT_FAIL(01));
     return;
   }
 
@@ -98,7 +98,7 @@ payload_poison_supported()
   status = val_ras_get_info(RAS_INFO_NUM_MC, 0, &num_mc_node);
   if (status || (num_mc_node == 0)) {
     val_print(ERROR, "\n       RAS MC nodes not found. Skipping...");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 01));
+    val_set_status(index, RESULT_SKIP(01));
     return;
   }
 
@@ -107,7 +107,7 @@ payload_poison_supported()
   status = val_ras_get_info(RAS_INFO_NODE_INDEX_FOR_AFF, mpidr, &pe_node_index);
   if (status) {
     val_print(DEBUG, "\n       RAS Node not found for PE");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+    val_set_status(index, RESULT_FAIL(02));
     return;
   }
 
@@ -115,7 +115,7 @@ payload_poison_supported()
   poison_check = val_ras_check_plat_poison_support();
   if (!poison_check) {
     val_print(ERROR, "\n       Poison storage & forward not supported. Skipping...");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+    val_set_status(index, RESULT_SKIP(02));
     return;
   }
 
@@ -164,7 +164,7 @@ payload_poison_supported()
     if (status)
     {
       val_print(ERROR, "\n      Failed in installing the exception handler");
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+      val_set_status(index, RESULT_FAIL(03));
       return;
     }
     branch_to_test = &&exception_return;
@@ -251,13 +251,13 @@ exception_return:
   }
 
   if (fail_cnt)
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
+    val_set_status(index, RESULT_FAIL(04));
   else if (warn_cnt)
-    val_set_status(index, RESULT_WARN(TEST_NUM, 01));
+    val_set_status(index, RESULT_WARNING(01));
   else if (test_skip)
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 03));
+    val_set_status(index, RESULT_SKIP(03));
   else
-    val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(index, RESULT_PASS);
 
   return;
 }
@@ -290,7 +290,7 @@ payload_poison_unsupported()
   status = val_ras_get_info(RAS_INFO_NUM_NODES, 0, &num_node);
   if (status || (num_node == 0)) {
     val_print(DEBUG, "\n       RAS Nodes not found. Skipping...");
-    val_set_status(index, RESULT_FAIL(TEST_NUM1, 01));
+    val_set_status(index, RESULT_FAIL(01));
     return;
   }
 
@@ -299,7 +299,7 @@ payload_poison_unsupported()
   status = val_ras_get_info(RAS_INFO_NUM_MC, 0, &num_mc_node);
   if (status || (num_mc_node == 0)) {
     val_print(ERROR, "\n       RAS MC nodes not found. Skipping...");
-    val_set_status(index, RESULT_SKIP(TEST_NUM1, 01));
+    val_set_status(index, RESULT_SKIP(01));
     return;
   }
 
@@ -308,7 +308,7 @@ payload_poison_unsupported()
   status = val_ras_get_info(RAS_INFO_NODE_INDEX_FOR_AFF, mpidr, &pe_node_index);
   if (status) {
     val_print(DEBUG, "\n       RAS Node not found for PE");
-    val_set_status(index, RESULT_FAIL(TEST_NUM1, 02));
+    val_set_status(index, RESULT_FAIL(02));
     return;
   }
 
@@ -316,7 +316,7 @@ payload_poison_unsupported()
   poison_check = val_ras_check_plat_poison_support();
   if (poison_check) {
     val_print(ERROR, "\n       Poison storage & forward supported. Skipping...");
-    val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+    val_set_status(index, RESULT_SKIP(02));
     return;
   }
 
@@ -365,7 +365,7 @@ payload_poison_unsupported()
     if (status)
     {
       val_print(ERROR, "\n      Failed in installing the exception handler");
-      val_set_status(index, RESULT_FAIL(TEST_NUM1, 03));
+      val_set_status(index, RESULT_FAIL(03));
       return;
     }
     branch_to_test = &&exception_return;
@@ -422,17 +422,17 @@ exception_return:
   }
 
   if (fail_cnt) {
-    val_set_status(index, RESULT_FAIL(TEST_NUM1, 04));
+    val_set_status(index, RESULT_FAIL(04));
     return;
   } else if (warn_cnt) {
-    val_set_status(index, RESULT_WARN(TEST_NUM1, 01));
+    val_set_status(index, RESULT_WARNING(01));
     return;
   } else if (test_skip) {
-    val_set_status(index, RESULT_SKIP(TEST_NUM1, 03));
+    val_set_status(index, RESULT_SKIP(03));
     return;
   }
 
-  val_set_status(index, RESULT_PASS(TEST_NUM1, 01));
+  val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

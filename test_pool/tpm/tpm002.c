@@ -43,7 +43,7 @@ payload()
     tpm_present = val_tpm2_get_info(TPM2_INFO_IS_PRESENT);
     if (tpm_present == 0) {
         val_print(ERROR, "\n       TPM not present");
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_FAIL(01));
         return;
     }
 
@@ -58,7 +58,7 @@ payload()
         tpm_start_method == TPM_IF_START_METHOD_CRB_FFA) {
         val_print(TRACE,
           "\n       Skipping test: TPM locality not accessible at current privilege level");
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_SKIP(01));
         return;
     }
 
@@ -93,7 +93,7 @@ payload()
         cap_locality = VAL_EXTRACT_BITS(interface_id_val, 8, 8); /* CapLocality is bit[8] */
         if (cap_locality == 0) {
             val_print(ERROR, "\n       TPM FIFO interface supports only locality 0");
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+            val_set_status(pe_index, RESULT_FAIL(03));
             return;
         }
     }
@@ -117,7 +117,7 @@ payload()
         cap_locality = VAL_EXTRACT_BITS(interface_id_val, 8, 8); /* CapLocality is bit[8] */
         if (cap_locality == 0) {
             val_print(ERROR, "\n       TPM CRB interface supports only locality 0");
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 04));
+            val_set_status(pe_index, RESULT_FAIL(04));
             return;
         }
     }
@@ -125,12 +125,12 @@ payload()
     /* Step 7: Catch any unknown/unhandled interface types */
     else {
         val_print(ERROR, "\n       Invalid TPM interface type per TPM2 spec");
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 05));
+        val_set_status(pe_index, RESULT_FAIL(05));
         return;
     }
 
     /* Interface supports localities 0 - 4 */
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
     return;
 }
 

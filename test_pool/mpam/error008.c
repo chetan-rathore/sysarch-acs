@@ -88,7 +88,7 @@ void payload(void)
         status    = val_mpam_msc_reset_errcode(msc_index);
 
         if (!status) {
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+            val_set_status(pe_index, RESULT_FAIL(01));
             return;
         }
 
@@ -132,11 +132,11 @@ void payload(void)
     }
 
     if (test_skip)
-        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_SKIP(01));
     else if (test_fail)
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(pe_index, RESULT_FAIL(02));
     else
-        val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(pe_index, RESULT_PASS);
     return;
 }
 

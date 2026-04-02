@@ -42,7 +42,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(TRACE, "\n       Received exception of type in test 861: %d", interrupt_type);
-  val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+  val_set_status(pe_index, RESULT_FAIL(01));
 }
 
 static uint32_t test_sequence_1B(uint8_t *addr)
@@ -59,7 +59,7 @@ static uint32_t test_sequence_1B(uint8_t *addr)
 
       if ((old_value != read_value && read_value == PCIE_UNKNOWN_RESPONSE)) {
         val_print(ERROR, "\n       Error in read and write 1B");
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(pe_index, RESULT_FAIL(02));
         return 1;
       }
 
@@ -84,7 +84,7 @@ uint32_t test_sequence_2B(uint16_t *addr)
 
       if ((old_value != read_value && read_value == PCIE_UNKNOWN_RESPONSE)) {
         val_print(ERROR, "\n       Error in read and write 2B");
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+        val_set_status(pe_index, RESULT_FAIL(03));
         return 1;
       }
 
@@ -115,7 +115,7 @@ payload(void)
   if (status)
   {
       val_print(ERROR, "\n       Failed in installing the exception handler");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
 
@@ -177,12 +177,12 @@ exception_return861:
 
   if (test_skip == 1) {
       val_print(DEBUG, "\n       No MMIO BARs detected. Skipping test");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_SKIP(01));
   }
   else if (test_fails)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, test_fails));
+      val_set_status(pe_index, RESULT_FAIL(test_fails));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

@@ -22,17 +22,19 @@
 #include "acs_drtm.h"
 #include "acs_pfdi.h"
 #include "acs_cxl.h"
+#include "val_status.h"
 
 extern uint32_t g_print_level;
 
 
-#define ACS_STATUS_FAIL      0x90000000
 #define ACS_STATUS_ERR       0xEDCB1234  //some impropable value?
-#define ACS_STATUS_SKIP      0x10000000
-#define ACS_STATUS_PASS      0x0
 #define ACS_STATUS_NIST_PASS 0x1
 #define ACS_INVALID_INDEX    0xFFFFFFFF
-#define ACS_STATUS_UNKNOWN   0xFFFFFFFF
+
+#define ACS_STATUS_FAIL    STATUS_ERROR
+#define ACS_STATUS_PASS    STATUS_SUCCESS
+#define ACS_STATUS_SKIP    STATUS_SKIP
+#define ACS_STATUS_UNKNOWN STATUS_UNKNOWN
 
 #define val_print(level, ...)                     \
     do {                                          \
@@ -66,7 +68,7 @@ extern uint32_t g_print_level;
 typedef struct {
     uint32_t total_rules_run;     /* Total rules/tests that reported a status */
     uint32_t passed;              /* Count of TEST_PASS */
-    uint32_t partial_coverage;    /* Count of TEST_PART_COV */
+    uint32_t partial_coverage;    /* Count of TEST_PARTIAL_COV */
     uint32_t warnings;            /* Count of TEST_WARN */
     uint32_t skipped;             /* Count of TEST_SKIP */
     uint32_t failed;              /* Count of TEST_FAIL */
@@ -101,6 +103,7 @@ typedef char char8_t;
 
 /* GENERIC VAL APIs */
 void val_allocate_shared_mem(void);
+uintptr_t val_get_status_region_base(void);
 void val_free_shared_mem(void);
 //void val_print(uint32_t level, char8_t *string, uint64_t data);
 void val_print_raw(uint64_t uart_addr, uint32_t level, char8_t *string, uint64_t data);

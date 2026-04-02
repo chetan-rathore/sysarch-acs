@@ -40,11 +40,11 @@ static void payload(void)
      * Value 0 indicates nested virtualization not supported
      */
     if (data == 0)
-        val_set_status(index, RESULT_SKIP(TEST_NUM, 02));
+        val_set_status(index, RESULT_SKIP(02));
     else if (data == 0x2)
-        val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+        val_set_status(index, RESULT_PASS);
     else
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+        val_set_status(index, RESULT_FAIL(01));
 }
 
 uint32_t pe036_entry(uint32_t num_pe)

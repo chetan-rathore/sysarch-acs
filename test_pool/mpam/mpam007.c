@@ -53,7 +53,7 @@ static void payload(void)
     /* If PE not implements FEAT_MPAM, FAIL the test */
     if (!((VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64PFR0_EL1), 40, 43) > 0) ||
         (VAL_EXTRACT_BITS(val_pe_reg_read(ID_AA64PFR1_EL1), 16, 19) > 0))) {
-            val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+            val_set_status(index, RESULT_FAIL(01));
             return;
     }
 
@@ -64,7 +64,7 @@ static void payload(void)
 
     if (msc_node_cnt == 0) {
         val_print(ERROR, "\n       MSC count is 0");
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(index, RESULT_FAIL(02));
         return;
     }
 
@@ -190,27 +190,27 @@ static void payload(void)
         if (g_sys_last_lvl_cache == SLC_TYPE_UNKNOWN) {
             val_print(ERROR, "\n       PPTT and memside LLC MSC found, Please provide"
                       "System Last-Level cache info via -slc cmdline option \n");
-            val_set_status(index, RESULT_FAIL(TEST_NUM, 03));
+            val_set_status(index, RESULT_FAIL(03));
             return;
         } else if (g_sys_last_lvl_cache == SLC_TYPE_PPTT_CACHE && pptt_llc_cpor_supported) {
-            val_set_status(index, RESULT_PASS(TEST_NUM, 01));
+            val_set_status(index, RESULT_PASS);
             return;
         } else if (g_sys_last_lvl_cache == SLC_TYPE_MEMSIDE_CACHE && memside_llc_cpor_supported) {
-            val_set_status(index, RESULT_PASS(TEST_NUM, 02));
+            val_set_status(index, RESULT_PASS);
             return;
         } else {
-            val_set_status(index, RESULT_FAIL(TEST_NUM, 04));
             val_print(ERROR, "\n       CPOR unsupported by System last-level cache");
+            val_set_status(index, RESULT_FAIL(04));
             return;
         }
     }
 
     /* if either of PPTT LLC or mem-side LLC supports cache portioning (CPOR) pass the test */
     if (pptt_llc_cpor_supported || memside_llc_cpor_supported) {
-        val_set_status(index, RESULT_PASS(TEST_NUM, 03));
+        val_set_status(index, RESULT_PASS);
     }
     else {
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 05));
+        val_set_status(index, RESULT_FAIL(05));
     }
 
     return;

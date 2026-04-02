@@ -46,7 +46,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(ERROR, "\n       Received Exception of type %d", interrupt_type);
-  val_set_status(index, RESULT_FAIL(TEST_NUM, 01));
+  val_set_status(index, RESULT_FAIL(01));
 }
 
 
@@ -159,7 +159,7 @@ void static payload_secondary()
     dest_buf = src_buf + buf_size;
 
     if ((src_buf == NULL) || (dest_buf == NULL)) {
-        val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+        val_set_status(pe_index, RESULT_FAIL(02));
 
         /* Restore MPAM2_EL2 settings */
         val_mpam_reg_write(MPAM2_EL2, mpam2_el2);
@@ -176,7 +176,7 @@ void static payload_secondary()
 
     /* Restore MPAM2_EL2 settings */
     val_mpam_reg_write(MPAM2_EL2, mpam2_el2);
-    val_set_status(pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(pe_index, RESULT_PASS);
 
     return;
 }
@@ -261,7 +261,7 @@ payload_primary(void)
     if (mbwmin_node_cnt == 0) {
         val_print(INFO,
                 "\n       %d MSC Memory Nodes support MBW Min Limit Partitioning", mbwmin_node_cnt);
-        val_set_status(primary_pe_index, RESULT_SKIP(TEST_NUM, 01));
+        val_set_status(primary_pe_index, RESULT_SKIP(01));
         return;
     }
 
@@ -278,7 +278,7 @@ payload_primary(void)
     if (status)
     {
         val_print(ERROR, "\n       Failed in installing the exception handler");
-        val_set_status(primary_pe_index, RESULT_FAIL(TEST_NUM, 03));
+        val_set_status(primary_pe_index, RESULT_FAIL(03));
         return;
     }
 
@@ -319,7 +319,7 @@ payload_primary(void)
                                                     num_pe_cont);
 
                 if (alloc_status == 0) {
-                    val_set_status(primary_pe_index, RESULT_FAIL(TEST_NUM, 04));
+                    val_set_status(primary_pe_index, RESULT_FAIL(04));
                     val_mpam_reg_write(MPAM2_EL2, mpam2_el2);
                     return;
                 }
@@ -352,7 +352,7 @@ payload_primary(void)
                 if (!val_mpam_get_mbwumon_count(msc_index)) {
                     val_print(INFO,
                         "\n       No MBWU Monitor found to validate the test. Skipping test");
-                        val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 02));
+                        val_set_status(pe_index, RESULT_SKIP(02));
                         contend_flag = 0;
                         return;
                 }
@@ -478,7 +478,7 @@ payload_primary(void)
                 if (counter[msc_index][rsrc_index][scenario_cnt] <
                                         counter[msc_index][rsrc_index][scenario_cnt + 1]) {
                         val_print(ERROR, "\n       Failed for msc_index : %d", msc_index);
-                        val_set_status(primary_pe_index, RESULT_FAIL(TEST_NUM, 05));
+                        val_set_status(primary_pe_index, RESULT_FAIL(05));
                         return;
                 }
             }
@@ -486,7 +486,7 @@ payload_primary(void)
     }
 
     /* Set the test status to pass */
-    val_set_status(primary_pe_index, RESULT_PASS(TEST_NUM, 01));
+    val_set_status(primary_pe_index, RESULT_PASS);
 
     return;
 

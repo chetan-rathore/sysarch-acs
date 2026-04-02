@@ -30,9 +30,9 @@
 /**
   @brief   This functions checks if USBs in system implements preferred type passed as input.
   @param   usb_type - Preferred USB type
-  @return  test_status_t - Status of the check (PASS/FAIL/SKIP)
+  @return  uint32_t - Status of the check (PASS/FAIL/SKIP)
 **/
-test_status_t check_for_usb_intrf (uint32_t usb_type)
+uint32_t check_for_usb_intrf (uint32_t usb_type)
 {
     uint32_t interface = 0;
     uint32_t ret;
@@ -131,17 +131,17 @@ void
 payload_ehci_check()
 {
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
-  test_status_t status;
+  uint32_t status;
 
   /* Check if USB implements EHCI. If not, skip if it's XHCI; otherwise, fail. */
   status = check_for_usb_intrf(USB_TYPE_EHCI);
 
   if (status == TEST_SKIP) {
-      val_set_status(index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(index, RESULT_SKIP(1));
   } else if (status == TEST_FAIL) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+      val_set_status(index, RESULT_FAIL(1));
   } else {
-     val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+     val_set_status(index, RESULT_PASS);
   }
 }
 
@@ -150,17 +150,17 @@ void
 payload_xhci_check()
 {
   uint32_t index = val_pe_get_index_mpid(val_pe_get_mpid());
-  test_status_t status;
+  uint32_t status;
 
   /* Check if USB implements XHCI. If not, skip if it's EHCI; otherwise, fail. */
   status = check_for_usb_intrf(USB_TYPE_XHCI);
 
   if (status == TEST_SKIP) {
-      val_set_status(index, RESULT_SKIP(TEST_NUM1, 1));
+      val_set_status(index, RESULT_SKIP(1));
   } else if (status == TEST_FAIL) {
-      val_set_status(index, RESULT_FAIL(TEST_NUM1, 1));
+      val_set_status(index, RESULT_FAIL(1));
   } else {
-     val_set_status(index, RESULT_PASS(TEST_NUM1, 1));
+     val_set_status(index, RESULT_PASS);
   }
 }
 

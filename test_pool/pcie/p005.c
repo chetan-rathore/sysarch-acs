@@ -39,7 +39,7 @@ esr(uint64_t interrupt_type, void *context)
   val_pe_update_elr(context, (uint64_t)branch_to_test);
 
   val_print(ERROR, "\n       Received exception of type: %d", interrupt_type);
-  val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+  val_set_status(pe_index, RESULT_FAIL(01));
 }
 
 static
@@ -118,7 +118,7 @@ payload(void)
   if (status)
   {
       val_print(ERROR, "\n       Failed in installing the exception handler");
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 01));
+      val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
 
@@ -192,7 +192,7 @@ payload(void)
             val_print(ERROR,
                     "\n        Memory offset + base 0x%llx", mem_base + mem_offset);
             val_print(ERROR, " exceeds the memory limit 0x%llx", mem_lim);
-            val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+            val_set_status(pe_index, RESULT_FAIL(02));
             return;
         }
 
@@ -213,7 +213,7 @@ payload(void)
           val_print(DEBUG, "\n       Value written into memory - 0x%x", KNOWN_DATA);
           val_print(DEBUG, "\n       Value in memory after write - 0x%x", read_value);
           val_print(ERROR, "\n       Memory access check failed for BDF  0x%x\n", bdf);
-          val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 02));
+          val_set_status(pe_index, RESULT_FAIL(02));
           val_pcie_clear_urd(bdf);
           return;
         }
@@ -271,7 +271,7 @@ payload(void)
                val_print(ERROR, " 0x%llx", updated_mem_lim);
                val_print(ERROR,
                    "\n       Out of range 0x%llx", (new_mem_lim + MEM_OFFSET_SMALL));
-               val_set_status(pe_index, RESULT_FAIL(TEST_NUM, 03));
+               val_set_status(pe_index, RESULT_FAIL(03));
            }
         }
 
@@ -299,10 +299,10 @@ exception_return:
   if (test_skip == 1) {
       val_print(DEBUG,
         "\n       No RP/iEP_RP type device found with valid Memory Base/Limit Reg.");
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
   }
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 }
 
 uint32_t

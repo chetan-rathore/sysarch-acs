@@ -66,7 +66,7 @@ typedef struct {
 } test_data_t;
 
 /* This functions checks if counters collectively supports event list passed as parameter */
-test_status_t check_event_support(PMU_EVENT_TYPE_e *event_list, uint32_t num_events,
+uint32_t check_event_support(PMU_EVENT_TYPE_e *event_list, uint32_t num_events,
                                   uint64_t node_primary_instance, PMU_NODE_INFO_TYPE node_type)
 {
     uint32_t counter, event_idx;
@@ -123,7 +123,7 @@ test_status_t check_event_support(PMU_EVENT_TYPE_e *event_list, uint32_t num_eve
 /* This payload checks for presence PMU monitor(s) with required event list passed as parameter */
 static void payload_check_pmu_monitors(void *arg)
 {
-    test_status_t status;
+    uint32_t status;
     uint64_t num_mem_range, mem_range_index, mc_prox_domain;
     uint64_t node_count, node_index, pcie_rc_id;
     uint32_t fail_cnt = 0;
@@ -143,7 +143,7 @@ static void payload_check_pmu_monitors(void *arg)
         num_mem_range = val_srat_get_info(SRAT_MEM_NUM_MEM_RANGE, 0);
         if (num_mem_range == 0 || num_mem_range == SRAT_INVALID_INFO) {
             val_print(ERROR, "\n       No Proximity domains in the system");
-            val_set_status(index, RESULT_FAIL(test_data->test_num, 02));
+            val_set_status(index, RESULT_FAIL(02));
             return;
         }
 
@@ -182,22 +182,22 @@ static void payload_check_pmu_monitors(void *arg)
         }
     } else {
         val_print(ERROR, "\n       Invalid interface type passed to check_monitors()");
-        val_set_status(index, RESULT_FAIL(test_data->test_num, 03));
+        val_set_status(index, RESULT_FAIL(03));
         return;
     }
 
     if (!run_flag) {
         val_print(ERROR, "\n       No PMU associated with PCIe interface");
-        val_set_status(index, RESULT_FAIL(test_data->test_num, 04));
+        val_set_status(index, RESULT_FAIL(04));
         return;
     }
 
     if (fail_cnt) {
-        val_set_status(index, RESULT_FAIL(test_data->test_num, 05));
+        val_set_status(index, RESULT_FAIL(05));
         return;
     }
 
-    val_set_status(index, RESULT_PASS(test_data->test_num, 01));
+    val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

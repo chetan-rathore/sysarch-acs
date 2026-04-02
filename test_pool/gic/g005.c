@@ -56,7 +56,7 @@ payload()
   // Distributor must forward NS Group 1 interrupt
   if (!enable_grp1ns) {
     val_print(ERROR, "\n       Non-secure SGIs not forwarded");
-    val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+    val_set_status(index, RESULT_FAIL(1));
     return;
   }
   else {
@@ -65,7 +65,7 @@ payload()
         pe_rdbase = val_gic_get_pe_rdbase(mpid);
         val_print(DEBUG, "\n       PE RD base address %llx", pe_rdbase);
         if (pe_rdbase == 0) {
-            val_set_status(index, RESULT_FAIL(TEST_NUM, 2));
+            val_set_status(index, RESULT_FAIL(2));
             return;
         }
         /* Read the current value of GICR_ISENABLER0 and set the lower 8 bits to 1 */
@@ -78,7 +78,7 @@ payload()
         val_print(DEBUG, "  data 0x%x", data);
         data = VAL_EXTRACT_BITS(data, 0, 7);
         if (data == 0xFF) {
-            val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+            val_set_status(index, RESULT_PASS);
             return;
         }
         else {
@@ -86,7 +86,7 @@ payload()
                 "\n       GICR_ISENABLER0: %X\n ", data);
             val_print(ERROR,
                 "\n       INTID 0 - 7 not implemented as non-secure SGIs");
-            val_set_status(index, RESULT_FAIL(TEST_NUM, 3));
+            val_set_status(index, RESULT_FAIL(3));
             return;
         }
     }
@@ -96,7 +96,7 @@ payload()
         val_mmio_write((val_get_gicd_base() + GICD_ISENABLER), data);
         data = VAL_EXTRACT_BITS(val_gic_get_info(GIC_INFO_SGI_NON_SECURE_LEGACY), 0, 7);
         if (data == 0xFF) {
-            val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+            val_set_status(index, RESULT_PASS);
             return;
         }
         else {
@@ -104,7 +104,7 @@ payload()
                 "\n       GICD_IENABLER<n>: %X\n ", data);
             val_print(ERROR,
                 "\n       INTID 0 - 7 not implemented as non-secure SGIs");
-            val_set_status(index, RESULT_FAIL(TEST_NUM, 4));
+            val_set_status(index, RESULT_FAIL(4));
             return;
         }
     }

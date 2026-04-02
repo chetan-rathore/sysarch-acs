@@ -37,7 +37,7 @@ payload()
     if (intid != 25) {
        val_print(ERROR,
                  "\n       GIC Maintenance interrupt not mapped to PPI ID 25, id %d", intid);
-       val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+       val_set_status(index, RESULT_FAIL(1));
        return;
     }
 
@@ -47,7 +47,7 @@ payload()
     if (intid != 26) {
         val_print(DEBUG,
               "\n       NS EL2 physical timer not mapped to PPI id 26, INTID: %d ", intid);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
     }
 
@@ -57,7 +57,7 @@ payload()
     if (intid != 27) {
         val_print(ERROR,
             "\n       EL0-Virtual timer not mapped to PPI ID 27, INTID: %d   ", intid);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
     }
 
@@ -67,7 +67,7 @@ payload()
     if (intid != 28) {
        val_print(ERROR, "\n       NS EL2 virtual timer not mapped to PPI ID 28, id %d",
                                                                 intid);
-       val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+       val_set_status(index, RESULT_FAIL(1));
        return;
     }
 
@@ -77,11 +77,11 @@ payload()
     if (intid != 30) {
         val_print(ERROR,
             "\n       EL0-Phy timer not mapped to PPI ID 30, INTID: %d   ", intid);
-        val_set_status(index, RESULT_FAIL(TEST_NUM, 1));
+        val_set_status(index, RESULT_FAIL(1));
         return;
     }
 
-    val_set_status(index, RESULT_PASS(TEST_NUM, 1));
+    val_set_status(index, RESULT_PASS);
 }
 
 uint32_t

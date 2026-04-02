@@ -364,7 +364,7 @@ payload(void)
      returning SKIP if called for BSA */
   /* TODO revisit could be warning for BSA, since we can't deduce if condition of BSA rule */
   if (g_build_sbsa == 0) {
-      val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_SKIP(1));
       return;
   }
 
@@ -372,13 +372,13 @@ payload(void)
   barspace_transactions_order_check();
 
   if (warn_cnt)
-    val_set_status(pe_index, RESULT_WARN(TEST_NUM, 1));
+    val_set_status(pe_index, RESULT_WARNING(1));
   else if (!run_flag)
-    val_set_status(pe_index, RESULT_SKIP(TEST_NUM, 2));
+    val_set_status(pe_index, RESULT_SKIP(2));
   else if (fail_cnt)
-      val_set_status(pe_index, RESULT_FAIL(TEST_NUM, fail_cnt));
+      val_set_status(pe_index, RESULT_FAIL(fail_cnt));
   else
-      val_set_status(pe_index, RESULT_PASS(TEST_NUM, 1));
+      val_set_status(pe_index, RESULT_PASS);
 
   return;
 }
@@ -394,7 +394,7 @@ e003_entry(uint32_t num_pe)
   status = val_initialize_test(TEST_NUM, TEST_DESC, num_pe);
   if (status != ACS_STATUS_SKIP) {
       if (val_exerciser_test_init() != ACS_STATUS_PASS)
-          return TEST_SKIP_VAL;
+          return RESULT_SKIP(1);
       val_run_test_payload(TEST_NUM, num_pe, payload, 0);
   }
 
