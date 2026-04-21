@@ -15,6 +15,10 @@
 #define DAIF_DBG_BIT        (1U << 3)
 #define DAIF_CONFIG         (0x7U)
 
+#ifdef PMSELR_EL0_SEL_MASK
+#undef PMSELR_EL0_SEL_MASK
+#endif
+
 #define PMSELR_EL0_SEL_MASK (0x1fU)
 
 #define EL_IMPL_NONE        (0ULL)
