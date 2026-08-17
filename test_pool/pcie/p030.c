@@ -23,7 +23,7 @@
 #define TEST_RULE  "PCI_IN_19"
 #define TEST_DESC  "Check Cmd Reg memory space enable     "
 
-static void *branch_to_test;
+static void * volatile branch_to_test;
 static
 void
 esr(uint64_t interrupt_type, void *context)
@@ -37,6 +37,28 @@ esr(uint64_t interrupt_type, void *context)
 
   val_print(TRACE, "\n       Received exception of type: %d", interrupt_type);
   val_set_status(pe_index, RESULT_PASS);
+}
+
+/*
+ * Keep the exception recovery point in a separate stack frame. Returning
+ * normally from this helper prevents the exception path from invalidating
+ * register-allocated loop state in payload().
+ */
+static __attribute__((noinline))
+uint32_t
+read_bar_with_exception(uint64_t bar_base)
+{
+  volatile uint32_t bar_data = 0;
+  volatile uint32_t timeout;
+
+  branch_to_test = &&exception_return;
+
+  bar_data = (*(volatile addr_t *)bar_base);
+  timeout = TIMEOUT_SMALL;
+  while (--timeout > 0);
+
+exception_return:
+  return bar_data;
 }
 
 /*
@@ -110,7 +132,6 @@ payload(void)
   bool skip_flag = acs_policy_get_pcie_skip_dp_nic_ms();
   uint64_t bar_base;
   uint32_t status;
-  uint32_t timeout;
 
   pcie_device_bdf_table *bdf_tbl_ptr;
 
@@ -126,8 +147,6 @@ payload(void)
       val_set_status(pe_index, RESULT_FAIL(01));
       return;
   }
-
-  branch_to_test = &&exception_return;
 
   bar_data = 0;
   tbl_index = 0;
@@ -205,11 +224,7 @@ payload(void)
        * response. Based on platform configuration, this may
        * even cause an sync/async exception.
        */
-      bar_data = (*(volatile addr_t *)bar_base);
-      timeout = TIMEOUT_SMALL;
-      while (--timeout > 0);
-
-exception_return:
+      bar_data = read_bar_with_exception(bar_base);
       /*
        * If none of below condition are met, device MSE check is considered fail
        *   - UR bit detected set
