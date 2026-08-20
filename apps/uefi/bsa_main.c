@@ -40,6 +40,7 @@ CONST SHELL_PARAM_ITEM ParamList[] = {
     {L"-l", TypeValue},
     {L"-m", TypeValue},
     {L"-mmio", TypeFlag},
+    {L"-multi-pe-timeout-multiplier", TypeValue},
     {L"-no_crypto_ext", TypeFlag},
     {L"-only", TypeValue},
     {L"-os", TypeFlag},
@@ -77,6 +78,9 @@ HelpMsg (VOID)
         "                  TIMER, WATCHDOG, NIST, PCIE, MPAM, ETE, TPM, POWER_WAKEUP\n"
         "        Example: -m PE,GIC,PCIE\n"
         "-mmio   Pass this flag to enable pal_mmio_read/write prints, use with -v 1\n"
+        "-multi-pe-timeout-multiplier <n>\n"
+        "        Scale the secondary PE CPU_ON retry and completion timeout\n"
+        "        for multi-PE tests. Range: 1-100. Default: 10\n"
         "-no_crypto_ext \n"
         "        Pass this flag if cryptography extension not supported\n"
         "        due to export restrictions\n"

@@ -649,7 +649,7 @@ val_run_test_payload(uint32_t test_num, uint32_t num_pe, void (*payload)(void), 
           val_execute_on_pe(i, payload, test_input);
   }
 
-  val_wait_for_test_completion(test_num, num_pe, TIMEOUT_LARGE);
+  val_wait_for_test_completion(test_num, num_pe, ACS_MULTI_PE_TIMEOUT);
 }
 
 /**

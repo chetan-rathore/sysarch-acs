@@ -50,6 +50,8 @@
 #define ACS_GPU_TEST_NUM_BASE        1700
 #define ACS_CXL_TEST_NUM_BASE        1800
 
+#define ACS_MULTI_PE_TIMEOUT            (acs_policy_get_multi_pe_timeout_multiplier() * TIMEOUT_LARGE)
+
 /* Module specific print APIs */
 
 typedef enum {

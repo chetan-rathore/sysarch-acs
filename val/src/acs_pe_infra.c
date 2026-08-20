@@ -264,7 +264,7 @@ void
 val_execute_on_pe(uint32_t index, void (*payload)(void), uint64_t test_input)
 {
 
-  int timeout = TIMEOUT_LARGE;
+  int timeout = ACS_MULTI_PE_TIMEOUT;
   if (index > g_pe_info_table->header.num_of_pe) {
       val_print(ERROR, "\n       Input Index exceeds Num of PE %x", index);
       val_report_status(index, RESULT_FAIL(0xFF), NULL);

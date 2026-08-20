@@ -600,6 +600,17 @@ command_init (void)
               policy->timeout_pass, policy->timeout_fail);
     }
 
+    CmdLineArg = ShellCommandLineGetValue(ParamPackage, L"-multi-pe-timeout-multiplier");
+    if (CmdLineArg != NULL) {
+        policy->multi_pe_timeout_multiplier = (UINT32)StrDecimalToUintn(CmdLineArg);
+        if ((policy->multi_pe_timeout_multiplier < ACS_MULTI_PE_TIMEOUT_MIN_MULTIPLIER) ||
+            (policy->multi_pe_timeout_multiplier > ACS_MULTI_PE_TIMEOUT_MAX_MULTIPLIER)) {
+            Print(L"Invalid -multi-pe-timeout-multiplier: range should be 1 to 100\n");
+            return SHELL_INVALID_PARAMETER;
+        }
+        Print(L"Multi-PE timeout multiplier: %d\n", policy->multi_pe_timeout_multiplier);
+    }
+
     /* Parse verbosity level */
     CmdLineArg  = ShellCommandLineGetValue (ParamPackage, L"-v");
     if (CmdLineArg == NULL) {

@@ -21,6 +21,10 @@
 #include "acs_stdint.h"
 #include "acs_stdbool.h"
 
+#define ACS_MULTI_PE_TIMEOUT_DEFAULT_MULTIPLIER 10U
+#define ACS_MULTI_PE_TIMEOUT_MIN_MULTIPLIER     1U
+#define ACS_MULTI_PE_TIMEOUT_MAX_MULTIPLIER     100U
+
 /*
  * acs_execution_policy_t captures shared runtime behavior knobs for one ACS
  * invocation. It contains only "how to run" inputs gathered from platform
@@ -41,6 +45,7 @@ typedef struct acs_execution_policy {
     uint32_t timeout_pass;
     uint32_t timeout_fail;
     uint32_t timer_timeout_us;
+    uint32_t multi_pe_timeout_multiplier;
     uint32_t crypto_support;
     /*
      * System last-level cache hint used by MPAM and related tests:
@@ -69,6 +74,7 @@ bool acs_policy_get_pcie_skip_dp_nic_ms(void);
 uint32_t acs_policy_get_timeout_pass(void);
 uint32_t acs_policy_get_timeout_fail(void);
 uint32_t acs_policy_get_timer_timeout_us(void);
+uint32_t acs_policy_get_multi_pe_timeout_multiplier(void);
 uint32_t acs_policy_get_crypto_support(void);
 uint32_t acs_policy_get_sys_last_lvl_cache(void);
 uint32_t acs_policy_get_el1skiptrap_mask(void);
