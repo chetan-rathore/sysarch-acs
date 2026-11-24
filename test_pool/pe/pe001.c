@@ -43,6 +43,12 @@
 #define MASK_CCSIDR_LS    0xFFFFFFFFFFFFFFF8
 
 #define MAX_CACHE_LEVEL   7
+#define ID_AA64PFR0_EL_FIELD_WIDTH  4
+#define ID_AA64PFR0_EL_FIELD_MASK   0xFULL
+#define ID_AA64PFR0_EL_MAX          3
+#define ID_AA64PFR0_EL_AA64_ONLY    1
+#define ID_AA64PFR0_EL_AA64_AA32    2
+#define PMCR_N_MASK                 (0x1FULL << 11)
 
 uint64_t rd_data_array[NUM_OF_REGISTERS];
 uint64_t cache_list[MAX_CACHE_LEVEL];
@@ -121,6 +127,161 @@ is_feat_mpam_implemented(void)
     return 0;
 }
 
+static uint64_t
+normalize_pfr0_aarch32_el_support(uint64_t reg_value)
+{
+    uint32_t el;
+    uint64_t field;
+
+    for (el = 0; el <= ID_AA64PFR0_EL_MAX; el++) {
+        field = (reg_value >> (el * ID_AA64PFR0_EL_FIELD_WIDTH)) &
+                ID_AA64PFR0_EL_FIELD_MASK;
+
+        if (field == ID_AA64PFR0_EL_AA64_AA32) {
+            reg_value &= ~(ID_AA64PFR0_EL_FIELD_MASK <<
+                           (el * ID_AA64PFR0_EL_FIELD_WIDTH));
+            reg_value |= ((uint64_t)ID_AA64PFR0_EL_AA64_ONLY <<
+                          (el * ID_AA64PFR0_EL_FIELD_WIDTH));
+        }
+    }
+
+    return reg_value;
+}
+
+static uint32_t
+is_pmceid_reg(uint32_t reg)
+{
+    return ((reg == PMCEID0_EL0) || (reg == PMCEID1_EL0));
+}
+
+static uint64_t
+get_pmu_errata_mask(uint32_t reg)
+{
+    if (is_pmceid_reg(reg))
+        return ~(0ULL);
+
+    if (reg == PMCR_EL0)
+        return PMCR_N_MASK;
+
+    return 0;
+}
+
+static uint64_t
+get_pe_reg_data(uint32_t pe_index, uint32_t primary_index, uint32_t reg_index)
+{
+    if (pe_index == primary_index)
+        return rd_data_array[reg_index];
+
+    return g_pe_reg_info[pe_index].reg_data[reg_index];
+}
+
+static uint32_t
+is_pmu_errata_diff_permitted(uint32_t reg, uint64_t primary_midr, uint64_t current_midr)
+{
+    if (get_pmu_errata_mask(reg) == 0)
+        return 0;
+
+    return ((primary_midr & MASK_MIDR) != (current_midr & MASK_MIDR));
+}
+
+static uint32_t
+is_pmu_errata_value_diff(uint32_t reg_index, uint64_t primary_value, uint64_t current_value)
+{
+    uint64_t mask = get_pmu_errata_mask(reg_list[reg_index].reg_name);
+
+    return (mask != 0) && ((current_value & mask) != (primary_value & mask));
+}
+
+static uint32_t
+is_reg_value_diff(uint32_t reg_index, uint64_t primary_value, uint64_t current_value,
+                  uint64_t primary_midr, uint64_t current_midr)
+{
+    (void)primary_midr;
+    (void)current_midr;
+
+    if (is_pmceid_reg(reg_list[reg_index].reg_name))
+        return 0;
+
+    if (reg_list[reg_index].reg_name == PMCR_EL0) {
+        return ((current_value & (~(reg_list[reg_index].reg_mask | PMCR_N_MASK))) !=
+                (primary_value & (~(reg_list[reg_index].reg_mask | PMCR_N_MASK))));
+    }
+
+    return ((current_value & (~reg_list[reg_index].reg_mask)) !=
+            (primary_value & (~reg_list[reg_index].reg_mask)));
+}
+
+static uint32_t
+find_reg_index(uint32_t reg)
+{
+    uint32_t reg_index;
+
+    for (reg_index = 0; reg_index < NUM_OF_REGISTERS; reg_index++) {
+        if (reg_list[reg_index].reg_name == reg)
+            return reg_index;
+    }
+
+    return NUM_OF_REGISTERS;
+}
+
+static uint32_t
+check_pmu_group_symmetry(uint32_t num_pe, uint32_t primary_index)
+{
+    uint32_t pe_index;
+    uint32_t ref_index;
+    uint32_t pmu_index;
+    uint32_t fail_count = 0;
+    uint32_t pmu_reg_indexes[] = {
+        find_reg_index(PMCEID0_EL0),
+        find_reg_index(PMCEID1_EL0),
+        find_reg_index(PMCR_EL0)
+    };
+
+    for (pe_index = 0; pe_index < num_pe; pe_index++) {
+        uint64_t pe_midr = get_pe_reg_data(pe_index, primary_index, 1);
+        uint32_t found_ref = 0;
+
+        for (ref_index = 0; ref_index < pe_index; ref_index++) {
+            uint64_t ref_midr = get_pe_reg_data(ref_index, primary_index, 1);
+
+            if ((pe_midr & MASK_MIDR) == (ref_midr & MASK_MIDR)) {
+                found_ref = 1;
+                break;
+            }
+        }
+
+        if (!found_ref)
+            continue;
+
+        for (pmu_index = 0; pmu_index < sizeof(pmu_reg_indexes) /
+                                      sizeof(pmu_reg_indexes[0]); pmu_index++) {
+            uint32_t reg_index = pmu_reg_indexes[pmu_index];
+            uint64_t mask;
+            uint64_t pe_value;
+            uint64_t ref_value;
+
+            if (reg_index == NUM_OF_REGISTERS)
+                continue;
+
+            mask = get_pmu_errata_mask(reg_list[reg_index].reg_name);
+            pe_value = get_pe_reg_data(pe_index, primary_index, reg_index);
+            ref_value = get_pe_reg_data(ref_index, primary_index, reg_index);
+
+            if ((pe_value & mask) != (ref_value & mask)) {
+                val_print(ERROR, "\n       PE Index %d, ", pe_index);
+                val_print(ERROR, reg_list[reg_index].reg_desc);
+                val_print(ERROR, " 0x%016llx    FAIL", pe_value & mask);
+                val_print(ERROR, "\n       Reference PE Index      %d", ref_index);
+                val_print(ERROR, "\n       Reference PE Value      0x%016llx", ref_value & mask);
+                val_print(ERROR, "\n       Matching MIDR_EL1 mask  0x%08llx", pe_midr & MASK_MIDR);
+                fail_count++;
+            }
+        }
+    }
+
+    return fail_count;
+}
+
 uint64_t
 return_reg_value(uint32_t reg, uint8_t dependency)
 {
@@ -132,6 +293,9 @@ return_reg_value(uint32_t reg, uint8_t dependency)
           return 0;
       }
   }
+
+  if (reg == ID_AA64PFR0_EL1)
+      return normalize_pfr0_aarch32_el_support(val_pe_reg_read(reg));
 
   if(dependency == 0)
       return val_pe_reg_read(reg);
@@ -165,13 +329,8 @@ return_reg_value(uint32_t reg, uint8_t dependency)
             return 0;
         break;
 
-    case AA32: // If the register is UNK in pure AArch64 implementation, then skip register check
-        temp = val_pe_reg_read(ID_AA64PFR0_EL1);
-        temp = (temp & 1);
-        if(temp == 0)
-            return val_pe_reg_read(reg);
-        else
-            return 0;
+    case AA32: // AArch32-only ID registers are outside BSA scope
+        return 0;
         break;
 
     case PMUV3: // If PMUv3 is not supported, then skip register check
@@ -280,8 +439,8 @@ id_regs_check(void)
       secondary_buffer->reg_data[i] = reg_read_data;
       val_data_cache_ops_by_va((addr_t)&secondary_buffer->reg_data[i], CLEAN_AND_INVALIDATE);
 
-      if ((reg_read_data & (~reg_list[i].reg_mask)) != (rd_data_array[i] &
-                                                                    (~reg_list[i].reg_mask)))
+      if (is_reg_value_diff(i, rd_data_array[i], reg_read_data, rd_data_array[1],
+                            secondary_buffer->reg_data[1]))
       {
           secondary_buffer->reg_status[i] = 1;
           val_data_cache_ops_by_va((addr_t)&secondary_buffer->reg_status[i], CLEAN_AND_INVALIDATE);
@@ -316,6 +475,8 @@ payload(uint32_t num_pe)
       val_set_status(my_index, RESULT_SKIP(1));
       return;
   }
+
+  val_print(INFO, "\n       BSA ignores AArch32-only PE feature differences");
 
   /* Loop CLIDR to check if a cache level is implemented */
   i = 0;
@@ -403,6 +564,8 @@ payload(uint32_t num_pe)
       val_print(INFO, "\n          Other Cores          Identical       ");
   }
 
+  total_fail += check_pmu_group_symmetry(num_pe, my_index);
+
   pe_buffer = NULL;
 
   for (i = 0; i < num_pe; i++) {
@@ -433,6 +596,16 @@ payload(uint32_t num_pe)
           }
 
           for (int reg_index = 1; reg_index < NUM_OF_REGISTERS; reg_index++) {
+             if (!(pe_buffer->reg_status[reg_index]) &&
+                 is_pmu_errata_diff_permitted(reg_list[reg_index].reg_name, rd_data_array[1],
+                                              pe_buffer->reg_data[1]) &&
+                 is_pmu_errata_value_diff(reg_index, rd_data_array[reg_index],
+                                          pe_buffer->reg_data[reg_index])) {
+                 val_print(INFO, "\n       PE Index %d, ", i);
+                 val_print(INFO, reg_list[reg_index].reg_desc);
+                 val_print(INFO, " difference permitted due to MIDR_EL1 Variant/PartNum/Revision");
+             }
+
              if (!(pe_buffer->reg_status[reg_index])) {
                  val_print(TRACE, "\n       PE Index %d, ", i);
                  val_print(TRACE, reg_list[reg_index].reg_desc);
